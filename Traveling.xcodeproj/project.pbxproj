@@ -29,9 +29,33 @@
 		E7A0C4C82EA8076900ED8CB9 /* TravelingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E7A0C5142EA828F100ED8CB9 /* Exceptions for "Traveling" folder in "Traveling" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				App/Configuration/Untitled1.swift,
+			);
+			target = E7A0C4AF2EA8076600ED8CB9 /* Traveling */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		E7A0C5152EA828F100ED8CB9 /* Exceptions for "Traveling" folder in "Copy Bundle Resources" phase from "Traveling" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = E7A0C4AE2EA8076600ED8CB9 /* Resources */;
+			membershipExceptions = (
+				App/Configuration/Untitled1.swift,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E7A0C4B22EA8076600ED8CB9 /* Traveling */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E7A0C5142EA828F100ED8CB9 /* Exceptions for "Traveling" folder in "Traveling" target */,
+				E7A0C5152EA828F100ED8CB9 /* Exceptions for "Traveling" folder in "Copy Bundle Resources" phase from "Traveling" target */,
+			);
 			path = Traveling;
 			sourceTree = "<group>";
 		};
