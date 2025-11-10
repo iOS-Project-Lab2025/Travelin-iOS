@@ -1,6 +1,15 @@
 {
-  "originHash" : "ae94d77b3cab58245ed9263e61d40af9694885616f7792aa7c3480acc2cc933c",
+  "originHash" : "ee8e9249a704bf9c8e7790388f121241056a905995e4878fb2285bb2ac7826cd",
   "pins" : [
+    {
+      "identity" : "keychainaccess",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
+      "state" : {
+        "branch" : "master",
+        "revision" : "e0c7eebc5a4465a3c4680764f26b7a61f567cdaf"
+      }
+    },
     {
       "identity" : "swiftlintplugins",
       "kind" : "remoteSourceControl",

@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		642FF90D2EB82969005E613A /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 642FF90C2EB82969005E613A /* KeychainAccess */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		E7A0C4BF2EA8076900ED8CB9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -76,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				642FF90D2EB82969005E613A /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,6 +142,7 @@
 			);
 			name = Traveling;
 			packageProductDependencies = (
+				642FF90C2EB82969005E613A /* KeychainAccess */,
 			);
 			productName = Traveling;
 			productReference = E7A0C4B02EA8076600ED8CB9 /* Traveling.app */;
@@ -222,6 +228,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				9AF07C272EAAA46C0054106E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
+				642FF90B2EB82969005E613A /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E7A0C4B12EA8076600ED8CB9 /* Products */;
@@ -425,7 +432,7 @@
 				CODE_SIGN_ENTITLEMENTS = Traveling/Traveling.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HA6847M65W;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -466,7 +473,7 @@
 				CODE_SIGN_ENTITLEMENTS = Traveling/Traveling.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HA6847M65W;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -631,6 +638,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		642FF90B2EB82969005E613A /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		9AF07C272EAAA46C0054106E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins.git";
@@ -642,6 +657,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		642FF90C2EB82969005E613A /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 642FF90B2EB82969005E613A /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
 		9AF07C282EAAA4740054106E /* SwiftLintBuildToolPlugin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9AF07C272EAAA46C0054106E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
