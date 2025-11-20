@@ -1,3 +1,10 @@
+//
+//  AuthInterceptor.swift
+//  Traveling
+//
+//  Created by Daniel Retamal on 18-11-25.
+//
+
 import Foundation
 
 actor AuthInterceptor: RequestInterceptor {
@@ -9,13 +16,13 @@ actor AuthInterceptor: RequestInterceptor {
         self.tokenManager = tokenManager
     }
     
-    // MARK: - Adaptación
+    // MARK: - Adaptation
     func adapt(_ request: URLRequest) async -> URLRequest {
         var modifiedRequest = request
         
-        // Si ya tenemos un token, lo inyectamos
+        // If we already have a token, inject it
         if let token = tokenManager.getAccessToken() {
-            // Ojo: No sobrescribir si ya tiene un Authorization header (útil para endpoints públicos o especiales)
+            // Note: Don't overwrite if it already has an Authorization header (useful for public or special endpoints)
             if modifiedRequest.value(forHTTPHeaderField: "Authorization") == nil {
                 modifiedRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             }
@@ -23,58 +30,58 @@ actor AuthInterceptor: RequestInterceptor {
         return modifiedRequest
     }
     
-    // MARK: - Lógica de Reintento (Refresh Token)
+    // MARK: - Retry Logic (Refresh Token)
     func shouldRetry(_ request: URLRequest, with error: Error, response: HTTPURLResponse?) async -> RetryResult {
         
-        // 1. Solo nos importa el error 401
+        // 1. Only care about 401 errors
         guard response?.statusCode == 401 else {
             return .doNotRetry
         }
         
-        // 2. Evitar bucle infinito: Si la petición que falló YA ERA la de auth/refresh, no reintentar
+        // 2. Avoid infinite loop: If the request that failed WAS ALREADY auth/refresh, don't retry
         if let urlString = request.url?.absoluteString, urlString.contains("/auth/refresh") || urlString.contains("/auth/login") {
             return .doNotRetry
         }
         
-        // 3. Si ya estamos refrescando, espera un poco y dile que reintente (usará el nuevo token)
+        // 3. If we're already refreshing, wait a bit and tell it to retry (will use the new token)
         if isRefreshing {
-            try? await Task.sleep(nanoseconds: 1 * 1_000_000_000) // Espera simple
+            try? await Task.sleep(nanoseconds: 1 * 1_000_000_000) // Simple wait
             return .retry
         }
         
-        // 4. Iniciar proceso de refresco
+        // 4. Start refresh process
         isRefreshing = true
-        defer { isRefreshing = false } // Asegurar que se libere el flag
+        defer { isRefreshing = false } // Ensure the flag is released
         
         do {
-            // A. Obtener el refresh token actual
+            // A. Get the current refresh token
             guard let refreshToken = tokenManager.getRefreshToken() else {
-                // Si no hay refresh token, el usuario debe loguearse de nuevo
+                // If there's no refresh token, the user must log in again
                 return .doNotRetry
             }
             
-            // B. Llamar al endpoint de refresco.
-            // IMPORTANTE: Aquí deberías usar una llamada "cruda" o un cliente sin este interceptor
-            // para evitar recursividad. Asumiremos una función auxiliar `performRefresh`.
+            // B. Call the refresh endpoint.
+            // IMPORTANT: Use a "raw" call or a client without this interceptor
+            // to avoid recursion. We'll use a helper function `performRefresh`.
             let newTokens = try await performTokenRefresh(using: refreshToken)
             
-            // C. Guardar los nuevos tokens
+            // C. Save the new tokens
             try tokenManager.saveTokens(newTokens)
             
-            // D. Indicar que se debe reintentar la petición original
+            // D. Indicate that the original request should be retried
             return .retry
             
         } catch {
-            // Si falla el refresco (ej. refresh token expirado), borramos todo
+            // If refresh fails (e.g., refresh token expired), clear everything
             tokenManager.clearTokens()
             return .doNotRetryWithError(error)
         }
     }
     
-    // MARK: - Auxiliar para llamar a la API
+    // MARK: - Helper to call the API
     private func performTokenRefresh(using refreshToken: String) async throws -> OAuthTokens {
-        // Construye tu request de refresco manual aquí para no pasar por el interceptor
-        // Ejemplo simplificado:
+        // Build your refresh request manually here to avoid going through the interceptor
+        // Simplified example:
         guard let url = URL(string: "https://api.tuapp.com/auth/refresh") else {
             throw URLError(.badURL)
         }
@@ -92,8 +99,8 @@ actor AuthInterceptor: RequestInterceptor {
             throw URLError(.userAuthenticationRequired)
         }
         
-        // Decodificar respuesta a OAuthTokens
-        // Ajusta esto a como tu backend devuelve el JSON
+        // Decode response to OAuthTokens
+        // Adjust this to match how your backend returns the JSON
         struct TokenResponse: Decodable {
             let accessToken: String
             let refreshToken: String?

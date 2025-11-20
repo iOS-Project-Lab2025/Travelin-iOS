@@ -9,7 +9,7 @@ import Foundation
 
 class NetworkClient: NetworkClientProtocol {
     private let session: URLSession
-    private let interceptor: RequestInterceptor? // Inyectado
+    private let interceptor: RequestInterceptor? // Injected
     
     init(session: URLSession = .shared, interceptor: RequestInterceptor? = nil) {
         self.session = session
@@ -17,22 +17,22 @@ class NetworkClient: NetworkClientProtocol {
     }
     
     func execute(_ request: URLRequest) async throws -> Data {
-        // 1. Adaptar (inyectar token)
+        // 1. Adapt (inject token)
         var finalRequest = request
         if let interceptor = interceptor {
             finalRequest = await interceptor.adapt(request)
         }
         
-        // 2. Ejecutar
+        // 2. Execute
         do {
             let (data, response) = try await session.data(for: finalRequest)
             
-            // 3. Verificar si es 401 para interceptar
+            // 3. Check if it's 401 to intercept
             if let httpResponse = response as? HTTPURLResponse, 
                httpResponse.statusCode == 401, 
                let interceptor = interceptor {
                 
-                // Preguntar al interceptor qué hacer
+                // Ask the interceptor what to do
                 let action = await interceptor.shouldRetry(
                     finalRequest, 
                     with: URLError(.userAuthenticationRequired), 
@@ -41,28 +41,28 @@ class NetworkClient: NetworkClientProtocol {
                 
                 switch action {
                 case .retry:
-                    // RECURSIVIDAD: Llamar a execute de nuevo.
-                    // Al entrar, el interceptor.adapt() cogerá el token NUEVO que se acaba de guardar.
-                    return try await execute(request) // Nota: usa 'request' original sin headers sucios
+                    // RECURSION: Call execute again.
+                    // When it enters, interceptor.adapt() will pick up the NEW token that was just saved.
+                    return try await execute(request) // Note: use original 'request' without dirty headers
                     
                 case .doNotRetry:
-                    // Retornar data tal cual (el llamador debe manejar el 401)
+                    // Return data as is (the caller should handle the 401)
                     return data
                     
                 case .doNotRetryWithError(let error):
-                    // El interceptor decidió lanzar un error diferente (ej. refresh falló)
+                    // The interceptor decided to throw a different error (e.g., refresh failed)
                     throw error
                 }
             }
             
-            // 4. Si no es 401, devolver data normalmente
+            // 4. If it's not 401, return data normally
             return data
             
         } catch let error as URLError {
-            // Si es un error de red (timeout, sin conexión), propagarlo directamente
+            // If it's a network error (timeout, no connection), propagate it directly
             throw error
         } catch {
-            // Otros errores (ej. decodificación), propagarlos
+            // Other errors (e.g., decoding), propagate them
             throw error
         }
     }
