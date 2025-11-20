@@ -44,12 +44,12 @@ enum UserEndpoint: EndPoint {
     }
 
     var headers: [String : String]? {
-        switch self {
-        case .login:
+        switch method {
+        case .post:
             return ["Content-Type": "application/json"]
-            
+
         default:
-            return nil   // usa los headers por defecto
+            return nil
         }
     }
 }

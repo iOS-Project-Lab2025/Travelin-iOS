@@ -8,9 +8,9 @@
 import Foundation
 
 protocol NetworkServiceProtocol {
-    func execute<T: Decodable>(
+    func execute<T: Decodable, E: Encodable>(
         _ endPoint: EndPoint,
         responseType: T.Type,
-        body: Data?
+        body: E? 
     ) async throws -> T
 }

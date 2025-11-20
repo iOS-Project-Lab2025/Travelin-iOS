@@ -10,20 +10,23 @@ import Foundation
 struct EndPointBuilder: EndPointBuilderProtocol {
     private let baseURL: URL    // <-- URL
 
-        init(baseURL: URL) {
-            self.baseURL = baseURL
+    init(baseURL: URL) {
+        guard baseURL.scheme != nil, baseURL.host != nil else {
+            fatalError("Invalid base URL")
         }
+        self.baseURL = baseURL
+    }
 
-        func buildURL(from endPoint: EndPoint) throws -> URL {
-            var components = URLComponents()
-            components.scheme = baseURL.scheme
-            components.host = baseURL.host
-            components.path = endPoint.path
-            components.queryItems = endPoint.queryItems
+    func buildURL(from endPoint: EndPoint) throws -> URL {
+        var components = URLComponents()
+        components.scheme = baseURL.scheme
+        components.host = baseURL.host
+        components.path = baseURL.path + endPoint.path
+        components.queryItems = endPoint.queryItems
 
-            guard let url = components.url else {
-                throw URLError(.badURL)
-            }
-            return url
+        guard let url = components.url else {
+            throw URLError(.badURL)
         }
+        return url
+    }
 }

@@ -8,5 +8,5 @@
 import Foundation
 
 protocol NetworkClientProtocol {
-    func execute(_ request: URLRequest) async throws -> Data
+    func execute(_ request: URLRequest) async throws -> (Data, URLResponse)
 }
