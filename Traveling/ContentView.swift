@@ -13,7 +13,7 @@ struct ContentView: View {
 
     var body: some View {
 
-        switch router.activeRoute {
+        switch router.path {
         case .home:
             HomeView()
 
@@ -21,7 +21,7 @@ struct ContentView: View {
             OnboardingView()
 
         case .profile:
-            ProfileView()
+            ProfileView(userId: "John Doe")
 
         case .booking:
             BookingView()
@@ -37,5 +37,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .environment(AppRouter.shared)
+        .environment(AppRouter.Main.shared)
 }
