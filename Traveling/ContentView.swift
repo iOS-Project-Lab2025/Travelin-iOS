@@ -8,17 +8,35 @@
 import SwiftUI
 
 struct ContentView: View {
+
+    @Environment(\.appRouter) private var router
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+
+        switch router.path {
+        case .home:
+            HomeView()
+
+        case .onBoarding:
+            OnboardingView()
+
+        case .profile:
+            ProfileView(userId: "John Doe")
+
+        case .booking:
+            BookingView()
+
+        case .authentication(.login):
+            LoginView()
+
+        case .authentication(.register):
+            RegisterView()
         }
-        .padding()
+
     }
 }
 
 #Preview {
     ContentView()
+        .environment(AppRouter.Main.shared)
 }
