@@ -15,9 +15,9 @@ struct OnboardingView: View {
         VStack {
             Text("Onboarding view")
             Button {
-                router.goTo(.authentication(.login))
+                router.completeOnboarding()
             } label: {
-                Text("Login")
+                Text("Complete Onboarding")
             }
 
         }

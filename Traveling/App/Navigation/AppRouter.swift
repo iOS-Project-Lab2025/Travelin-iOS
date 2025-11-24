@@ -56,8 +56,11 @@ enum AppRouter {
     @Observable
     final class Main {
 
+        private var onBoardingComplete: (() -> Void)?
         static let shared = Main()
-        private init() {}
+        private init() {
+            path = UserDefaults.standard.bool(forKey: "onboardingSeen") ? .home : .onBoarding
+        }
 
         // Active main route
         var path: AppRoutes = .home
@@ -66,6 +69,12 @@ enum AppRouter {
         func goTo(_ route: AppRoutes) {
             path = route
         }
+
+        func completeOnboarding() {
+            UserDefaults.standard.set(true, forKey: "onboardingSeen")
+            path = .home
+        }
+
     }
 
     // MARK: - Allows you to freely navigate between routes using a navigation stack
