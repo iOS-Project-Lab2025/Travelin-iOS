@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		642FF90D2EB82969005E613A /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 642FF90C2EB82969005E613A /* KeychainAccess */; };
+		64DF110A2ED4FB870055C94A /* TravelinDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 64DF11092ED4FB870055C94A /* TravelinDesignSystem */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64DF110A2ED4FB870055C94A /* TravelinDesignSystem in Frameworks */,
 				642FF90D2EB82969005E613A /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,6 +145,7 @@
 			name = Traveling;
 			packageProductDependencies = (
 				642FF90C2EB82969005E613A /* KeychainAccess */,
+				64DF11092ED4FB870055C94A /* TravelinDesignSystem */,
 			);
 			productName = Traveling;
 			productReference = E7A0C4B02EA8076600ED8CB9 /* Traveling.app */;
@@ -229,6 +232,7 @@
 			packageReferences = (
 				9AF07C272EAAA46C0054106E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 				642FF90B2EB82969005E613A /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+				64DF11082ED4FB870055C94A /* XCRemoteSwiftPackageReference "TravelinDesignSystem" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E7A0C4B12EA8076600ED8CB9 /* Products */;
@@ -430,9 +434,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Traveling/Traveling.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3RC25YVKR4;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -453,8 +458,9 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = rod.dev.Traveling;
+				PRODUCT_BUNDLE_IDENTIFIER = travelin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -472,9 +478,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Traveling/Traveling.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 3RC25YVKR4;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -495,8 +502,9 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = rod.dev.Traveling;
+				PRODUCT_BUNDLE_IDENTIFIER = travelin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -514,7 +522,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HA6847M65W;
+				DEVELOPMENT_TEAM = 3RC25YVKR4;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -537,7 +545,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HA6847M65W;
+				DEVELOPMENT_TEAM = 3RC25YVKR4;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -559,7 +567,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HA6847M65W;
+				DEVELOPMENT_TEAM = 3RC25YVKR4;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -581,7 +589,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HA6847M65W;
+				DEVELOPMENT_TEAM = 3RC25YVKR4;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -648,6 +656,14 @@
 				kind = branch;
 			};
 		};
+		64DF11082ED4FB870055C94A /* XCRemoteSwiftPackageReference "TravelinDesignSystem" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/iOS-Project-Lab2025/TravelinDesignSystem";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		9AF07C272EAAA46C0054106E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins.git";
@@ -663,6 +679,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 642FF90B2EB82969005E613A /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
+		};
+		64DF11092ED4FB870055C94A /* TravelinDesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 64DF11082ED4FB870055C94A /* XCRemoteSwiftPackageReference "TravelinDesignSystem" */;
+			productName = TravelinDesignSystem;
 		};
 		9AF07C282EAAA4740054106E /* SwiftLintBuildToolPlugin */ = {
 			isa = XCSwiftPackageProductDependency;
