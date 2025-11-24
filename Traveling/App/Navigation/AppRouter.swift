@@ -114,6 +114,16 @@ enum AppRouter {
     ///         }
     ///         .environment(router)
     ///     }
+    ///     @ViewBuilder
+    ///     private func destinationView(for route: ProfileRoutes) -> some View {
+    ///          switch route {
+    ///          case .editUserProfile:
+    ///          ProfileEditView(userId: userId)
+    ///
+    ///          case .userProfile:
+    ///          UserProfileView(userId: userId)
+    ///          }
+    ///      }
     /// }
     /// ```
     ///
@@ -192,6 +202,19 @@ enum AppRouter {
     ///                 }
     ///         }
     ///         .environment(router)
+    ///     }
+    ///     @ViewBuilder
+    ///     private func destinationView(for route: BookingRoutes) -> some View {
+    ///         switch route {
+    ///         case .touristPlace:
+    ///             BookingTouristPlace()
+    ///
+    ///         case .availableDate:
+    ///             BookingAvailableDate()
+    ///
+    ///         case .infoDetails:
+    ///             BookingInfoDetails()
+    ///         }
     ///     }
     /// }
     /// ```
