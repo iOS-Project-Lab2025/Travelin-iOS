@@ -8,6 +8,24 @@
 import SwiftUI
 import TravelinDesignSystem
 
+/*
+    @Environment(\.appRouter) private var router
+
+    var body: some View {
+
+        VStack {
+            Text("Onboarding view")
+            Button {
+                router.completeOnboarding()
+            } label: {
+                Text("Complete Onboarding")
+            }
+
+        }
+
+    }
+*/
+
 struct OnboardingView: View {
     @AppStorage("hasCompletedOnboarding") var hasCompletedOnboarding: Bool = false
 
@@ -138,6 +156,7 @@ private struct OnboardingIndicatorsView: View {
                     .cornerRadius(3) // Adjusted corner radius relative to height
                     .animation(.spring(), value: currentStep)
             }
+        
         }
         .padding(.bottom, 10) // Extra padding for safe area
     }

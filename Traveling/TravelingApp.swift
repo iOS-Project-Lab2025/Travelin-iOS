@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct TravelingApp: App {
+
+    @State private var appRouter = AppRouter.Main.shared
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(appRouter)
         }
     }
 }
