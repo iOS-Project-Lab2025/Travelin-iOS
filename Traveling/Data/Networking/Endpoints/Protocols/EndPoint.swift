@@ -8,9 +8,8 @@
 import Foundation
 
 protocol EndPoint {
-    // var url: URL { get }
-    var path: String { get }
     var method: HTTPMethod { get }
+    var path: String { get }
     var queryItems: [URLQueryItem]? { get }
     var headers: [String: String]? { get }
 }

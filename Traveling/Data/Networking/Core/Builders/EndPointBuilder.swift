@@ -8,6 +8,7 @@
 import Foundation
 
 struct EndPointBuilder: EndPointBuilderProtocol {
+    
     private let baseURL: URL    // <-- URL
 
     init(baseURL: URL) {
@@ -21,12 +22,19 @@ struct EndPointBuilder: EndPointBuilderProtocol {
         var components = URLComponents()
         components.scheme = baseURL.scheme
         components.host = baseURL.host
+        components.port = baseURL.port
         components.path = baseURL.path + endPoint.path
         components.queryItems = endPoint.queryItems
 
         guard let url = components.url else {
             throw URLError(.badURL)
         }
+        NetworkDebug.lastURL = url.absoluteString
         return url
     }
+}
+
+
+enum NetworkDebug {
+    static var lastURL: String?
 }

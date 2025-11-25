@@ -8,8 +8,8 @@
 import Foundation
 
 protocol RequestBuilderProtocol {
-    func buildRequest<E: Encodable>(
+    func buildRequest(
         from endpoint: EndPoint,
-        body: E?
+        body: Encodable?
     ) throws -> URLRequest
 }

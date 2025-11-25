@@ -10,17 +10,17 @@ import Foundation
 struct RequestBuilder: RequestBuilderProtocol {
 
     private let endPointBuilder: EndPointBuilderProtocol
-    private let payloadBuilder: PayloadBuilderProtocol
+    private let payloadBuilder: PayloadBuilderProtocol?
 
     init(endPointBuilder: EndPointBuilderProtocol,
-         payloadBuilder: PayloadBuilderProtocol) {
+         payloadBuilder: PayloadBuilderProtocol? = nil) {
         self.endPointBuilder = endPointBuilder
         self.payloadBuilder = payloadBuilder
     }
 
-    func buildRequest<E: Encodable>(
+    func buildRequest(
         from endPoint: any EndPoint,
-        body: E?
+        body: Encodable? = nil
     ) throws -> URLRequest {
 
         // 1. Construye la URL
@@ -47,7 +47,7 @@ struct RequestBuilder: RequestBuilderProtocol {
         request.allHTTPHeaderFields = finalHeaders
         // 4. Body (si existe)
         if let body = body {
-            request.httpBody = try payloadBuilder.buildPayload(from: body)
+            request.httpBody = try payloadBuilder?.buildPayload(from: body)
         }
 
         request.timeoutInterval = 30
