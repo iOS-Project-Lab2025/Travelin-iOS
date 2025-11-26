@@ -1,22 +1,21 @@
 import Foundation
 
-struct POIResponse: Decodable {
-    let data: [POI]
+/*
+ struct POIResponse: Decodable {
+     let data: [POI]
+     let meta: Meta
+ }
+
+ */
+struct POISingleResponse: Decodable {
+    let data: POIDataModel
+}
+
+struct POIListResponse: Decodable {
+    let data: [POIDataModel]
     let meta: Meta
 }
 
-// MARK: - POI Item
-struct POI: Decodable {
-    let id: String
-    let `self`: POISelfLink
-    let type: String
-    let subType: String
-    let name: String
-    let geoCode: GeoCode
-    let category: String
-    let rank: Int?
-    let tags: [String]?
-}
 
 // MARK: - Self Link
 struct POISelfLink: Decodable {
@@ -51,11 +50,4 @@ struct PaginationLinks: Decodable {
 }
 
 
-struct POIListResponse: Decodable {
-    let data: [POI]
-    let meta: Meta
-}
 
-struct POISingleResponse: Decodable {
-    let data: POI
-}

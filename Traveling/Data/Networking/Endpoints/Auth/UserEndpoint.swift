@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum UserEndpoint: EndPoint {
+enum UserEndpoint: EndPointProtocol {
     case getUsers
     case getUser(id: Int)
     case login(email: String, password: String)

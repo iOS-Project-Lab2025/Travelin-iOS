@@ -8,5 +8,5 @@
 import Foundation
 
 protocol EndPointBuilderProtocol {
-    func buildURL(from endPoint: EndPoint) throws -> URL
+    func buildURL(from endPoint: EndPointProtocol) throws -> URL
 }

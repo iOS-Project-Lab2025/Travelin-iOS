@@ -16,7 +16,7 @@ final class NetworkServiceTest: NetworkServiceProtocol {
         self.requestBuilder = requestBuilder
     }
     func execute<T: Decodable>(
-        _ endPoint: any EndPoint,
+        _ endPoint: any EndPointProtocol,
         responseType: T.Type,
         body: Encodable? = nil
     ) async throws -> T {

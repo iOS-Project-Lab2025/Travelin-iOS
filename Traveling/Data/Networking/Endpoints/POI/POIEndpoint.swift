@@ -1,9 +1,9 @@
 import Foundation
 
-enum POIEndpoint: EndPoint {
+enum POIEndpoint: EndPointProtocol {
 
-    case searchRadius(POIRadiusParameters)
-    case searchBoundingBox(POIBoundingBoxParameters)
+    case searchRadius(POIRadiusParametersDataModel)
+    case searchBoundingBox(POIBoundingBoxParametersDataModel)
     case getById(String)
 
     private static let basePath = "/v1/reference-data/locations/pois"

@@ -1,11 +1,11 @@
 import Foundation
 
 /// Protocolo para generar query items automáticamente desde structs
-protocol QueryParameters: Encodable {
+protocol QueryParametersProtocol: Encodable {
     func toQueryItems() -> [URLQueryItem]
 }
 
-extension QueryParameters {
+extension QueryParametersProtocol {
     func toQueryItems() -> [URLQueryItem] {
         let mirror = Mirror(reflecting: self)
         var items: [URLQueryItem] = []

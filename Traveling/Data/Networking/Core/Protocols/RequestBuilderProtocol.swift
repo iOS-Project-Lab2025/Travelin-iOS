@@ -9,7 +9,7 @@ import Foundation
 
 protocol RequestBuilderProtocol {
     func buildRequest(
-        from endpoint: EndPoint,
+        from endpoint: EndPointProtocol,
         body: Encodable?
     ) throws -> URLRequest
 }

@@ -19,7 +19,7 @@ struct RequestBuilder: RequestBuilderProtocol {
     }
 
     func buildRequest(
-        from endPoint: any EndPoint,
+        from endPoint: any EndPointProtocol,
         body: Encodable? = nil
     ) throws -> URLRequest {
 
