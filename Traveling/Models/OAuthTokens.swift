@@ -14,7 +14,7 @@ import Foundation
 struct OAuthTokens {
     /// The short-lived token used to authenticate API requests.
     let accessToken: String
-    
+
     /// The long-lived token used to obtain a new `accessToken` when it expires.
     ///
     /// This is optional because not all OAuth2 flows (e.g., Client Credentials)
