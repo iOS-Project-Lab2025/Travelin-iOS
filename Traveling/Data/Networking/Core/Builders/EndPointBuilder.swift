@@ -17,7 +17,6 @@ struct EndPointBuilder: EndPointBuilderProtocol {
         }
         self.baseURL = baseURL
     }
-
     func buildURL(from endPoint: EndPointProtocol) throws -> URL {
         var components = URLComponents()
         components.scheme = baseURL.scheme

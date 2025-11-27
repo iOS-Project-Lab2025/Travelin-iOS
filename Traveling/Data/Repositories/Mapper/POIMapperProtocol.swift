@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 protocol POIMapperProtocol {
     func poiRadiusDomainToData(from vm: POIRadiusParametersDomainModel) -> POIRadiusParametersDataModel
     func poiBoundingDomainToData(from vm: POIBoundingBoxParametersDomainModel) -> POIBoundingBoxParametersDataModel

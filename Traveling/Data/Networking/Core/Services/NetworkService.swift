@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class NetworkServiceTest: NetworkServiceProtocol {
+final class NetworkService: NetworkServiceProtocol {
     private let client: NetworkClientProtocol
     private let requestBuilder: RequestBuilderProtocol
     init(client: NetworkClientProtocol,

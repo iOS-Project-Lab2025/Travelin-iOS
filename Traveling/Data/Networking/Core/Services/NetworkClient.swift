@@ -28,14 +28,14 @@ class NetworkClient: NetworkClientProtocol {
             let (data, response) = try await session.data(for: finalRequest)
             
             // 3. Check if it's 401 to intercept
-            if let httpResponse = response as? HTTPURLResponse,
-               httpResponse.statusCode == 401,
+            if let httpResponse = response as? HTTPURLResponse, 
+               httpResponse.statusCode == 401, 
                let interceptor = interceptor {
                 
                 // Ask the interceptor what to do
                 let action = await interceptor.shouldRetry(
-                    finalRequest,
-                    with: URLError(.userAuthenticationRequired),
+                    finalRequest, 
+                    with: URLError(.userAuthenticationRequired), 
                     response: httpResponse
                 )
                 

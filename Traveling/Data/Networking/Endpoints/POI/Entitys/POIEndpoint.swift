@@ -5,9 +5,7 @@ enum POIEndpoint: EndPointProtocol {
     case searchRadius(POIRadiusParametersDataModel)
     case searchBoundingBox(POIBoundingBoxParametersDataModel)
     case getById(String)
-
     private static let basePath = "/v1/reference-data/locations/pois"
-
     var path: String {
         switch self {
         case .searchRadius:
@@ -18,9 +16,7 @@ enum POIEndpoint: EndPointProtocol {
             return Self.basePath + "/\(id)"
         }
     }
-
     var method: HTTPMethod { .get }
-
     var queryItems: [URLQueryItem]? {
         switch self {
         case .searchRadius(let params):
@@ -31,6 +27,5 @@ enum POIEndpoint: EndPointProtocol {
             return nil
         }
     }
-
     var headers: [String : String]? { nil }
 }

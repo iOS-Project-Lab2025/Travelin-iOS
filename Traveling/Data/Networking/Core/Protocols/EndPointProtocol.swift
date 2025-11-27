@@ -8,10 +8,6 @@
 import Foundation
 
 protocol EndPointProtocol {
-    // var url: URL { get }
-    //var port: Int? { get }
-    //var scheme: String { get }
-    //var host: String { get }
     var method: HTTPMethod { get }
     var path: String { get }
     var queryItems: [URLQueryItem]? { get }

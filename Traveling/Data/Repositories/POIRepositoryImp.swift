@@ -14,7 +14,6 @@ final class POIRepositoryImp: POIRepositoryProtocol {
         self.network = network
         self.mapper = mapper
     }
-
     func searchRadius(params: POIRadiusParametersDomainModel) async throws -> [POIDomainModel] {
         var POIDomainModels: [POIDomainModel] = []
         let dataParams = mapper.poiRadiusDomainToData(from: params)
@@ -26,7 +25,6 @@ final class POIRepositoryImp: POIRepositoryProtocol {
         POIDomainModels = pOIListResponse.data.map { mapper.poiDataToDomain(from: $0) }
         return POIDomainModels
     }
-
     func searchBoundingBox(params: POIBoundingBoxParametersDomainModel) async throws -> [POIDomainModel] {
         var POIDomainModels: [POIDomainModel] = []
         let dataParams = mapper.poiBoundingDomainToData(from: params)
