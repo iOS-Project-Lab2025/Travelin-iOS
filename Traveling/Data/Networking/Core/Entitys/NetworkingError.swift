@@ -1,44 +1,84 @@
 //
 //  NetworkingError.swift
-//  TestNetworking
+//  Traveling
 //
 //  Created by Rodolfo Gonzalez on 27-11-25.
 //
 
 import Foundation
 
+/// MARK: - NetworkingError
+///
+/// Represents all possible errors that can occur within the networking layer.
+/// This unified error model simplifies error handling throughout
+/// URL building, request creation, execution, and response decoding.
+///
+/// ## Error Categories
+/// - **EndPointBuilder Errors**: URL construction problems.
+/// - **RequestBuilder Errors**: Failed request creation.
+/// - **PayloadBuilder Errors**: JSON encoding failures.
+/// - **NetworkClient Errors**: Transport or connectivity issues.
+/// - **NetworkService Errors**: Response validation or decoding failures.
+/// - **Repository Errors**: Propagated networking errors.
+/// - **Unknown Errors**: Fallback for unclassified issues.
+///
+/// ## Usage Example
+/// ```swift
+/// do {
+///     let response = try await networkService.execute(...)
+/// } catch let err as NetworkingError {
+///     print(err.errorDescription ?? "Unknown error")
+/// }
+/// ```
+///
+/// ## Notes
+/// - Conforms to `Equatable` for unit testing.
+/// - Provides meaningful debug messages through `LocalizedError`.
+///
+/// ## SeeAlso
+/// - `ErrorResponse`
+/// - `NetworkServiceProtocol`
+/// - `RequestBuilderProtocol`
 enum NetworkingError: Error, Equatable {
     
     // MARK: - EndPointBuilder Errors
+    /// Indicates the URL is malformed or incomplete.
     case invalidURL(URLError)
     
     // MARK: - RequestBuilder Errors
+    /// Failure while assembling the `URLRequest`.
     case requestBuildingFailed(String)
     
     // MARK: - PayloadBuilder Errors
+    /// JSON encoding failure for the request body.
     case encodingFailed(Error)
     
     // MARK: - NetworkClient Errors
+    /// No internet connectivity detected.
     case noConnection
+    /// Server did not respond within timeout constraints.
     case timeout
+    /// Transport-related error returned by the `URLSession`.
     case transportError(URLError)
     
     // MARK: - NetworkService Errors
+    /// Server returned an HTTP error (4xx or 5xx).
     case serverError(code: Int, message: String? = nil)
+    /// Failed to decode the server response.
     case decodingFailed(Error)
+    /// Response contains an unsupported content-type.
     case invalidContentType
+    /// Response body is unexpectedly empty.
     case emptyResponse
     
-    // MARK: - Repository Errors
-    /// Este caso se propaga desde NetworkService
-    /// Repository solo propaga NetworkingError
-    
-    // MARK: - Generic/Unknown
+    // MARK: - Generic / Unknown Errors
+    /// Fallback case for unclassified errors.
     case unknown(Error?)
-    
 }
 
 // MARK: - Equatable Conformance
+///
+/// Enables pattern matching in tests or logic that compares error types.
 extension NetworkingError {
     static func == (lhs: NetworkingError, rhs: NetworkingError) -> Bool {
         switch (lhs, rhs) {
@@ -82,9 +122,9 @@ extension NetworkingError {
     }
 }
 
-
-
-// MARK: - Error Descriptions (útil para debugging y UI)
+// MARK: - LocalizedError Conformance
+///
+/// Provides readable descriptions for UI alerts and debugging logs.
 extension NetworkingError: LocalizedError {
     var errorDescription: String? {
         switch self {
@@ -101,7 +141,7 @@ extension NetworkingError: LocalizedError {
             return "Invalid content type in response"
             
         case .emptyResponse:
-            return "Server returned empty response"
+            return "Server returned an empty response"
             
         case .requestBuildingFailed(let message):
             return "Failed to build request: \(message)"
@@ -125,7 +165,8 @@ extension NetworkingError: LocalizedError {
             if let error = error {
                 return "Unknown error: \(error.localizedDescription)"
             }
-            return "Unknown error occurred"
+            return "An unknown error occurred"
         }
     }
 }
+
