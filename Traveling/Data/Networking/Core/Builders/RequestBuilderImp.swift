@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RequestBuilder: RequestBuilderProtocol {
+struct RequestBuilderImp: RequestBuilderProtocol {
 
     private let endPointBuilder: EndPointBuilderProtocol
     private let payloadBuilder: PayloadBuilderProtocol?
@@ -23,7 +23,7 @@ struct RequestBuilder: RequestBuilderProtocol {
         body: Encodable? = nil
     ) throws -> URLRequest {
 
-        let url = try endPointBuilder.buildURL(from: endPoint)
+        let url = try self.endPointBuilder.buildURL(from: endPoint)
         var request = URLRequest(url: url)
         request.httpMethod = endPoint.method.rawValue
         let commonHeaders = [
@@ -38,7 +38,12 @@ struct RequestBuilder: RequestBuilderProtocol {
         }
         request.allHTTPHeaderFields = finalHeaders
         if let body = body {
-            request.httpBody = try payloadBuilder?.buildPayload(from: body)
+            guard payloadBuilder != nil else {
+                throw NetworkingError.requestBuildingFailed(
+                    "PayloadBuilder is required when body is present"
+                )
+            }
+            request.httpBody = try self.payloadBuilder?.buildPayload(from: body)
         }
         request.timeoutInterval = 30
         return request

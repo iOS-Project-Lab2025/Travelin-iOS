@@ -8,6 +8,10 @@ struct POIBoundingBoxParametersDataModel: QueryParametersProtocol {
     let categories: [POICategory]?
     let limit: Int?
     let offset: Int?
+    
+    func getPoint() -> String{
+        return "\(west)"
+    }
 }
 
 

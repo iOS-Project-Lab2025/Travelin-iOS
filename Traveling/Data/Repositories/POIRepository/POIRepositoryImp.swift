@@ -16,34 +16,34 @@ final class POIRepositoryImp: POIRepositoryProtocol {
     }
     func searchRadius(params: POIRadiusParametersDomainModel) async throws -> [POIDomainModel] {
         var POIDomainModels: [POIDomainModel] = []
-        let dataParams = mapper.poiRadiusDomainToData(from: params)
-        let pOIListResponse = try await network.execute(
+        let dataParams = self.mapper.poiRadiusDomainToData(from: params)
+        let pOIListResponse = try await self.network.execute(
             POIEndpoint.searchRadius(dataParams),
             responseType: POIListResponse.self,
             body: nil
         )
-        POIDomainModels = pOIListResponse.data.map { mapper.poiDataToDomain(from: $0) }
+        POIDomainModels = pOIListResponse.data.map { self.mapper.poiDataToDomain(from: $0) }
         return POIDomainModels
     }
     func searchBoundingBox(params: POIBoundingBoxParametersDomainModel) async throws -> [POIDomainModel] {
         var POIDomainModels: [POIDomainModel] = []
-        let dataParams = mapper.poiBoundingDomainToData(from: params)
-        let pOIListResponse = try await network.execute(
+        let dataParams = self.mapper.poiBoundingDomainToData(from: params)
+        let pOIListResponse = try await self.network.execute(
             POIEndpoint.searchBoundingBox(dataParams),
             responseType: POIListResponse.self,
             body: nil
         )
-        POIDomainModels = pOIListResponse.data.map { mapper.poiDataToDomain(from: $0) }
+        POIDomainModels = pOIListResponse.data.map { self.mapper.poiDataToDomain(from: $0) }
         return POIDomainModels
     }
 
     func getById(_ id: String) async throws -> POIDomainModel {
-        let pOIResponse = try await network.execute(
+        let pOIResponse = try await self.network.execute(
             POIEndpoint.getById(id),
             responseType: POISingleResponse.self,
             body: nil
         )
-        return mapper.poiDataToDomain(from: pOIResponse.data)
+        return self.mapper.poiDataToDomain(from: pOIResponse.data)
     }
 }
 
