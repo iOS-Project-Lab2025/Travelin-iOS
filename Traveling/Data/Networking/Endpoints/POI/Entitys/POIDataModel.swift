@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - POIDataModel
+// MARK: - POIDataModel
 ///
 /// Represents the **data-layer POI model** returned by the remote API.
 /// This struct mirrors the backend response exactly and is used for decoding
@@ -54,7 +54,7 @@ struct POIDataModel: Decodable {
     let tags: [String]?
 }
 
-/// MARK: - POIDomainModel
+// MARK: - POIDomainModel
 ///
 /// Represents the **domain-layer POI model**, used by UI and business logic.
 /// This struct contains only the fields required by the application.

@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - POISingleResponse
+// MARK: - POISingleResponse
 ///
 /// Represents the API response when fetching a **single Point of Interest (POI)**.
 /// This structure wraps the returned POI data model.
@@ -32,7 +32,7 @@ struct POISingleResponse: Decodable {
     let data: POIDataModel
 }
 
-/// MARK: - POIListResponse
+// MARK: - POIListResponse
 ///
 /// Represents an API response containing **multiple Points of Interest**.
 /// This structure is used for search operations such as:
@@ -135,12 +135,9 @@ struct PaginationLinks: Decodable {
     let last: String?
     let next: String?
     let up: String?
-    
+
     enum CodingKeys: String, CodingKey {
         case selfLink = "self"
         case first, last, next, up
     }
 }
-
-
-

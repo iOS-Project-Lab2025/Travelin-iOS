@@ -16,7 +16,7 @@ enum RetryResult {
 protocol RequestInterceptor {
     /// Modifies the request before sending it (e.g., add headers)
     func adapt(_ request: URLRequest) async -> URLRequest
-    
+
     /// Decides what to do if the request fails (e.g., if it's 401, refresh and retry)
     func shouldRetry(_ request: URLRequest, with error: Error, response: HTTPURLResponse?) async -> RetryResult
 }

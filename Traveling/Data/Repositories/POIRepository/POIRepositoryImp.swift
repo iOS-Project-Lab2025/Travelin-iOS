@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - POI Repository Implementation
+// MARK: - POI Repository Implementation
 ///
 /// `POIRepositoryImp` is the concrete implementation of `POIRepositoryProtocol`.
 /// It coordinates the communication between:
@@ -114,5 +114,3 @@ final class POIRepositoryImp: POIRepositoryProtocol {
         return self.mapper.poiDataToDomain(from: pOIResponse.data)
     }
 }
-
-

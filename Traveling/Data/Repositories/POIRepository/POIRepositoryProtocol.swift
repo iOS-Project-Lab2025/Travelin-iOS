@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - POI Repository Protocol
+// MARK: - POI Repository Protocol
 ///
 /// Defines the contract for repositories that provide access to
 /// Points of Interest (POI) domain data.
@@ -45,6 +45,3 @@ protocol POIRepositoryProtocol {
     /// Retrieves a single POI by ID.
     func getById(_ id: String) async throws -> POIDomainModel
 }
-
-
-

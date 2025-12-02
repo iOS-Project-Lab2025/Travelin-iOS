@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - RequestBuilder Protocol
+// MARK: - RequestBuilder Protocol
 ///
 /// Defines the interface for any component responsible for constructing
 /// a `URLRequest` from an endpoint and an optional request body.
@@ -45,4 +45,3 @@ protocol RequestBuilderProtocol {
     /// - Throws: Errors resulting from URL construction or body encoding.
     func buildRequest(from endpoint: EndPointProtocol, body: Encodable?) throws -> URLRequest
 }
-

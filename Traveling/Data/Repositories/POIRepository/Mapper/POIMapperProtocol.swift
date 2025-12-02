@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - POIMapper Protocol
+// MARK: - POIMapper Protocol
 ///
 /// Defines a contract for mapping between:
 /// - Domain models (used by business/UI)
@@ -34,15 +34,13 @@ import Foundation
 /// - `POIMapperImp`
 /// - `POIRepositoryProtocol`
 protocol POIMapperProtocol {
-    
+
     /// Maps domain radius parameters → data-layer request parameters.
     func poiRadiusDomainToData(from vm: POIRadiusParametersDomainModel) -> POIRadiusParametersDataModel
-    
+
     /// Maps domain bounding box parameters → data-layer request parameters.
     func poiBoundingDomainToData(from vm: POIBoundingBoxParametersDomainModel) -> POIBoundingBoxParametersDataModel
-    
+
     /// Maps API POI data → domain POI model.
     func poiDataToDomain(from data: POIDataModel) -> POIDomainModel
 }
-
-

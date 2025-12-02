@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - RequestBuilder Implementation
+// MARK: - RequestBuilder Implementation
 ///
 /// `RequestBuilderImp` is responsible for creating fully configured `URLRequest`
 /// instances based on an endpoint definition and an optional request body.
@@ -120,4 +120,3 @@ struct RequestBuilderImp: RequestBuilderProtocol {
         return request
     }
 }
-

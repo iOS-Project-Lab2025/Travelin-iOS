@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - QueryParameters Protocol
+// MARK: - QueryParameters Protocol
 ///
 /// A protocol for types that represent URL query parameters.
 /// Conforming types must be `Encodable` and provide a method that converts
@@ -48,23 +48,23 @@ protocol QueryParametersProtocol: Encodable {
 }
 
 extension QueryParametersProtocol {
-    
+
     /// Default implementation that uses reflection to generate query items.
     ///
     /// - Returns: An array of `URLQueryItem` built from non-nil properties.
     func toQueryItems() -> [URLQueryItem] {
         let mirror = Mirror(reflecting: self)
         var items: [URLQueryItem] = []
-        
+
         for child in mirror.children {
             guard let key = child.label else { continue }
             let value = child.value
-            
+
             // Skip nil values (String(describing: nil) → "nil")
             if isNil(value) {
                 continue
             }
-            
+
             // Handle arrays of values that conform to CustomStringConvertible
             if let array = value as? [CustomStringConvertible] {
                 items.append(
@@ -75,20 +75,20 @@ extension QueryParametersProtocol {
                 )
                 continue
             }
-            
+
             // Handle single values conforming to CustomStringConvertible
             if let convertible = value as? CustomStringConvertible {
                 items.append(URLQueryItem(name: key, value: convertible.description))
                 continue
             }
-            
+
             // Fallback for values not conforming to CustomStringConvertible
             items.append(URLQueryItem(name: key, value: "\(value)"))
         }
-        
+
         return items
     }
-    
+
     /// Helper to determine whether a value is an optional `.none`.
     ///
     /// - Parameter value: The reflected value.
@@ -97,4 +97,3 @@ extension QueryParametersProtocol {
         return "\(value)" == "nil"
     }
 }
-

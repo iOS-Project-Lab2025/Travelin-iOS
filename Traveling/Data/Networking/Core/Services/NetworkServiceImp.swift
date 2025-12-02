@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - NetworkService Implementation
+// MARK: - NetworkService Implementation
 ///
 /// `NetworkServiceImp` orchestrates the entire HTTP request lifecycle, including:
 /// - building a `URLRequest` from the endpoint
@@ -38,11 +38,11 @@ import Foundation
 /// let response: User = try await service.execute(UserEndpoint.getById("123"), responseType: User.self)
 /// ```
 final class NetworkServiceImp: NetworkServiceProtocol {
-    
+
     private let client: NetworkClientProtocol
     private let requestBuilder: RequestBuilderProtocol
     private let decoder: JSONDecoder
-    
+
     /// Initializes the network service with its required dependencies.
     ///
     /// - Parameters:
@@ -59,7 +59,7 @@ final class NetworkServiceImp: NetworkServiceProtocol {
         self.decoder = decoder
         self.decoder.keyDecodingStrategy = .convertFromSnakeCase
     }
-    
+
     /// Executes an endpoint request and decodes its response into the provided type.
     ///
     /// - Parameters:
@@ -83,38 +83,38 @@ final class NetworkServiceImp: NetworkServiceProtocol {
         responseType: T.Type,
         body: Encodable? = nil
     ) async throws -> T {
-        
+
         // Build the URLRequest
         let request = try self.requestBuilder.buildRequest(from: endPoint, body: body)
-        
+
         // -------------------------------------------------------------
         // 🔵 Debug Logging (always printed)
         // -------------------------------------------------------------
         print("🌍 NETWORK REQUEST")
         print("➡️ URL:", request.url?.absoluteString ?? "NO URL")
         print("➡️ METHOD:", request.httpMethod ?? "NO METHOD")
-        
+
         if let headers = request.allHTTPHeaderFields {
             print("➡️ HEADERS:", headers)
         }
-        
+
         if let body = request.httpBody,
            let json = String(data: body, encoding: .utf8) {
             print("➡️ BODY:", json)
         } else {
             print("➡️ BODY: <empty>")
         }
-        
+
         print("-----------------------------------------------------")
-        
+
         do {
             // Execute the request
             let (data, response) = try await self.client.execute(request)
-            
+
             guard let http = response as? HTTPURLResponse else {
                 throw NetworkingError.transportError(URLError(.badServerResponse))
             }
-            
+
             // Status Code Validation
             switch http.statusCode {
             case 200..<300:
@@ -124,59 +124,61 @@ final class NetworkServiceImp: NetworkServiceProtocol {
                 } else {
                     print("⚠️ Content-Type header missing")
                 }
-                
+
                 if let contentType = http.value(forHTTPHeaderField: "Content-Type"),
                    !contentType.isEmpty,
                    !contentType.lowercased().contains("json") {
                     print("❌ Invalid Content-Type:", contentType)
                     throw NetworkingError.invalidContentType
                 }
-                
+
             case 400..<500:
                 let errorMessage = parseServerError(from: data) ?? "Client error"
                 throw NetworkingError.serverError(code: http.statusCode, message: errorMessage)
-                
+
             case 500..<600:
                 let errorMessage = parseServerError(from: data) ?? "Server error"
                 throw NetworkingError.serverError(code: http.statusCode, message: errorMessage)
-                
+
             default:
                 throw NetworkingError.transportError(URLError(.badServerResponse))
             }
-            
+
             // Ensure non-empty body for successful responses
             guard !data.isEmpty else {
                 throw NetworkingError.emptyResponse
             }
-            
+
             // Decode response
             do {
                 return try self.decoder.decode(T.self, from: data)
             } catch {
                 throw NetworkingError.decodingFailed(error)
             }
-            
+
         // MARK: - NetworkingError passthrough
         } catch let networkingError as NetworkingError {
             throw networkingError
-            
+
         // MARK: - URLError → NetworkingError mapping
         } catch let urlError as URLError {
             switch urlError.code {
             case .notConnectedToInternet:
                 throw NetworkingError.noConnection
+
             case .timedOut:
                 throw NetworkingError.timeout
+
             default:
                 throw NetworkingError.transportError(urlError)
             }
-            
+
         // MARK: - Fallback unknown error
         } catch {
             throw NetworkingError.unknown(error)
         }
     }
-    
+
     /// Attempts to decode the server error payload using `ErrorResponse`.
     ///
     /// - Parameter data: The raw error response body.
@@ -188,4 +190,3 @@ final class NetworkServiceImp: NetworkServiceProtocol {
         return errorResponse.message
     }
 }
-

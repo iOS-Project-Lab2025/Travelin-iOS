@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - HTTP Method Enumeration
+// MARK: - HTTP Method Enumeration
 ///
 /// Defines the supported HTTP methods for network requests.
 /// Each case exposes its correct uppercase raw value, fully compatible with `URLRequest`.
@@ -36,4 +36,3 @@ enum HTTPMethod: String {
     case delete = "DELETE"
     case patch = "PATCH"
 }
-

@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - NetworkClient Protocol
+// MARK: - NetworkClient Protocol
 ///
 /// Defines the low-level contract for executing raw `URLRequest` objects.
 /// This protocol abstracts the actual networking mechanism (e.g. `URLSession`)
@@ -32,7 +32,7 @@ import Foundation
 /// - `NetworkClientImp`
 /// - `NetworkServiceProtocol`
 protocol NetworkClientProtocol {
-    
+
     /// Executes the given URLRequest asynchronously.
     ///
     /// - Parameter request: The request to be executed.
@@ -40,4 +40,3 @@ protocol NetworkClientProtocol {
     /// - Throws: Any networking error thrown by the underlying transport layer.
     func execute(_ request: URLRequest) async throws -> (Data, URLResponse)
 }
-

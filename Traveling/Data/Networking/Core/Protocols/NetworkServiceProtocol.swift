@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - NetworkService Protocol
+// MARK: - NetworkService Protocol
 ///
 /// Defines the high-level interface for executing API requests within the networking layer.
 /// This protocol abstracts away the details of:
@@ -55,4 +55,3 @@ protocol NetworkServiceProtocol {
         body: Encodable?
     ) async throws -> T
 }
-

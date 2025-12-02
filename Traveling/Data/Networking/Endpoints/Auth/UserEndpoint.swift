@@ -15,20 +15,20 @@ enum UserEndpoint: EndPointProtocol {
         switch self {
         case .getUsers:
             return "/users"
-            
+
         case .getUser(let id):
             return "/users/\(id)"
-            
+
         case .login:
             return "/auth/login"
         }
     }
-    
+
     var method: HTTPMethod {
         switch self {
         case .getUsers, .getUser:
             return .get
-            
+
         case .login:
             return .post
         }
@@ -37,13 +37,13 @@ enum UserEndpoint: EndPointProtocol {
         switch self {
         case .getUsers:
             return [URLQueryItem(name: "limit", value: "100")]
-            
+
         default:
             return nil
         }
     }
 
-    var headers: [String : String]? {
+    var headers: [String: String]? {
         switch method {
         case .post:
             return ["Content-Type": "application/json"]

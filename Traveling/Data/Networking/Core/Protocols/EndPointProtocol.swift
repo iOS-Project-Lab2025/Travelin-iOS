@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - EndPoint Protocol
+// MARK: - EndPoint Protocol
 ///
 /// `EndPointProtocol` defines the essential components required to describe
 /// an API endpoint in the networking layer.
@@ -75,4 +75,3 @@ extension EndPointProtocol {
     /// Default implementation: no custom headers.
     var headers: [String: String]? { nil }
 }
-

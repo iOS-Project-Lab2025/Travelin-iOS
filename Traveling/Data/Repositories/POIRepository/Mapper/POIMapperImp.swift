@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - POIMapper Implementation
+// MARK: - POIMapper Implementation
 ///
 /// `POIMapperImp` is responsible for converting between:
 /// - **Domain models** used by the app's business/UI layers
@@ -61,7 +61,7 @@ struct POIMapperImp: POIMapperProtocol {
             offset: vm.offset
         )
     }
-    
+
     /// Converts an API POI data model into its domain representation.
     func poiDataToDomain(from data: POIDataModel) -> POIDomainModel {
         POIDomainModel(
@@ -73,4 +73,3 @@ struct POIMapperImp: POIMapperProtocol {
         )
     }
 }
-

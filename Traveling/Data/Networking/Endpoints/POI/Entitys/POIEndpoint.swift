@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - POIEndpoint
+// MARK: - POIEndpoint
 ///
 /// Defines all API endpoints related to Points of Interest (POI).
 /// Each case represents a specific API route and provides:
@@ -59,6 +59,7 @@ enum POIEndpoint: EndPointProtocol {
         switch self {
         case .searchRadius:
             return Self.basePath
+
         case .searchBoundingBox:
             return Self.basePath + "/by-square"
         case .getById(let id):
@@ -84,6 +85,5 @@ enum POIEndpoint: EndPointProtocol {
     }
 
     /// No custom headers for POI endpoints.
-    var headers: [String : String]? { nil }
+    var headers: [String: String]? { nil }
 }
-

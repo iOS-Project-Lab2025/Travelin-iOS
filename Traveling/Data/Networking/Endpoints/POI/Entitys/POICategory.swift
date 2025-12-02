@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - POICategory
+// MARK: - POICategory
 ///
 /// Represents the different **categories of Points of Interest (POI)** supported by the app.
 /// These categories are sent to the backend as filters and are also displayed in the UI.
@@ -50,4 +50,3 @@ enum POICategory: String, CaseIterable, CustomStringConvertible, Encodable {
     /// Returns the raw string value used by the backend API.
     var description: String { rawValue }
 }
-

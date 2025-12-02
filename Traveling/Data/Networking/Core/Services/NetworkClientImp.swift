@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - URLSession-based Network Client
+// MARK: - URLSession-based Network Client
 ///
 /// `NetworkClientImp` is the concrete implementation of `NetworkClientProtocol`
 /// that uses `URLSession` to perform network requests.
@@ -39,7 +39,7 @@ import Foundation
 /// - `NetworkClientProtocol`
 /// - `NetworkServiceImp`
 final class NetworkClientImp: NetworkClientProtocol {
-    
+
     private let session: URLSession
 
     /// Initializes the client with a specific `URLSession`.
@@ -58,7 +58,3 @@ final class NetworkClientImp: NetworkClientProtocol {
         return try await self.session.data(for: request)
     }
 }
-
-
-
-

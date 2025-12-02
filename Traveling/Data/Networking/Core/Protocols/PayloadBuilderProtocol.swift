@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - PayloadBuilder Protocol
+// MARK: - PayloadBuilder Protocol
 ///
 /// Defines the required behavior for transforming an `Encodable` model
 /// into raw `Data`, usually for use as the HTTP body of a network request.

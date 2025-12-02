@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - Error Response Model
+// MARK: - Error Response Model
 ///
 /// Represents the general structure of an error returned by the backend API.
 /// This model is commonly decoded when the server responds with an error payload.

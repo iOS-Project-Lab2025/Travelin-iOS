@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - POIBoundingBoxParametersDataModel
+// MARK: - POIBoundingBoxParametersDataModel
 ///
 /// Represents the **data-layer model** used to send bounding-box search parameters
 /// to the POI backend API.
@@ -52,7 +52,7 @@ struct POIBoundingBoxParametersDataModel: QueryParametersProtocol {
     let categories: [POICategory]?
     let limit: Int?
     let offset: Int?
-    
+
     /// Returns a string representation of the west coordinate.
     /// (Possibly used by debugging or legacy logic)
     func getPoint() -> String {
@@ -60,7 +60,7 @@ struct POIBoundingBoxParametersDataModel: QueryParametersProtocol {
     }
 }
 
-/// MARK: - POIBoundingBoxParametersDomainModel
+// MARK: - POIBoundingBoxParametersDomainModel
 ///
 /// Domain-layer counterpart used by the app's business/UI components.
 /// This model is later converted into the data model using `POIMapperImp`.
@@ -85,4 +85,3 @@ struct POIBoundingBoxParametersDomainModel {
     var limit: Int?
     var offset: Int?
 }
-

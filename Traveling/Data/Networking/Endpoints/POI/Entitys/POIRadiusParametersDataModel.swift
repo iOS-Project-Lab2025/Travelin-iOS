@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - POIRadiusParametersDataModel
+// MARK: - POIRadiusParametersDataModel
 ///
 /// Represents the **data-layer model** used to send radius-based search
 /// parameters to the POI backend API.
@@ -57,7 +57,7 @@ struct POIRadiusParametersDataModel: QueryParametersProtocol {
     let offset: Int?
 }
 
-/// MARK: - POIRadiusParametersDomainModel
+// MARK: - POIRadiusParametersDomainModel
 ///
 /// Represents the **domain-layer model** used by UI and business logic.
 /// This model is later converted into a data-layer model via `POIMapperImp`.
@@ -94,4 +94,3 @@ struct POIRadiusParametersDomainModel {
     var limit: Int?
     var offset: Int?
 }
-

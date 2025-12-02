@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - EndPointBuilder Implementation
+// MARK: - EndPointBuilder Implementation
 ///
 /// `EndPointBuilderImp` is responsible for constructing complete URLs based on a base URL
 /// and endpoint definitions. It validates the provided base URL and ensures that
@@ -33,7 +33,7 @@ import Foundation
 /// ```
 ///
 struct EndPointBuilderImp: EndPointBuilderProtocol {
-    
+
     private let baseURL: URL    // Base URL used for building all endpoints
 
     /// Initializes the builder and validates the given base URL string.
@@ -41,7 +41,7 @@ struct EndPointBuilderImp: EndPointBuilderProtocol {
     /// - Parameter baseURL: A string representing the base API URL.
     /// - Throws: `NetworkingError.invalidURL` when the base URL is malformed.
     init(baseURL: String) throws {
-        
+
         guard let url = URL(string: baseURL) else {
             throw NetworkingError.invalidURL(URLError(.badURL, userInfo: [
                 NSLocalizedDescriptionKey: "Error with BaseURL"

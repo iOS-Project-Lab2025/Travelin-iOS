@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - PayloadBuilder Implementation
+// MARK: - PayloadBuilder Implementation
 ///
 /// `PayloadBuilderImp` is responsible for encoding any `Encodable` model
 /// into JSON `Data`, which is later used as the HTTP body of a request.
@@ -42,9 +42,9 @@ import Foundation
 /// - `PayloadBuilderProtocol`
 /// - `NetworkingError`
 struct PayloadBuilderImp: PayloadBuilderProtocol {
-    
+
     private let encoder: JSONEncoder
-    
+
     /// Initializes the payload builder with a configurable `JSONEncoder`.
     ///
     /// - Parameter encoder: Allows injecting a custom encoder. Defaults to `JSONEncoder()`

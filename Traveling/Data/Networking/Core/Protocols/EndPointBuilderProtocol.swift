@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// MARK: - EndPointBuilder Protocol
+// MARK: - EndPointBuilder Protocol
 ///
 /// Defines the required functionality for any component that builds URLs
 /// from endpoint definitions.
@@ -39,4 +39,3 @@ protocol EndPointBuilderProtocol {
     /// - Returns: A complete `URL`.
     func buildURL(from endPoint: EndPointProtocol) throws -> URL
 }
-
