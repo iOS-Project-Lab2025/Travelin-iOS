@@ -11,7 +11,7 @@ import Foundation
 ///
 /// This is a value-type (`struct`) because tokens represent a snapshot of
 /// credentials at a specific moment and don't have a persistent identity.
-struct OAuthTokens {
+struct OAuthTokens: Codable {
     /// The short-lived token used to authenticate API requests.
     let accessToken: String
     
