@@ -2,46 +2,40 @@
 //  UserEndpoint.swift
 //  Traveling
 //
-//  Created by Rodolfo Gonzalez on 18-11-25.
+//  Created by Rodolfo Gonzalez on 18-11-25 and Daniel Retamal on 24-11-25.
 //
 
 import Foundation
 
 enum UserEndpoint: EndPointProtocol {
-    case getUsers
-    case getUser(id: Int)
     case login(email: String, password: String)
+    case refresh(token: String)
+    case me
+
     var path: String {
         switch self {
-        case .getUsers:
-            return "/users"
-            
-        case .getUser(let id):
-            return "/users/\(id)"
-            
         case .login:
-            return "/auth/login"
+            return "/v1/auth/login"
+
+        case .refresh:
+            return "/v1/auth/refresh"
+
+        case .me:
+            return "/v1/auth/me"
         }
     }
     
     var method: HTTPMethod {
         switch self {
-        case .getUsers, .getUser:
-            return .get
-            
-        case .login:
+        case .login, .refresh:
             return .post
-        }
-    }
-    var queryItems: [URLQueryItem]? {
-        switch self {
-        case .getUsers:
-            return [URLQueryItem(name: "limit", value: "100")]
-            
+
         default:
-            return nil
+            return .get
         }
     }
+
+    var queryItems: [URLQueryItem]? { nil }
 
     var headers: [String : String]? {
         switch method {
@@ -52,4 +46,29 @@ enum UserEndpoint: EndPointProtocol {
             return nil
         }
     }
+    
+    // MARK: - Body Data
+    // This property provides the body data for requests that need it
+    var bodyData: Encodable? {
+        switch self {
+        case .login(let email, let password):
+            return LoginRequest(email: email, password: password)
+            
+        case .refresh(let token):
+            return RefreshTokenRequest(refreshToken: token)
+            
+        case .me:
+            return nil
+        }
+    }
+}
+
+// MARK: - Request Models
+struct LoginRequest: Encodable {
+    let email: String
+    let password: String
+}
+
+struct RefreshTokenRequest: Encodable {
+    let refreshToken: String
 }
