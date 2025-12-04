@@ -39,7 +39,8 @@ actor AuthInterceptor: RequestInterceptor {
         }
         
         // 2. Avoid infinite loop: If the request that failed WAS ALREADY auth/refresh, don't retry
-        if let urlString = request.url?.absoluteString, urlString.contains("/auth/refresh") || urlString.contains("/auth/login") {
+        if let urlString = request.url?.absoluteString,
+           urlString.contains("v1/auth/refresh") || urlString.contains("v1/auth/login") {
             return .doNotRetry
         }
         
@@ -80,9 +81,7 @@ actor AuthInterceptor: RequestInterceptor {
     
     // MARK: - Helper to call the API
     private func performTokenRefresh(using refreshToken: String) async throws -> OAuthTokens {
-        // Build your refresh request manually here to avoid going through the interceptor
-        // Simplified example:
-        guard let url = URL(string: "https://api.tuapp.com/auth/refresh") else {
+        guard let url = URL(string: "http://localhost:3000/v1/auth/refresh") else {
             throw URLError(.badURL)
         }
         
@@ -95,18 +94,19 @@ actor AuthInterceptor: RequestInterceptor {
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+        
+        guard httpResponse.statusCode == 200 else {
             throw URLError(.userAuthenticationRequired)
         }
         
-        // Decode response to OAuthTokens
-        // Adjust this to match how your backend returns the JSON
-        struct TokenResponse: Decodable {
-            let accessToken: String
-            let refreshToken: String?
+        struct BackendResponse: Decodable {
+            let data: OAuthTokens
         }
-        
-        let decoded = try JSONDecoder().decode(TokenResponse.self, from: data)
-        return OAuthTokens(accessToken: decoded.accessToken, refreshToken: decoded.refreshToken)
+
+        let decoded = try JSONDecoder().decode(BackendResponse.self, from: data)
+        return decoded.data 
     }
 }
