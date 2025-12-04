@@ -7,9 +7,19 @@
 
 import Foundation
 
-class NetworkClient: NetworkClientProtocol {
+/// Network client with interceptor support for authenticated requests.
+///
+/// This client automatically:
+/// - Injects authentication tokens via the interceptor's `adapt()` method
+/// - Detects 401 Unauthorized responses
+/// - Triggers token refresh via the interceptor's `shouldRetry()` method
+/// - Retries the original request with the new token
+///
+/// Use this for endpoints that require authentication.
+/// For public endpoints, use `URLNetworkClient` instead.
+class NetworkClient: InterceptableNetworkClientProtocol {
     private let session: URLSession
-    private let interceptor: RequestInterceptor? // Injected
+    private let interceptor: RequestInterceptor?
     
     init(session: URLSession = .shared, interceptor: RequestInterceptor? = nil) {
         self.session = session
