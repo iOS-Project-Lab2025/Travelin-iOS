@@ -1,5 +1,5 @@
 {
-  "originHash" : "ee8e9249a704bf9c8e7790388f121241056a905995e4878fb2285bb2ac7826cd",
+  "originHash" : "b4d45b65d3c7248252df711325985f195c00908ed01c3b414fe8d79c8e122ee6",
   "pins" : [
     {
       "identity" : "keychainaccess",
@@ -15,8 +15,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SimplyDanny/SwiftLintPlugins.git",
       "state" : {
-        "revision" : "ef264ee3ccea175f5c9efc8b814ccb48cd3fdaac",
-        "version" : "0.62.1"
+        "revision" : "ecafb5b056cb7995324f0d310a61f30661d00cad",
+        "version" : "0.62.2"
+      }
+    },
+    {
+      "identity" : "travelindesignsystem",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/iOS-Project-Lab2025/TravelinDesignSystem",
+      "state" : {
+        "branch" : "main",
+        "revision" : "4a85a367b26b426be18a330f4b4914804dff06fd"
       }
     }
   ],

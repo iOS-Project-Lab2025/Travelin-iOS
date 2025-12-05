@@ -23,72 +23,72 @@ import Foundation
 /// 2.  **Stubbing:** Control properties (e.g., `shouldThrowError`) that
 ///     allow tests to "stub" or force specific behaviors, like failure.
 class MockTokenManager: TokenManaging {
-    
+
     // MARK: - Spy Properties (State Storage)
-    
+
     /// In-memory storage for the access token. Tests can read this
     /// directly to assert that the correct value was saved.
     var accessToken: String?
-    
+
     /// In-memory storage for the refresh token.
     var refreshToken: String?
-    
+
     // MARK: - Spy Properties (Behavior Tracking)
-    
+
     /// A "spy" flag that tracks if `saveTokens` was called.
     var saveTokensCalled = false
-    
+
     /// A "spy" flag that tracks if `clearTokens` was called.
     var clearTokensCalled = false
-    
+
     // MARK: - Stub Properties (Behavior Simulation)
-    
+
     /// A "stub" flag. When set to `true`, the `saveTokens` function
     /// will throw `MockError.simulatedSaveError` to test failure paths.
     var shouldThrowError = false
-    
+
     /// A custom error type used by this mock to simulate failures.
     enum MockError: Error, Equatable {
         case simulatedSaveError
     }
-    
+
     // MARK: - TokenManaging Conformance
-    
+
     /// Simulates saving tokens to in-memory variables.
     ///
     /// This function will set `saveTokensCalled` to `true` and will
     /// throw an error if `shouldThrowError` is `true`.
     func saveTokens(_ tokens: OAuthTokens) throws {
         saveTokensCalled = true
-        
+
         if shouldThrowError {
             throw MockError.simulatedSaveError
         }
-        
+
         // Save to in-memory "spy" properties
         self.accessToken = tokens.accessToken
         self.refreshToken = tokens.refreshToken
     }
-    
+
     /// Simulates retrieving the access token from in-memory storage.
     func getAccessToken() -> String? {
         return accessToken
     }
-    
+
     /// Simulates retrieving the refresh token from in-memory storage.
     func getRefreshToken() -> String? {
         return refreshToken
     }
-    
+
     /// Simulates clearing tokens from in-memory storage.
     func clearTokens() {
         clearTokensCalled = true
         self.accessToken = nil
         self.refreshToken = nil
     }
-    
+
     // MARK: - Test Utilities
-    
+
     /// Resets the mock to its default, "clean" state.
     ///
     /// This is crucial for test isolation and should be called in the
