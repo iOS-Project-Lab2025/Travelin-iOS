@@ -13,6 +13,9 @@ struct ContentView: View {
 
     var body: some View {
 
+        // 🧪 Temporal: Auth view test
+        //SimpleLoginTestView()
+
         switch router.path {
         case .home:
             HomeView()
