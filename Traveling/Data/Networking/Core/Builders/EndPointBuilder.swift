@@ -34,7 +34,3 @@ struct EndPointBuilder: EndPointBuilderProtocol {
     }
 }
 
-
-enum NetworkDebug {
-    static var lastURL: String?
-}
