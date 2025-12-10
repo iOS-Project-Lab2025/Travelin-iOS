@@ -10,10 +10,15 @@ import SwiftUI
 struct RegisterView: View {
 
     @State private var registerRouter = AppRouter.FlowRouter<RegisterRoutes>(flow: [.form, .success])
+    @State private var registerViewModel: RegisterViewModel
+    
+    init(registerViewModel:RegisterViewModel){
+        _registerViewModel = State(initialValue: registerViewModel)
+    }
 
     var body: some View {
         NavigationStack(path: $registerRouter.path) {
-            RegisterFormView()
+            RegisterFormView(registerViewModel: registerViewModel)
                 .navigationDestination(for: RegisterRoutes.self) { route in
                     destinationView(for: route)
                 }
@@ -24,7 +29,7 @@ struct RegisterView: View {
         private func destinationView(for route: RegisterRoutes) -> some View {
             switch route {
             case .form:
-                RegisterFormView()
+                RegisterFormView(registerViewModel: registerViewModel)
 
             case .success:
                 RegisterSuccessView()

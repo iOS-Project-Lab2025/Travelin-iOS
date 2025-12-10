@@ -2,28 +2,40 @@
 //  RegisterFormView.swift
 //  Traveling
 //
-//  Created by Ivan Pereira on 23-11-25.
+//  Created by Ignacio Alvarado on 09-12-25.
 //
 
 import SwiftUI
+import TravelinDesignSystem
 
-struct RegisterFormView: View {
-
+struct RegisterFormView<VM: RegisterViewModelProtocol>: View {
     @Environment(AppRouter.FlowRouter<RegisterRoutes>.self) private var registerRouter
+    @State private var registerViewModel: VM
+    
+    @State private var username: String = ""
 
+    init(registerViewModel: VM) {
+        self.registerViewModel = registerViewModel
+        }
+    
     var body: some View {
         VStack {
-            Text("Register Form")
-            Button {
-                registerRouter.next()
-            } label: {
-                Text("Next")
-            }
+            form
+        }
+    }
+    
+    private var form: some View {
 
+        VStack {
+            TextField("Enter username", text: $username)
+                .textFieldStyle(.roundedBorder)
+                .padding()
         }
     }
 }
 
+
+
 #Preview {
-    RegisterFormView()
+    RegisterFormView(registerViewModel: RegisterViewModel())
 }
