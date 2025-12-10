@@ -8,25 +8,35 @@
 import SwiftUI
 
 struct HomeView: View {
-    @Environment(\.appRouter) private var router
-
-    private let options: [(title: String, route: AppRoutes)] = [
-        ("Go to Onboarding", .onBoarding),
-        ("Go to Login", .authentication(.login)),
-        ("Go to Register", .authentication(.register)),
-        ("Go to Profile", .profile),
-        ("Go to Booking", .booking)
-    ]
-
+    @State private var homeRouter = AppRouter.PathRouter<HomeRoutes>()
+    @State private var viewModel = HomeViewModel()
     var body: some View {
-        VStack {
-            Text("Home")
-
-            List(options, id: \.title) { option in
-                Button(option.title) {
-                    router.goTo(option.route)
+        NavigationStack(path: $homeRouter.path) {
+            VStack(spacing: 0) {
+                TopHomeView(searchDetail: $viewModel.searchDetail)
+                    .edgesIgnoringSafeArea(.top)
+                    .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height * 0.35)
+                    
+                ScrollView(.vertical) {
+                    HomePackageCollectionView(packages: $viewModel.packages)
+                    HomeCountriesCollectionView(countries: $viewModel.countries)
                 }
             }
         }
+        .environment(homeRouter)
     }
+    @ViewBuilder
+    private func destinationView(for route: HomeRoutes) -> some View {
+        switch route {
+        case .globalSearch:
+            HomeView()
+
+        case .tourList:
+            HomeView()
+        }
+    }
+}
+enum HomeRoutes: Hashable {
+    case globalSearch
+    case tourList
 }

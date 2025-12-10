@@ -8,6 +8,7 @@
 import Foundation
 
 enum AppRoutes: Hashable {
+    case initial
     case home
     case onBoarding
     case authentication(AuthenticationEntry)
