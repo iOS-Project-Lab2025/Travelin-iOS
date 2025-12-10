@@ -38,10 +38,10 @@ struct LoginView <VM: LoginViewModelProtocol>: View {
                     width: 103,
                     height: 102
                 )
-            Text("login.title")
+            Text("login.title".localized)
                 .font(TravelinDesignSystem.DesignTokens.Typography.heading2)
 
-            Text("login.subtitle")
+            Text("login.subtitle".localized)
                 .font(TravelinDesignSystem.DesignTokens.Typography.body)
         }
     }
@@ -55,7 +55,12 @@ struct LoginView <VM: LoginViewModelProtocol>: View {
                 label: "login.emailTextFieldLabel".localized,
                 style: .outlined,
                 text: $loginViewModel.email)
-            .padding(.bottom, 14)
+
+            Text("login.emailError")
+                .font(.system(size: 10))
+                .foregroundColor(DesignTokens.Colors.error)
+                .opacity(loginViewModel.shouldShowEmailError ? 1 : 0)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
             DSTextField(
                 placeHolder: "login.passwordPlaceHolder".localized,
@@ -64,11 +69,17 @@ struct LoginView <VM: LoginViewModelProtocol>: View {
                  style: .outlined,
                  text: $loginViewModel.password
              )
-            .padding(.bottom, 10)
+            .padding(.top, 2)
+            Text("login.passwordError")
+                .font(.system(size: 10))
+                .foregroundColor(DesignTokens.Colors.error)
+                .opacity(loginViewModel.shouldShowPasswordError ? 1 : 0)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
             DSButton(title: "login.loginButtonTitle".localized, variant: .primary) {
-                self.loginViewModel.login()
+                loginViewModel.login()
             }
+            .padding(.top, 10)
             Spacer()
                 .frame(height: 187)
         }
@@ -98,4 +109,5 @@ struct LoginView <VM: LoginViewModelProtocol>: View {
 
 #Preview {
     LoginView(loginViewModel: LoginViewModel())
+        .environment(\.locale, Locale(identifier: "en"))
 }
