@@ -10,7 +10,7 @@ import Foundation
 class RegisterViewModel: RegisterViewModelProtocol {
     var firstName: String = ""
     var lastName: String = ""
-    var phone: any Numeric = 0
+    var phone: String = ""
     var age: any Numeric = 0
     var email: String = ""
     var password: String = ""
