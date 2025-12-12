@@ -20,31 +20,24 @@ class SimpleLoginViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var isLoading: Bool = false
     
-    // Dependencies
+    // Dependencies (injected, defaults from Services)
     private let tokenManager: TokenManaging
     private let authService: AuthService
     private let userService: UserService
     
-    init() {
-        // Initialize dependencies
-        self.tokenManager = KeychainTokenManager()
-        
-        // Create base URL and builders
-        guard let baseURL = URL(string: "http://localhost:3000") else {
-            fatalError("Invalid base URL")
-        }
-        let endpointBuilder = EndPointBuilder(baseURL: baseURL)
-        let payloadBuilder = PayloadBuilder()
-        let requestBuilder = RequestBuilder(endPointBuilder: endpointBuilder, payloadBuilder: payloadBuilder)
-        
-        // AuthService uses URLNetworkClient (no interceptor) for login/refresh
-        let simpleClient = URLNetworkClient()
-        self.authService = AuthService(client: simpleClient, requestBuilder: requestBuilder)
-        
-        // UserService uses NetworkClient (with interceptor) for authenticated requests
-        let interceptor = AuthInterceptor(tokenManager: tokenManager)
-        let authClient = NetworkClient(interceptor: interceptor)
-        self.userService = UserService(client: authClient, requestBuilder: requestBuilder)
+    /// Initializes the view model with dependency injection
+    /// - Parameters:
+    ///   - authService: Service for authentication (default: Services.auth)
+    ///   - userService: Service for user operations (default: Services.user)
+    ///   - tokenManager: Token storage manager (default: Services.tokenManager)
+    init(
+        authService: AuthService = Services.auth,
+        userService: UserService = Services.user,
+        tokenManager: TokenManaging = Services.tokenManager
+    ) {
+        self.authService = authService
+        self.userService = userService
+        self.tokenManager = tokenManager
     }
     
     /// Performs login and fetches user profile
