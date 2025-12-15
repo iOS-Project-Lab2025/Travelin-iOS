@@ -34,7 +34,19 @@ class AuthService {
             body: endpoint.bodyData
         )
         
-        let (data, _) = try await client.execute(request)
+        let (data, response) = try await client.execute(request)
+        
+        if let httpResponse = response as? HTTPURLResponse,
+           !(200...299).contains(httpResponse.statusCode) {
+            
+            if let errorResponse = try? JSONDecoder().decode(LoginErrorResponse.self, from: data),
+               let firstError = errorResponse.errors.first {
+                throw NetworkingError.serverError(code: firstError.status, message: firstError.detail)
+            } else {
+                throw NetworkingError.serverError(code: httpResponse.statusCode, message: "Unknown server error")
+            }
+        }
+        
         return try JSONDecoder().decode(LoginResponse.self, from: data)
     }
     
@@ -51,25 +63,19 @@ class AuthService {
             body: endpoint.bodyData
         )
         
-        let (data, _) = try await client.execute(request)
-        return try JSONDecoder().decode(LoginResponse.self, from: data)
-    }
-}
-
-// MARK: - Response Models
-struct LoginResponse: Codable {
-    let data: TokenData
-    
-    struct TokenData: Codable {
-        let user: UserInfo
-        let accessToken: String
-        let refreshToken: String?
+        let (data, response) = try await client.execute(request)
         
-        struct UserInfo: Codable {
-            let id: Int
-            let email: String
-            let firstName: String?
-            let lastName: String?
+        if let httpResponse = response as? HTTPURLResponse,
+           !(200...299).contains(httpResponse.statusCode) {
+            
+            if let errorResponse = try? JSONDecoder().decode(LoginErrorResponse.self, from: data),
+               let firstError = errorResponse.errors.first {
+                throw NetworkingError.serverError(code: firstError.status, message: firstError.detail)
+            } else {
+                throw NetworkingError.serverError(code: httpResponse.statusCode, message: "Unknown server error")
+            }
         }
+        
+        return try JSONDecoder().decode(LoginResponse.self, from: data)
     }
 }
