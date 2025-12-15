@@ -14,7 +14,7 @@ struct ContentView: View {
     var body: some View {
 
         // 🧪 Temporal: Auth view test
-        //SimpleLoginTestView()
+        SimpleLoginTestView()
 
         switch router.path {
         case .home:
@@ -30,7 +30,13 @@ struct ContentView: View {
             BookingView()
 
         case .authentication(.login):
-            LoginView(loginViewModel: LoginViewModel())
+            LoginView(
+                loginViewModel: LoginViewModel(
+                    authService: Services.auth,
+                    userService: Services.user,
+                    tokenManager: Services.tokenManager
+                )
+            )
 
         case .authentication(.register):
             RegisterView()

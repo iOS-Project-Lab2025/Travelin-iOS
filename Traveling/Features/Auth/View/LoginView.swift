@@ -8,13 +8,13 @@
 import SwiftUI
 import TravelinDesignSystem
 
-struct LoginView <VM: LoginViewModelProtocol>: View {
+struct LoginView: View {
     @Environment(\.appRouter) var appRouter
-    @State private var loginViewModel: VM
+    @State private var loginViewModel: any LoginViewModelProtocol
 
-    init( loginViewModel: VM ) {
-        self.loginViewModel = loginViewModel
-    }
+     init(loginViewModel: any LoginViewModelProtocol) {
+         _loginViewModel = State(initialValue: loginViewModel)
+     }
 
     // MARK: - Body sections
     var body: some View {
@@ -22,6 +22,7 @@ struct LoginView <VM: LoginViewModelProtocol>: View {
         VStack {
             header
             form
+            errorMessage
             footer
         }
     }
@@ -76,10 +77,26 @@ struct LoginView <VM: LoginViewModelProtocol>: View {
                 .opacity(loginViewModel.shouldShowPasswordError ? 1 : 0)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            DSButton(title: "login.loginButtonTitle".localized, variant: .primary) {
-                loginViewModel.login()
+            if case .loading = loginViewModel.loginState {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 10)
+            } else {
+                DSButton(
+                    title: "login.loginButtonTitle".localized,
+                    variant: .primary
+                ) {
+                    Task {
+                       await loginViewModel.login()
+
+                        if case .success = loginViewModel.loginState {
+                            appRouter.goTo(.home)
+                        }
+                    }
+                }
+                .padding(.top, 10)
             }
-            .padding(.top, 10)
             Spacer()
                 .frame(height: 187)
         }
@@ -103,6 +120,15 @@ struct LoginView <VM: LoginViewModelProtocol>: View {
             }
 
             }
+    }
+
+    @ViewBuilder
+    private var errorMessage: some View {
+        if case .failure(let error) = loginViewModel.loginState {
+            Text("Login failed: \(error.localizedDescription)")
+                .font(.system(size: 10))
+                .foregroundColor(DesignTokens.Colors.error)
+        }
     }
 
     }

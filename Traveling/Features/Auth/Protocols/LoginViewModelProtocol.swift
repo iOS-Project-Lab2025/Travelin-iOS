@@ -11,6 +11,7 @@ protocol LoginViewModelProtocol: Observable {
     var email: String { get set }
     var password: String { get set }
     var didAttemptLogin: Bool { get set }
+    var loginState: LoginState { get }
 
     func validateEmail() -> Bool
     func validatePassword() -> Bool
@@ -18,5 +19,5 @@ protocol LoginViewModelProtocol: Observable {
     var shouldShowEmailError: Bool { get }
     var shouldShowPasswordError: Bool { get }
 
-    func login()
+    func login() async
 }
