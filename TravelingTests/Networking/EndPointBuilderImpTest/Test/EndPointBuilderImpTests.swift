@@ -1,5 +1,5 @@
 //
-//  EndPointBuilderImpTest.swift
+//  EndPointBuilderImpTests.swift
 //  TravelingUITests
 //
 //  Created by Rodolfo Gonzalez on 15-12-25.
@@ -10,7 +10,7 @@ import Testing
 import Foundation
 
 @Suite("EndPointBuilderImp Tests")
-struct EndPointBuilderImpTest {
+struct EndPointBuilderImpTests {
     
     // MARK: - INIT TESTS
     @Test("Init should succeed with a base URL")
