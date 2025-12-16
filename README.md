@@ -26,9 +26,13 @@ To test the authentication flow:
 
 ### Architecture Overview
 
-- **AuthService** - Handles login and token refresh (uses `URLNetworkClient`)
-- **UserService** - Handles authenticated requests (uses `NetworkClient` with interceptor)
+- **URLNetworkClient** - Unified HTTP client with optional interceptor support (consolidated)
+- **AuthService** - Handles login and token refresh (uses `URLNetworkClient` without interceptor)
+- **UserService** - Handles authenticated requests (uses `URLNetworkClient` with `AuthInterceptor`)
 - **KeychainTokenManager** - Secure token storage
 - **AuthInterceptor** - Automatic token injection and refresh on 401
 
-For detailed architecture and implementation steps, see [LOGIN_IMPLEMENTATION_GUIDE.md](LOGIN_IMPLEMENTATION_GUIDE.md).
+For detailed architecture and implementation steps, see:
+
+- [LOGIN_IMPLEMENTATION_GUIDE.md](LOGIN_IMPLEMENTATION_GUIDE.md) - Authentication implementation
+- [NETWORK_CLIENT_ARCHITECTURE.md](NETWORK_CLIENT_ARCHITECTURE.md) - **NEW**: Consolidated network layer architecture
