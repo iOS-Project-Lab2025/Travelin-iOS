@@ -8,15 +8,28 @@
 import SwiftUI
 import TravelinDesignSystem
 
+/// The view responsible for displaying the Login screen.
+///
+/// This view presents a form for the user to enter their email and password,
+/// and handles navigation to other screens upon successful login or sign-up requests.
 struct LoginView: View {
+    // MARK: - Properties
+    /// The router used for navigation within the app.
     @Environment(\.appRouter) var appRouter
+    /// The view model that manages the login logic and state.
     @State private var loginViewModel: any LoginViewModelProtocol
 
+    // MARK: - Init
+
+    /// Initializes a new instance of `LoginView`.
+    ///
+    /// - Parameter loginViewModel: The view model to be used by the view.
      init(loginViewModel: any LoginViewModelProtocol) {
          _loginViewModel = State(initialValue: loginViewModel)
      }
 
     // MARK: - Body sections
+    /// The content and behavior of the view.
     var body: some View {
 
         VStack {
@@ -28,6 +41,7 @@ struct LoginView: View {
     }
 
     // MARK: - Header
+    /// The header section containing the logo and titles.
     private var header: some View {
         VStack {
             Spacer()
@@ -48,6 +62,7 @@ struct LoginView: View {
     }
 
     // MARK: - Form
+    /// The form section containing text fields for email and password, and the login button.
     private var form: some View {
         VStack {
             DSTextField(
@@ -105,6 +120,7 @@ struct LoginView: View {
     }
 
     // MARK: - Footer
+    /// The footer section containing the sign-up link.
     private var footer: some View {
         HStack {
             Text("login.footerText".localized)
@@ -122,6 +138,7 @@ struct LoginView: View {
             }
     }
 
+    /// A view that displays an error message if the login fails.
     @ViewBuilder
     private var errorMessage: some View {
         if case .failure(let error) = loginViewModel.loginState {
