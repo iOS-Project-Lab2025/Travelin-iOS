@@ -10,7 +10,7 @@ import Testing
 import Foundation
 
 @Suite("EndPointBuilderImp Tests")
-struct EndPointBuilderImpTests {
+struct EndPointBuilderImpTest {
     
     // MARK: - INIT TESTS
     @Test("Init should succeed with a base URL")
