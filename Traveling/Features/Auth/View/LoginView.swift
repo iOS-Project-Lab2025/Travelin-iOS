@@ -33,10 +33,30 @@ struct LoginView: View {
     var body: some View {
 
         VStack {
+            backButton
             header
             form
             errorMessage
             footer
+        }
+    }
+
+    // MARK: - Back Button
+    /// Custom back button that navigates to home
+    private var backButton: some View {
+        HStack {
+            Button {
+                appRouter.goTo(.home)
+            }
+            label: {
+                    Image(systemName: "chevron.left")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.black)
+            }
+            .padding(.horizontal, 26)
+
+            Spacer()
+
         }
     }
 
