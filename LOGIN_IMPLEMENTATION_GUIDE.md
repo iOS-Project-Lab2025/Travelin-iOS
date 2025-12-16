@@ -61,21 +61,21 @@ tokenManager.clearTokens()
 
 ### 3. Network Layer
 
-#### **NetworkClient** (with interceptor)
-
-- **Location**: `Data/Networking/Core/Services/NetworkClient.swift`
-- **Features**:
-  - Automatically injects Bearer token via `AuthInterceptor.adapt()`
-  - Detects 401 Unauthorized responses
-  - Automatically refreshes tokens via `AuthInterceptor.shouldRetry()`
-  - Retries original request with new token
-- **Use for**: All authenticated endpoints (e.g., `/v1/auth/me`, `/v1/poi/*`)
-
-#### **URLNetworkClient** (without interceptor)
+#### **URLNetworkClient** (Unified HTTP Client)
 
 - **Location**: `Data/Networking/Core/Services/URLNetworkClient.swift`
-- **Features**: Direct URLSession wrapper
-- **Use for**: Public endpoints and authentication endpoints (login, refresh)
+- **Features**:
+  - Single consolidated network client
+  - Optional interceptor support for authentication
+  - When **with interceptor**: Automatically injects Bearer token, detects 401, refreshes tokens, and retries
+  - When **without interceptor**: Direct URLSession wrapper for public endpoints
+- **Use cases**:
+  - **Without interceptor**: Public endpoints (login, register, refresh)
+  - **With interceptor**: Authenticated endpoints (user profile, bookings, POIs)
+
+> **Note**: Previously we had separate `NetworkClient` and `URLNetworkClient` classes.
+> These have been consolidated into a single `URLNetworkClient` with optional interceptor support.
+> See [NETWORK_CLIENT_ARCHITECTURE.md](NETWORK_CLIENT_ARCHITECTURE.md) for details.
 
 ### 4. Request Flow
 
@@ -410,12 +410,11 @@ Traveling/
 ├── Data/
 │   └── Networking/
 │       ├── Services/
-│       │   ├── AuthService.swift          # Login/Refresh
-│       │   └── UserService.swift          # User profile
+│       │   ├── AuthService.swift          # Login/Refresh (uses public client)
+│       │   └── UserService.swift          # User profile (uses authenticated client)
 │       ├── Core/
 │       │   └── Services/
-│       │       ├── NetworkClient.swift    # With interceptor
-│       │       └── URLNetworkClient.swift # Without interceptor
+│       │       └── URLNetworkClient.swift # Unified client (with optional interceptor)
 │       ├── Interceptors/
 │       │   └── AuthInterceptor.swift      # Token injection & refresh
 │       └── Endpoints/

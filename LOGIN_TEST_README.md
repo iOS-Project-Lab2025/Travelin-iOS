@@ -148,14 +148,17 @@ class LoginViewModel: ObservableObject {
 - ✅ `SimpleLoginTestView.swift` - Test view implementation
 - ✅ `LOGIN_IMPLEMENTATION_GUIDE.md` - Full documentation
 
+
 ### Modified Files
 
 - ✅ `ContentView.swift` - Updated to show test view
 
 ### Existing Files (Referenced)
 
-- `AuthService.swift` - Login/refresh service
+- `AuthService.swift` - Login/refresh service (uses public client)
+- `UserService.swift` - User profile service (uses authenticated client)
 - `KeychainTokenManager.swift` - Token storage
-- `NetworkClient.swift` - Network client with interceptor
+- `URLNetworkClient.swift` - Unified network client (with optional interceptor)
 - `AuthInterceptor.swift` - Token injection & refresh
 - `UserEndpoint.swift` - API endpoint definitions
+
