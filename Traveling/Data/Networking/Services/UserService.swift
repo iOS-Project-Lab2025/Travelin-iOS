@@ -8,7 +8,7 @@
 import Foundation
 
 /// Service responsible for user-related operations that require authentication
-/// Uses NetworkClient (with interceptor) for automatic token injection and refresh
+/// Uses URLNetworkClient (with AuthInterceptor) for automatic token injection and refresh
 class UserService {
     
     private let client: InterceptableNetworkClientProtocol
@@ -22,7 +22,7 @@ class UserService {
     // MARK: - Get User Profile
     /// Fetches the current user's profile information
     /// - Returns: UserProfileResponse containing user data
-    /// - Note: This endpoint requires authentication. The NetworkClient will automatically
+    /// - Note: This endpoint requires authentication. URLNetworkClient will automatically
     ///         inject the access token and handle token refresh if needed.
     func getUserProfile() async throws -> UserProfileResponse {
         let endpoint = UserEndpoint.me
