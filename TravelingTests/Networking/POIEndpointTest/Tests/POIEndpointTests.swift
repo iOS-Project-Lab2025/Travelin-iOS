@@ -9,11 +9,20 @@ import Testing
 @testable import Traveling
 import Foundation
 
+/// Test suite for validating the behavior of `POIEndpoint`.
+///
+/// These tests ensure that:
+/// - All POI endpoints use the correct HTTP method
+/// - Endpoint paths are generated correctly for each use case
+/// - Query parameters are included or omitted as expected
+/// - Endpoints can be composed into valid URLs
 @Suite("POIEndpoint Tests")
 struct POIEndpointTests {
     
     // MARK: - HTTP Method
     
+    /// Verifies that all POI-related endpoints
+    /// use the HTTP GET method.
     @Test("All POI endpoints use HTTP GET")
     func usesGETMethod() {
         let radius = POIEndpoint.searchRadius(mockRadiusParams())
@@ -27,6 +36,8 @@ struct POIEndpointTests {
     
     // MARK: - Path Generation
     
+    /// Verifies that the search-by-radius endpoint
+    /// generates the base POI search path.
     @Test("Search radius endpoint generates base POI path")
     func searchRadiusPath() {
         let endpoint = POIEndpoint.searchRadius(mockRadiusParams())
@@ -34,6 +45,8 @@ struct POIEndpointTests {
         #expect(endpoint.path == "/v1/reference-data/locations/pois")
     }
     
+    /// Verifies that the search-by-bounding-box endpoint
+    /// appends the expected `by-square` path segment.
     @Test("Search bounding box endpoint appends by-square")
     func searchBoundingBoxPath() {
         let endpoint = POIEndpoint.searchBoundingBox(mockBoundingParams())
@@ -41,6 +54,8 @@ struct POIEndpointTests {
         #expect(endpoint.path == "/v1/reference-data/locations/pois/by-square")
     }
     
+    /// Verifies that the get-by-ID endpoint
+    /// includes the POI identifier in the URL path.
     @Test("Get by ID endpoint includes identifier in path")
     func getByIdPath() {
         let endpoint = POIEndpoint.getById("poi_123")
@@ -50,6 +65,8 @@ struct POIEndpointTests {
     
     // MARK: - Query Parameters
     
+    /// Verifies that search endpoints
+    /// provide query items for request configuration.
     @Test("Search endpoints provide query items")
     func searchEndpointsHaveQueryItems() {
         let radius = POIEndpoint.searchRadius(mockRadiusParams())
@@ -59,6 +76,8 @@ struct POIEndpointTests {
         #expect(box.queryItems != nil)
     }
     
+    /// Verifies that the get-by-ID endpoint
+    /// does not include any query parameters.
     @Test("Get by ID endpoint has no query items")
     func getByIdHasNoQueryItems() {
         let endpoint = POIEndpoint.getById("poi_123")
@@ -68,6 +87,8 @@ struct POIEndpointTests {
     
     // MARK: - Integration Test
     
+    /// Verifies that a POI endpoint can be composed
+    /// into a valid URL using `URLComponents`.
     @Test("Endpoints produce valid URLs")
     func buildsValidURL() {
         let endpoint = POIEndpoint.searchRadius(mockRadiusParams())
@@ -83,6 +104,7 @@ struct POIEndpointTests {
     
     // MARK: - Test Helpers
     
+    /// Creates a mock radius-based POI search parameter set.
     private func mockRadiusParams() -> POIRadiusParametersDataModel {
         POIRadiusParametersDataModel(
             latitude: 40.7,
@@ -94,6 +116,7 @@ struct POIEndpointTests {
         )
     }
     
+    /// Creates a mock bounding-box-based POI search parameter set.
     private func mockBoundingParams() -> POIBoundingBoxParametersDataModel {
         POIBoundingBoxParametersDataModel(
             north: 40.8,
@@ -106,4 +129,3 @@ struct POIEndpointTests {
         )
     }
 }
-

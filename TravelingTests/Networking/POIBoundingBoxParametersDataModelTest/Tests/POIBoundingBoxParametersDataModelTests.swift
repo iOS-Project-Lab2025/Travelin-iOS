@@ -9,11 +9,21 @@ import Testing
 @testable import Traveling
 import Foundation
 
+/// Test suite for validating the behavior of `POIBoundingBoxParametersDataModel`.
+///
+/// These tests ensure that:
+/// - Bounding box coordinates are correctly converted into query items
+/// - Optional parameters are included or omitted as expected
+/// - Array values are serialized correctly
+/// - Generated query items can be safely used to build URLs
+/// - Helper methods return the expected values
 @Suite("POIBoundingBoxParametersDataModel Tests")
 struct POIBoundingBoxParametersDataModelTests {
 
     // MARK: - Core Query Behavior
 
+    /// Verifies that bounding box coordinates
+    /// are converted into individual query items.
     @Test("Converts bounding box coordinates into query items")
     func convertsCoordinatesToQueryItems() {
         let params = POIBoundingBoxParametersDataModel(
@@ -37,6 +47,8 @@ struct POIBoundingBoxParametersDataModelTests {
 
     // MARK: - Optional Handling
 
+    /// Verifies that optional parameters
+    /// are omitted from query items when they are `nil`.
     @Test("Omits optional values when nil")
     func omitsNilOptionalValues() {
         let params = POIBoundingBoxParametersDataModel(
@@ -57,6 +69,8 @@ struct POIBoundingBoxParametersDataModelTests {
         #expect(items.allSatisfy { $0.name != "offset" })
     }
 
+    /// Verifies that optional parameters
+    /// are included in query items when present.
     @Test("Includes optional values when present")
     func includesOptionalValues() {
         let params = POIBoundingBoxParametersDataModel(
@@ -79,6 +93,8 @@ struct POIBoundingBoxParametersDataModelTests {
 
     // MARK: - Array Handling
 
+    /// Verifies that category arrays
+    /// are serialized as comma-separated values.
     @Test("Serializes categories as comma-separated values")
     func serializesCategories() {
         let params = POIBoundingBoxParametersDataModel(
@@ -100,6 +116,8 @@ struct POIBoundingBoxParametersDataModelTests {
 
     // MARK: - URL Usability
 
+    /// Verifies that the generated query items
+    /// can be used to construct a valid URL.
     @Test("Produces valid URL when used in URLComponents")
     func producesValidURL() {
         let params = POIBoundingBoxParametersDataModel(
@@ -120,6 +138,8 @@ struct POIBoundingBoxParametersDataModelTests {
 
     // MARK: - Helper Method
 
+    /// Verifies that `getPoint()` returns
+    /// the west coordinate as a string.
     @Test("getPoint returns west coordinate as string")
     func getPointReturnsWestValue() {
         let params = POIBoundingBoxParametersDataModel(
@@ -135,4 +155,3 @@ struct POIBoundingBoxParametersDataModelTests {
         #expect(params.getPoint() == "-12.34")
     }
 }
-

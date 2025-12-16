@@ -9,11 +9,21 @@ import Testing
 @testable import Traveling
 import Foundation
 
+/// Test suite for validating the default behavior and contract
+/// of types conforming to `EndPointProtocol`.
+///
+/// These tests ensure that:
+/// - Default protocol properties behave as expected
+/// - Required properties are always exposed
+/// - Endpoints can be safely used to construct URLs
+/// - Conforming types can override optional properties
 @Suite("EndPointProtocol Tests")
 struct EndPointProtocolTests {
 
     // MARK: - Default Behavior
 
+    /// Verifies that endpoints which do not provide custom
+    /// query items expose `nil` as the default value.
     @Test("Endpoints without custom query items expose nil queryItems")
     func defaultQueryItemsAreNil() {
         let endpoint = MockEndpoint()
@@ -21,6 +31,8 @@ struct EndPointProtocolTests {
         #expect(endpoint.queryItems == nil)
     }
 
+    /// Verifies that endpoints which do not provide custom
+    /// headers expose `nil` as the default value.
     @Test("Endpoints without custom headers expose nil headers")
     func defaultHeadersAreNil() {
         let endpoint = MockEndpoint()
@@ -30,6 +42,8 @@ struct EndPointProtocolTests {
 
     // MARK: - Required Properties
 
+    /// Verifies that an endpoint exposes the required
+    /// `method` and `path` properties defined by the protocol.
     @Test("Endpoint exposes method and path")
     func exposesMethodAndPath() {
         let endpoint = MockEndpoint()
@@ -40,6 +54,11 @@ struct EndPointProtocolTests {
 
     // MARK: - URL Usability
 
+    /// Verifies that an endpoint can be used to construct
+    /// a valid `URL` when combined with URL components.
+    ///
+    /// This test ensures that the protocol requirements
+    /// are sufficient for URL construction.
     @Test("Endpoint can be used to construct a valid URL")
     func canBuildValidURL() {
         let endpoint = MockEndpoint()
@@ -53,6 +72,8 @@ struct EndPointProtocolTests {
 
     // MARK: - Custom Overrides
 
+    /// Verifies that conforming types can override
+    /// the default `queryItems` property.
     @Test("Endpoint can override query items")
     func allowsCustomQueryItems() {
         let endpoint = EndpointWithQueryItems()
@@ -62,6 +83,8 @@ struct EndPointProtocolTests {
         #expect(endpoint.queryItems?.first?.name == "q")
     }
 
+    /// Verifies that conforming types can override
+    /// the default `headers` property.
     @Test("Endpoint can override headers")
     func allowsCustomHeaders() {
         let endpoint = EndpointWithHeaders()
@@ -72,11 +95,15 @@ struct EndPointProtocolTests {
 
     // MARK: - Helpers (Test-only)
 
+    /// Minimal endpoint implementation used to validate
+    /// default protocol behavior.
     private struct MockEndpoint: EndPointProtocol {
         var method: HTTPMethod { .get }
         var path: String { "/test" }
     }
 
+    /// Endpoint implementation that overrides `queryItems`
+    /// to validate custom query parameter support.
     private struct EndpointWithQueryItems: EndPointProtocol {
         var method: HTTPMethod { .get }
         var path: String { "/search" }
@@ -85,6 +112,8 @@ struct EndPointProtocolTests {
         }
     }
 
+    /// Endpoint implementation that overrides `headers`
+    /// to validate custom HTTP header support.
     private struct EndpointWithHeaders: EndPointProtocol {
         var method: HTTPMethod { .get }
         var path: String { "/secure" }
@@ -93,4 +122,3 @@ struct EndPointProtocolTests {
         }
     }
 }
-

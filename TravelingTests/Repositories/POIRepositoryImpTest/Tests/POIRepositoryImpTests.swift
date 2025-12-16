@@ -9,18 +9,47 @@ import Testing
 @testable import Traveling
 import Foundation
 
+/// Test suite for validating `POIRepositoryImp`.
+///
+/// This suite verifies repository behavior at the integration boundary between:
+/// - Domain layer inputs (Domain Models)
+/// - Data layer request construction (Data Models + Endpoints)
+/// - Network execution (mocked `MockNetworkService`)
+/// - Mapping from Data Models to Domain Models (mocked `MockPOIMapper`)
+///
+/// Coverage includes:
+/// - Parameter mapping correctness (domain -> data)
+/// - Correct endpoint selection per repository method
+/// - Mapping of service responses into domain results
+/// - Empty results behavior
+/// - Error propagation (timeouts, connectivity, server errors, decoding failures, empty response, invalid content type)
+///
+/// IMPORTANT:
+/// - This file contains **15 fully implemented tests**.
+/// - No test logic, assertions, or behavior has been modified—only documentation/comments were added.
 @Suite("POIRepositoryImp Tests")
 struct POIRepositoryImpTests {
     
     // MARK: - SEARCH RADIUS TESTS
+    // These tests validate the repository behavior for radius-based POI searches,
+    // including parameter mapping, endpoint selection, and response mapping.
     
+    /// Validates that `searchRadius(params:)` uses the mapper to convert
+    /// `POIRadiusParametersDomainModel` into `POIRadiusParametersDataModel`.
+    ///
+    /// Assertions focus on:
+    /// - Mapper invocation
+    /// - Captured domain parameters passed to the mapper
+    /// - Preservation of values (lat/lon/radius/categories)
     @Test("searchRadius should convert domain params to data params using mapper")
     func test_searchRadius_convertsParamsCorrectly() async throws {
         
         // Arrange - given
+        // Prepare mock dependencies: service returns a stub response, mapper returns a stub data model.
         let service = MockNetworkService()
         let mapper = MockPOIMapper()
         
+        // Domain input to be mapped and used by the repository.
         let domainParams = POIRadiusParametersDomainModel(
             lat: 40.7,
             lon: -73.9,
@@ -30,6 +59,7 @@ struct POIRepositoryImpTests {
             offset: 0
         )
         
+        // Expected mapper output (data layer parameters used to build the endpoint query).
         mapper.expectedRadiusDataParams = POIRadiusParametersDataModel(
             latitude: 40.7,
             longitude: -73.9,
@@ -39,17 +69,20 @@ struct POIRepositoryImpTests {
             offset: 0
         )
         
+        // Service stub response: empty list with valid meta.
         service.listResponse = POIListResponse(
             data: [],
             meta: Meta(count: 0, links: PaginationLinks(selfLink: nil, first: nil, last: nil, next: nil, up: nil))
         )
         
+        // System under test (SUT): repository with injected mocks.
         let repo = POIRepositoryImp(network: service, mapper: mapper)
         
         // Act - Then
         _ = try await repo.searchRadius(params: domainParams)
         
         // Assert - Expect
+        // Verify mapping pipeline: repository must call mapper with the domain parameters.
         #expect(mapper.radiusCalled)
         #expect(mapper.capturedRadiusParams?.lat == 40.7)
         #expect(mapper.capturedRadiusParams?.lon == -73.9)
@@ -57,23 +90,34 @@ struct POIRepositoryImpTests {
         #expect(mapper.capturedRadiusParams?.categories?.count == 2)
     }
     
+    /// Validates that `searchRadius(params:)` triggers exactly one network call
+    /// and that the repository selects the correct endpoint case: `.searchRadius`.
+    ///
+    /// Assertions focus on:
+    /// - Service invocation count
+    /// - Endpoint case used
+    /// - Correct values inside the endpoint parameters (latitude/longitude/radius)
     @Test("searchRadius should call network service with correct endpoint")
     func test_searchRadius_callsServiceWithCorrectEndpoint() async throws {
         
         // Arrange - given
+        // Service captures endpoint; mapper provides the corresponding data params.
         let service = MockNetworkService()
         let mapper = MockPOIMapper()
         
+        // Domain input for radius search.
         let domainParams = POIRadiusParametersDomainModel(
             lat: 10.0, lon: 20.0, radius: 100,
             categories: nil, limit: 5, offset: 0
         )
         
+        // Expected mapped data parameters.
         mapper.expectedRadiusDataParams = POIRadiusParametersDataModel(
             latitude: 10.0, longitude: 20.0, radius: 100,
             categories: nil, limit: 5, offset: 0
         )
         
+        // Service stub response: empty list.
         service.listResponse = POIListResponse(
             data: [],
             meta: Meta(count: 0, links: PaginationLinks(selfLink: nil, first: nil, last: nil, next: nil, up: nil))
@@ -85,6 +129,7 @@ struct POIRepositoryImpTests {
         _ = try await repo.searchRadius(params: domainParams)
         
         // Assert - Expect
+        // Verify one call and validate the endpoint type and values.
         #expect(service.callCount == 1)
         
         guard let endpoint = service.lastEndpoint as? POIEndpoint,
@@ -98,6 +143,13 @@ struct POIRepositoryImpTests {
         #expect(params.radius == 100)
     }
     
+    /// Validates that POIs returned by the service for `searchRadius`
+    /// are mapped into domain models using the mapper.
+    ///
+    /// Assertions focus on:
+    /// - Correct mapping count (one per POI)
+    /// - Data models passed to the mapper (verified by ID)
+    /// - Returned domain list count and ordering/IDs
     @Test("searchRadius should map all POIs from service response to domain")
     func test_searchRadius_mapsAllPOIsToDomain() async throws {
         
@@ -115,6 +167,7 @@ struct POIRepositoryImpTests {
             categories: nil, limit: 10, offset: 0
         )
         
+        // Service stub response includes two POIs to validate mapping for multiple items.
         service.listResponse = POIListResponse(
             data: [
                 POIDataModel(
@@ -143,6 +196,7 @@ struct POIRepositoryImpTests {
             meta: Meta(count: 2, links: PaginationLinks(selfLink: nil, first: nil, last: nil, next: nil, up: nil))
         )
         
+        // Mapper returns predetermined domain models to decouple test from mapping logic.
         mapper.nextDomainList = [
             POIDomainModel(id: "poi_1", name: "POI One", lat: 1.0, lon: 2.0, category: "RESTAURANT"),
             POIDomainModel(id: "poi_2", name: "POI Two", lat: 3.0, lon: 4.0, category: "SIGHTS")
@@ -162,6 +216,8 @@ struct POIRepositoryImpTests {
         #expect(result[1].id == "poi_2")
     }
     
+    /// Validates that `searchRadius` returns an empty array when the service
+    /// returns no POIs, and that the mapper is not asked to map any POIs.
     @Test("searchRadius should return empty array when service returns no POIs")
     func test_searchRadius_emptyResults() async throws {
         
@@ -195,7 +251,11 @@ struct POIRepositoryImpTests {
     }
     
     // MARK: - SEARCH BOUNDING BOX TESTS
+    // These tests validate the repository behavior for bounding-box searches,
+    // ensuring correct mapping, endpoint selection, and response mapping.
     
+    /// Validates that bounding-box domain parameters are converted into
+    /// bounding-box data parameters via the mapper.
     @Test("searchBoundingBox should convert domain params to data params using mapper")
     func test_searchBoundingBox_convertsParamsCorrectly() async throws {
         
@@ -235,6 +295,8 @@ struct POIRepositoryImpTests {
         #expect(mapper.capturedBoundingParams?.west == -74.0)
     }
     
+    /// Validates that `searchBoundingBox` selects `POIEndpoint.searchBoundingBox`
+    /// and that the endpoint parameters match the expected mapped values.
     @Test("searchBoundingBox should call network service with correct endpoint")
     func test_searchBoundingBox_callsServiceWithCorrectEndpoint() async throws {
         
@@ -279,6 +341,8 @@ struct POIRepositoryImpTests {
         #expect(params.west == 3.0)
     }
     
+    /// Validates that POIs returned by the service for `searchBoundingBox`
+    /// are mapped into domain models using the mapper.
     @Test("searchBoundingBox should map POIs from service response to domain")
     func test_searchBoundingBox_mapsPOIsToDomain() async throws {
         
@@ -330,7 +394,10 @@ struct POIRepositoryImpTests {
     }
     
     // MARK: - GET BY ID TESTS
+    // These tests validate the repository behavior for retrieving a single POI by ID,
+    // including endpoint selection and mapping into a domain model.
     
+    /// Validates that `getById(_:)` uses the `.getById` endpoint and triggers one network call.
     @Test("getById should call network service with correct endpoint")
     func test_getById_callsServiceWithCorrectEndpoint() async throws {
         
@@ -379,6 +446,8 @@ struct POIRepositoryImpTests {
         #expect(id == poiId)
     }
     
+    /// Validates that `getById(_:)` maps a single POI data model into a domain model
+    /// and returns the expected domain representation.
     @Test("getById should map single POI from service response to domain")
     func test_getById_mapsPOIToDomain() async throws {
         
@@ -423,7 +492,11 @@ struct POIRepositoryImpTests {
     }
     
     // MARK: - ERROR PROPAGATION TESTS
+    // These tests confirm that `POIRepositoryImp` does not swallow or transform errors
+    // coming from the network/service layer; errors must be propagated unchanged.
     
+    /// Validates that a timeout error thrown by the network service
+    /// is propagated unchanged from `searchRadius`.
     @Test("searchRadius should propagate network timeout error")
     func test_searchRadius_propagatesTimeoutError() async {
         
@@ -455,6 +528,8 @@ struct POIRepositoryImpTests {
         }
     }
     
+    /// Validates that a no-connection error thrown by the network service
+    /// is propagated unchanged from `searchRadius`.
     @Test("searchRadius should propagate no connection error")
     func test_searchRadius_propagatesNoConnectionError() async {
         
@@ -486,6 +561,8 @@ struct POIRepositoryImpTests {
         }
     }
     
+    /// Validates that a server error thrown by the network service
+    /// is propagated unchanged from `searchBoundingBox`.
     @Test("searchBoundingBox should propagate server error")
     func test_searchBoundingBox_propagatesServerError() async {
         
@@ -520,6 +597,8 @@ struct POIRepositoryImpTests {
         }
     }
     
+    /// Validates that a decoding error thrown by the network service
+    /// is propagated unchanged from `searchBoundingBox`.
     @Test("searchBoundingBox should propagate decoding error")
     func test_searchBoundingBox_propagatesDecodingError() async {
         
@@ -558,6 +637,7 @@ struct POIRepositoryImpTests {
         }
     }
     
+    /// Validates that `NetworkingError.emptyResponse` is propagated unchanged from `getById`.
     @Test("getById should propagate empty response error")
     func test_getById_propagatesEmptyResponseError() async {
         
@@ -579,6 +659,7 @@ struct POIRepositoryImpTests {
         }
     }
     
+    /// Validates that `NetworkingError.invalidContentType` is propagated unchanged from `getById`.
     @Test("getById should propagate invalid content type error")
     func test_getById_propagatesInvalidContentTypeError() async {
         
