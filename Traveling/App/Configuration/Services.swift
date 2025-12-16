@@ -31,21 +31,27 @@ enum Services {
     
     // MARK: - Network Clients
     
-    private static let urlNetworkClient = URLNetworkClient()
-    private static let authenticatedNetworkClient: InterceptableNetworkClientProtocol = {
+    /// Public client: For endpoints that don't require authentication (login, register, etc.)
+    private static let publicClient = URLNetworkClient()
+    
+    /// Authenticated client: For endpoints that require authentication (user profile, bookings, etc.)
+    /// Automatically handles token injection and refresh via AuthInterceptor
+    private static let authenticatedClient: InterceptableNetworkClientProtocol = {
         let interceptor = AuthInterceptor(tokenManager: tokenManager)
-        return NetworkClient(interceptor: interceptor)
+        return URLNetworkClient(interceptor: interceptor)
     }()
     
     // MARK: - Services
     
+    /// Authentication service: Uses public client (no auth required for login/register)
     static let auth = AuthService(
-        client: urlNetworkClient,
+        client: publicClient,
         requestBuilder: requestBuilder
     )
     
+    /// User service: Uses authenticated client (requires valid access token)
     static let user = UserService(
-        client: authenticatedNetworkClient,
+        client: authenticatedClient,
         requestBuilder: requestBuilder
     )
 }
