@@ -55,20 +55,20 @@ struct RegisterSuccessView: View {
             Text("Successfully")
                 .font(.system(size: 29))
                 .fontWeight(.bold)
-                .foregroundColor(.white)
+                .foregroundColor(DesignTokens.Colors.textOnAction)
                 .lineSpacing(40 - 32)
                 .kerning(-0.165)
 
             Text("created an account")
                 .font(.system(size: 25))
                 .fontWeight(.bold)
-                .foregroundColor(.white)
+                .foregroundColor(DesignTokens.Colors.textOnAction)
                 .lineSpacing(40 - 32)
                 .kerning(-0.165)
 
             Text("After this you can explore any place you want enjoy it!")
                 .font(.system(size: 14))
-                .foregroundColor(.white)
+                .foregroundColor(DesignTokens.Colors.textOnAction)
                 .multilineTextAlignment(.center)
         }
 
