@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		642FF90D2EB82969005E613A /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 642FF90C2EB82969005E613A /* KeychainAccess */; };
 		64DF110A2ED4FB870055C94A /* TravelinDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 64DF11092ED4FB870055C94A /* TravelinDesignSystem */; };
+		9A7FFA7C2EF3456100698A4A /* TravelinTestPlan.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 9A7FFA7B2EF3456100698A4A /* TravelinTestPlan.xctestplan */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9A7FFA7B2EF3456100698A4A /* TravelinTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TravelinTestPlan.xctestplan; sourceTree = "<group>"; };
 		E7A0C4B02EA8076600ED8CB9 /* Traveling.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Traveling.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7A0C4BE2EA8076900ED8CB9 /* TravelingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7A0C4C82EA8076900ED8CB9 /* TravelingUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +84,7 @@
 		E7A0C4A72EA8076600ED8CB9 = {
 			isa = PBXGroup;
 			children = (
+				9A7FFA7B2EF3456100698A4A /* TravelinTestPlan.xctestplan */,
 				E7A0C4B22EA8076600ED8CB9 /* Traveling */,
 				E7A0C4C12EA8076900ED8CB9 /* TravelingTests */,
 				E7A0C4CB2EA8076900ED8CB9 /* TravelingUITests */,
@@ -227,6 +230,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A7FFA7C2EF3456100698A4A /* TravelinTestPlan.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
