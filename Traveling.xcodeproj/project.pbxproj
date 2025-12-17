@@ -636,8 +636,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/iOS-Project-Lab2025/TravelinDesignSystem";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 		9AF07C272EAAA46C0054106E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
