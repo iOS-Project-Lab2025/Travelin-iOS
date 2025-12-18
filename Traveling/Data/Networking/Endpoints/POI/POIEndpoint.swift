@@ -63,10 +63,10 @@ enum POIEndpoint: EndPointProtocol {
 
         case .searchBoundingBox:
             return Self.basePath + "/by-square"
-            
+
         case .getById(let id):
             return Self.basePath + "/\(id)"
-            
+
         case .getByName:
             return Self.basePath + "/by-name"
         }
@@ -86,7 +86,7 @@ enum POIEndpoint: EndPointProtocol {
 
         case .getById:
             return nil
-            
+
         case .getByName(let params):
             return params.toQueryItems()
         }

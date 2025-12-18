@@ -25,7 +25,7 @@ struct PayloadBuilderImpTests {
     /// and does not throw when encoding valid data.
     @Test("Init should succeed")
     func testPayloadBuilder_init_succes() throws {
-        
+
         // Arrange
         let encoder = JSONEncoder()
         let builder = PayloadBuilderImp(encoder: encoder)
@@ -48,7 +48,7 @@ struct PayloadBuilderImpTests {
         let encoder = JSONEncoder()
         let builder = PayloadBuilderImp(encoder: encoder)
         let modelData = MockTestModel(id: 1, name: "Rod")
-        
+
         // Act
         let data = try builder.buildPayload(from: modelData)
 
@@ -97,7 +97,7 @@ struct PayloadBuilderImpTests {
         let encoder = JSONEncoder()
         let builder = PayloadBuilderImp(encoder: encoder)
         let badData = MockBadEncodableModel()
-        
+
         // Assert
         #expect {
             // Act

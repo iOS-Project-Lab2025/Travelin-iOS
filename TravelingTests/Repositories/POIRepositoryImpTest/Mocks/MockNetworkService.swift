@@ -21,29 +21,29 @@ import Foundation
 final class MockNetworkService: NetworkServiceProtocol {
 
     // MARK: - Captured Data
-    
+
     /// Captures the last endpoint passed to `execute`.
     var lastEndpoint: EndPointProtocol?
-    
+
     /// Captures the request body passed to `execute`, if any.
     var lastBody: Encodable?
-    
+
     /// Tracks how many times `execute` was called.
     var callCount = 0
 
     // MARK: - Mock Responses
-    
+
     /// Mock response used when a list response is expected.
     var listResponse: POIListResponse?
-    
+
     /// Mock response used when a single response is expected.
     var singleResponse: POISingleResponse?
-    
+
     /// Optional error to be thrown instead of returning a response.
     var errorToThrow: Error?
 
     // MARK: - Protocol Implementation
-    
+
     /// Simulates execution of a network request.
     ///
     /// - Parameters:
@@ -78,9 +78,9 @@ final class MockNetworkService: NetworkServiceProtocol {
 
         fatalError("MockNetworkService: no mock response configured for \(Response.self)")
     }
-    
+
     // MARK: - Helpers
-    
+
     /// Resets all captured data and configured mock responses.
     ///
     /// This method is useful when reusing the mock across

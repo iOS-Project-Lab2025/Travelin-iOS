@@ -24,7 +24,7 @@ enum UserEndpoint: EndPointProtocol {
             return "/v1/auth/me"
         }
     }
-    
+
     var method: HTTPMethod {
         switch self {
         case .login, .refresh:
@@ -37,7 +37,7 @@ enum UserEndpoint: EndPointProtocol {
 
     var queryItems: [URLQueryItem]? { nil }
 
-    var headers: [String : String]? {
+    var headers: [String: String]? {
         switch method {
         case .post:
             return ["Content-Type": "application/json"]
@@ -46,17 +46,17 @@ enum UserEndpoint: EndPointProtocol {
             return nil
         }
     }
-    
+
     // MARK: - Body Data
     // This property provides the body data for requests that need it
     var bodyData: Encodable? {
         switch self {
         case .login(let email, let password):
             return LoginRequest(email: email, password: password)
-            
+
         case .refresh(let token):
             return RefreshTokenRequest(refreshToken: token)
-            
+
         case .me:
             return nil
         }

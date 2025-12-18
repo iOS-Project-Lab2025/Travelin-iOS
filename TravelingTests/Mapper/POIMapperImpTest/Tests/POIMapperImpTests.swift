@@ -141,7 +141,7 @@ struct POIMapperImpTests {
         #expect(result.lon == -3.0)
         #expect(result.category == "HISTORICAL")
     }
-    //ADD
+    // ADD
     // MARK: - SEARCH BY NAME MAPPING TESTS
 
     @Test("poiGetByNameDomainToData should correctly map name-based search parameters")

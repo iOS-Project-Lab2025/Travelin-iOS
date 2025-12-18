@@ -30,7 +30,7 @@ final class MockEndPointBuilder: EndPointBuilderProtocol {
 
     /// Optional error to be thrown instead of returning a URL.
     var thrownError: Error?
-    
+
     /// Simulates URL construction from an endpoint definition.
     ///
     /// - Parameter endPoint: The endpoint used to build the URL.
@@ -42,4 +42,3 @@ final class MockEndPointBuilder: EndPointBuilderProtocol {
         return returnedURL ?? URL(string: "https://example.com/default")!
     }
 }
-

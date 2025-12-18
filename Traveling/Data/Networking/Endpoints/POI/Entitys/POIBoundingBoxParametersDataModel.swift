@@ -60,7 +60,6 @@ struct POIBoundingBoxParametersDataModel: QueryParametersProtocol {
     }
 }
 
-
 // MARK: - POIBoundingBoxParametersDomainModel
 ///
 /// Domain-layer counterpart used by the app's business/UI components.
@@ -86,5 +85,3 @@ struct POIBoundingBoxParametersDomainModel {
     let page: PageParameters?
     var offset: Int?
 }
-
-

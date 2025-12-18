@@ -18,7 +18,7 @@ import Foundation
 /// - Query parameters are appended properly
 @Suite("EndPointBuilderImp Tests")
 struct EndPointBuilderImpTests {
-    
+
     // MARK: - Init Tests
 
     /// Verifies that `EndPointBuilderImp` initializes successfully
@@ -33,7 +33,7 @@ struct EndPointBuilderImpTests {
         // Arrange
         // Given a well-formed base URL
         let baseURL = "https://example.com"
-       
+
         // Assert
         // Expect no error to be thrown during initialization
         #expect(throws: Never.self) {
@@ -41,7 +41,7 @@ struct EndPointBuilderImpTests {
             _ = try EndPointBuilderImp(baseURL: baseURL)
         }
     }
-    
+
     /// Verifies that initialization throws `NetworkingError.invalidURL`
     /// when the provided base URL is malformed.
     @Test("Init should throw NetworkingError.invalidURL for malformed base URL")
@@ -127,14 +127,14 @@ struct EndPointBuilderImpTests {
                 URLQueryItem(name: "limit", value: "10")
             ]
         )
-        
+
         // Assert
         // Expect URL construction to succeed without errors
         #expect(throws: Never.self) {
             // Act
             let builder = try EndPointBuilderImp(baseURL: "https://api.example.com")
             let url = try builder.buildURL(from: endpoint)
-            
+
             // Then
             // Verify the resulting URL and debug tracking value
             #expect(url.absoluteString == "https://api.example.com/search?q=poi&limit=10")

@@ -99,7 +99,7 @@ final class POIRepositoryImp: POIRepositoryProtocol {
         POIDomainModels = pOIListResponse.data.map { self.mapper.poiDataToDomain(from: $0) }
         return POIDomainModels
     }
-    
+
     /// Searches for POIs by name or text query.
     ///
     /// - Parameter params: Domain model containing the search text and filters.

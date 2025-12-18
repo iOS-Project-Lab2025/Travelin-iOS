@@ -139,6 +139,7 @@ struct NetworkingErrorTests {
         switch error {
         case NetworkingError.noConnection:
             #expect(true)
+
         default:
             Issue.record("Expected noConnection error")
         }

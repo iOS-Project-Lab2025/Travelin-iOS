@@ -30,7 +30,7 @@ struct RequestBuilderImpTests {
         // Arrange
         let mockEndPointBuilder = MockEndPointBuilder()
         mockEndPointBuilder.returnedURL = URL(string: "https://test.com/user")!
-        
+
         let builder = RequestBuilderImp(endPointBuilder: mockEndPointBuilder)
         let endpoint = MockEndPoint(method: .get, path: "/user")
 
@@ -49,7 +49,7 @@ struct RequestBuilderImpTests {
         // Arrange
         let mockEndPointBuilder = MockEndPointBuilder()
         mockEndPointBuilder.returnedURL = URL(string: "https://example.com")!
-        
+
         let builder = RequestBuilderImp(endPointBuilder: mockEndPointBuilder)
         let endpoint = MockEndPoint(method: .post, path: "/login")
 
@@ -67,7 +67,7 @@ struct RequestBuilderImpTests {
         // Arrange
         let mockEndPointBuilder = MockEndPointBuilder()
         mockEndPointBuilder.returnedURL = URL(string: "https://example.com")!
-        
+
         let builder = RequestBuilderImp(endPointBuilder: mockEndPointBuilder)
         let endpoint = MockEndPoint(
             method: .get,
@@ -95,7 +95,7 @@ struct RequestBuilderImpTests {
         // Arrange
         let mockEndPointBuilder = MockEndPointBuilder()
         mockEndPointBuilder.returnedURL = URL(string: "https://example.com")!
-        
+
         let builder = RequestBuilderImp(endPointBuilder: mockEndPointBuilder)
         let endpoint = MockEndPoint(method: .get, path: "/timeout")
 
@@ -113,15 +113,15 @@ struct RequestBuilderImpTests {
         // Arrange
         let mockEndPointBuilder = MockEndPointBuilder()
         mockEndPointBuilder.returnedURL = URL(string: "https://example.com")!
-        
+
         let mockPayloadBuilder = MockPayloadBuilder()
         mockPayloadBuilder.returnedData = Data([1, 2, 3])
-        
+
         let builder = RequestBuilderImp(
             endPointBuilder: mockEndPointBuilder,
             payloadBuilder: mockPayloadBuilder
         )
-        
+
         struct Body: Encodable { let name: String }
         let endpoint = MockEndPoint(method: .post, path: "/create")
 
@@ -142,7 +142,7 @@ struct RequestBuilderImpTests {
         // Arrange
         let mockEndPointBuilder = MockEndPointBuilder()
         mockEndPointBuilder.thrownError = NetworkingError.invalidURL(URLError(.badURL))
-        
+
         let builder = RequestBuilderImp(endPointBuilder: mockEndPointBuilder)
         let endpoint = MockEndPoint(method: .get, path: "/bad")
 
@@ -165,9 +165,9 @@ struct RequestBuilderImpTests {
         // Arrange
         let mockEndPointBuilder = MockEndPointBuilder()
         mockEndPointBuilder.returnedURL = URL(string: "https://example.com")!
-        
+
         let builder = RequestBuilderImp(endPointBuilder: mockEndPointBuilder)
-        
+
         struct Body: Encodable { let id: Int }
         let endpoint = MockEndPoint(method: .post, path: "/create")
 
@@ -190,17 +190,17 @@ struct RequestBuilderImpTests {
         // Arrange
         let mockEndPointBuilder = MockEndPointBuilder()
         mockEndPointBuilder.returnedURL = URL(string: "https://example.com")!
-        
+
         let mockPayloadBuilder = MockPayloadBuilder()
         mockPayloadBuilder.thrownError = NetworkingError.encodingFailed(
             EncodingError.invalidValue("X", .init(codingPath: [], debugDescription: "invalid"))
         )
-        
+
         let builder = RequestBuilderImp(
             endPointBuilder: mockEndPointBuilder,
             payloadBuilder: mockPayloadBuilder
         )
-        
+
         struct Body: Encodable { let value: String }
         let endpoint = MockEndPoint(method: .post, path: "/encode")
 

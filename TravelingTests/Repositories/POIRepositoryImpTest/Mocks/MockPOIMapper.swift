@@ -9,27 +9,27 @@
 import Foundation
 
 final class MockPOIMapper: POIMapperProtocol {
-    
+
     // MARK: - Call Tracking
-    
+
     var radiusCalled = false
     var boundingCalled = false
     var getByNameCalled = false
     var dataToDomainCallCount = 0
 
     // MARK: - Expected Parameters
-    
+
     var expectedRadiusDataParams: POIRadiusParametersDataModel?
     var expectedBoundingDataParams: POIBoundingBoxParametersDataModel?
     var expectedGetByNameDataParams: POIGetByNameParametersDataModel?
 
     // MARK: - Mock Return Values
-    
+
     var nextDomainList: [POIDomainModel] = []
     var nextDomainSingle: POIDomainModel?
 
     // MARK: - Captured Data (for verification)
-    
+
     var capturedRadiusParams: POIRadiusParametersDomainModel?
     var capturedBoundingParams: POIBoundingBoxParametersDomainModel?
     var capturedGetByNameParams: POIGetByNameParametersDomainModel?
@@ -38,46 +38,43 @@ final class MockPOIMapper: POIMapperProtocol {
     // MARK: - Protocol Implementation
 
     func poiRadiusDomainToData(from model: POIRadiusParametersDomainModel)
-        -> POIRadiusParametersDataModel
-    {
+        -> POIRadiusParametersDataModel {
         radiusCalled = true
         capturedRadiusParams = model
-        
+
         guard let expected = expectedRadiusDataParams else {
             fatalError("MockPOIMapper: expectedRadiusDataParams not configured")
         }
-        
+
         return expected
     }
 
     func poiBoundingDomainToData(from model: POIBoundingBoxParametersDomainModel)
-        -> POIBoundingBoxParametersDataModel
-    {
+        -> POIBoundingBoxParametersDataModel {
         boundingCalled = true
         capturedBoundingParams = model
-        
+
         guard let expected = expectedBoundingDataParams else {
             fatalError("MockPOIMapper: expectedBoundingDataParams not configured")
         }
-        
+
         return expected
     }
-    
+
     func poiGetByNameDomainToData(
         from vm: POIGetByNameParametersDomainModel
     ) -> POIGetByNameParametersDataModel {
         getByNameCalled = true
         capturedGetByNameParams = vm
-        
+
         guard let expected = expectedGetByNameDataParams else {
             fatalError("MockPOIMapper: expectedGetByNameDataParams not configured")
         }
-        
+
         return expected
     }
 
-    func poiDataToDomain(from data: POIDataModel) -> POIDomainModel
-    {
+    func poiDataToDomain(from data: POIDataModel) -> POIDomainModel {
         dataToDomainCallCount += 1
         capturedDataModels.append(data)
 
@@ -99,17 +96,17 @@ final class MockPOIMapper: POIMapperProtocol {
             category: data.category
         )
     }
-    
+
     // MARK: - Verification Helpers
-    
+
     func verifyDataModelWasMapped(withId id: String) -> Bool {
         return capturedDataModels.contains { $0.id == id }
     }
-    
+
     func verifyMappingCount(_ count: Int) -> Bool {
         return dataToDomainCallCount == count
     }
-    
+
     func reset() {
         radiusCalled = false
         boundingCalled = false
