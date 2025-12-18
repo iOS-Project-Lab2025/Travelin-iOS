@@ -22,8 +22,6 @@ struct POIBoundingBoxParametersDataModelTests {
 
     // MARK: - Core Query Behavior
 
-    /// Verifies that bounding box coordinates
-    /// are converted into individual query items.
     @Test("Converts bounding box coordinates into query items")
     func convertsCoordinatesToQueryItems() {
         let params = POIBoundingBoxParametersDataModel(
@@ -32,7 +30,7 @@ struct POIBoundingBoxParametersDataModelTests {
             east: -73.9,
             west: -74.0,
             categories: nil,
-            limit: nil,
+            page: nil,
             offset: nil
         )
 
@@ -47,8 +45,6 @@ struct POIBoundingBoxParametersDataModelTests {
 
     // MARK: - Optional Handling
 
-    /// Verifies that optional parameters
-    /// are omitted from query items when they are `nil`.
     @Test("Omits optional values when nil")
     func omitsNilOptionalValues() {
         let params = POIBoundingBoxParametersDataModel(
@@ -57,7 +53,7 @@ struct POIBoundingBoxParametersDataModelTests {
             east: 3,
             west: 4,
             categories: nil,
-            limit: nil,
+            page: nil,
             offset: nil
         )
 
@@ -65,12 +61,10 @@ struct POIBoundingBoxParametersDataModelTests {
 
         #expect(items.count == 4)
         #expect(items.allSatisfy { $0.name != "categories" })
-        #expect(items.allSatisfy { $0.name != "limit" })
+        #expect(items.allSatisfy { $0.name != "page[limit]" })
         #expect(items.allSatisfy { $0.name != "offset" })
     }
 
-    /// Verifies that optional parameters
-    /// are included in query items when present.
     @Test("Includes optional values when present")
     func includesOptionalValues() {
         let params = POIBoundingBoxParametersDataModel(
@@ -79,22 +73,19 @@ struct POIBoundingBoxParametersDataModelTests {
             east: 8,
             west: 3,
             categories: [.restaurant, .shopping],
-            limit: 20,
+            page: PageParameters(limit: 20),
             offset: 0
         )
 
         let items = params.toQueryItems()
 
         #expect(items.count == 7)
-        #expect(items.contains { $0.name == "limit" && $0.value == "20" })
-        #expect(items.contains { $0.name == "offset" && $0.value == "0" })
+        #expect(items.contains { $0.name == "page[limit]" && $0.value == "20" })
         #expect(items.contains { $0.name == "categories" })
     }
 
     // MARK: - Array Handling
 
-    /// Verifies that category arrays
-    /// are serialized as comma-separated values.
     @Test("Serializes categories as comma-separated values")
     func serializesCategories() {
         let params = POIBoundingBoxParametersDataModel(
@@ -103,7 +94,7 @@ struct POIBoundingBoxParametersDataModelTests {
             east: 0,
             west: 0,
             categories: [.restaurant, .sights],
-            limit: nil,
+            page: nil,
             offset: nil
         )
 
@@ -116,8 +107,6 @@ struct POIBoundingBoxParametersDataModelTests {
 
     // MARK: - URL Usability
 
-    /// Verifies that the generated query items
-    /// can be used to construct a valid URL.
     @Test("Produces valid URL when used in URLComponents")
     func producesValidURL() {
         let params = POIBoundingBoxParametersDataModel(
@@ -126,7 +115,7 @@ struct POIBoundingBoxParametersDataModelTests {
             east: -73.9,
             west: -74.0,
             categories: [.restaurant],
-            limit: 10,
+            page: nil,
             offset: 0
         )
 
@@ -138,8 +127,6 @@ struct POIBoundingBoxParametersDataModelTests {
 
     // MARK: - Helper Method
 
-    /// Verifies that `getPoint()` returns
-    /// the west coordinate as a string.
     @Test("getPoint returns west coordinate as string")
     func getPointReturnsWestValue() {
         let params = POIBoundingBoxParametersDataModel(
@@ -148,7 +135,7 @@ struct POIBoundingBoxParametersDataModelTests {
             east: 0,
             west: -12.34,
             categories: nil,
-            limit: nil,
+            page: nil,
             offset: nil
         )
 

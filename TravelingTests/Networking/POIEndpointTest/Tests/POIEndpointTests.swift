@@ -21,8 +21,6 @@ struct POIEndpointTests {
     
     // MARK: - HTTP Method
     
-    /// Verifies that all POI-related endpoints
-    /// use the HTTP GET method.
     @Test("All POI endpoints use HTTP GET")
     func usesGETMethod() {
         let radius = POIEndpoint.searchRadius(mockRadiusParams())
@@ -36,8 +34,6 @@ struct POIEndpointTests {
     
     // MARK: - Path Generation
     
-    /// Verifies that the search-by-radius endpoint
-    /// generates the base POI search path.
     @Test("Search radius endpoint generates base POI path")
     func searchRadiusPath() {
         let endpoint = POIEndpoint.searchRadius(mockRadiusParams())
@@ -45,8 +41,6 @@ struct POIEndpointTests {
         #expect(endpoint.path == "/v1/reference-data/locations/pois")
     }
     
-    /// Verifies that the search-by-bounding-box endpoint
-    /// appends the expected `by-square` path segment.
     @Test("Search bounding box endpoint appends by-square")
     func searchBoundingBoxPath() {
         let endpoint = POIEndpoint.searchBoundingBox(mockBoundingParams())
@@ -54,8 +48,6 @@ struct POIEndpointTests {
         #expect(endpoint.path == "/v1/reference-data/locations/pois/by-square")
     }
     
-    /// Verifies that the get-by-ID endpoint
-    /// includes the POI identifier in the URL path.
     @Test("Get by ID endpoint includes identifier in path")
     func getByIdPath() {
         let endpoint = POIEndpoint.getById("poi_123")
@@ -65,8 +57,6 @@ struct POIEndpointTests {
     
     // MARK: - Query Parameters
     
-    /// Verifies that search endpoints
-    /// provide query items for request configuration.
     @Test("Search endpoints provide query items")
     func searchEndpointsHaveQueryItems() {
         let radius = POIEndpoint.searchRadius(mockRadiusParams())
@@ -76,8 +66,6 @@ struct POIEndpointTests {
         #expect(box.queryItems != nil)
     }
     
-    /// Verifies that the get-by-ID endpoint
-    /// does not include any query parameters.
     @Test("Get by ID endpoint has no query items")
     func getByIdHasNoQueryItems() {
         let endpoint = POIEndpoint.getById("poi_123")
@@ -87,8 +75,6 @@ struct POIEndpointTests {
     
     // MARK: - Integration Test
     
-    /// Verifies that a POI endpoint can be composed
-    /// into a valid URL using `URLComponents`.
     @Test("Endpoints produce valid URLs")
     func buildsValidURL() {
         let endpoint = POIEndpoint.searchRadius(mockRadiusParams())
@@ -104,19 +90,17 @@ struct POIEndpointTests {
     
     // MARK: - Test Helpers
     
-    /// Creates a mock radius-based POI search parameter set.
     private func mockRadiusParams() -> POIRadiusParametersDataModel {
         POIRadiusParametersDataModel(
             latitude: 40.7,
             longitude: -73.9,
             radius: 500,
             categories: [.restaurant],
-            limit: 10,
+            page: PageParameters(limit: 10),
             offset: 0
         )
     }
     
-    /// Creates a mock bounding-box-based POI search parameter set.
     private func mockBoundingParams() -> POIBoundingBoxParametersDataModel {
         POIBoundingBoxParametersDataModel(
             north: 40.8,
@@ -124,8 +108,57 @@ struct POIEndpointTests {
             east: -73.9,
             west: -74.0,
             categories: [.sights],
-            limit: 10,
+            page: PageParameters(limit: 10),
             offset: 0
         )
     }
+    //ADD
+    // MARK: - GET BY NAME TESTS
+
+    @Test("Get by name endpoint appends by-name to base path")
+    func getByNamePath() {
+        let endpoint = POIEndpoint.getByName(mockGetByNameParams())
+
+        #expect(endpoint.path == "/v1/reference-data/locations/pois/by-name")
+    }
+
+    @Test("Get by name endpoint provides query items")
+    func getByNameHasQueryItems() {
+        let endpoint = POIEndpoint.getByName(mockGetByNameParams())
+
+        #expect(endpoint.queryItems != nil)
+        #expect(endpoint.queryItems?.isEmpty == false)
+    }
+
+    @Test("Get by name endpoint uses HTTP GET method")
+    func getByNameUsesGETMethod() {
+        let endpoint = POIEndpoint.getByName(mockGetByNameParams())
+
+        #expect(endpoint.method == .get)
+    }
+
+    @Test("Get by name endpoint produces valid URL")
+    func getByNameBuildsValidURL() {
+        let endpoint = POIEndpoint.getByName(mockGetByNameParams())
+
+        var components = URLComponents(string: "https://api.example.com")!
+        components.path = endpoint.path
+        components.queryItems = endpoint.queryItems
+
+        let url = components.url
+
+        #expect(url != nil)
+        #expect(url?.absoluteString.contains("/v1/reference-data/locations/pois/by-name") == true)
+        #expect(url?.absoluteString.contains("name=") == true)
+    }
+
+    // MARK: - Test Helper
+
+    private func mockGetByNameParams() -> POIGetByNameParametersDataModel {
+        POIGetByNameParametersDataModel(
+            name: "Museum",
+            categories: [.sights, .historical]
+        )
+    }
+
 }

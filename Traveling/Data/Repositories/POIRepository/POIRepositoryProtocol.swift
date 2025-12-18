@@ -41,7 +41,12 @@ protocol POIRepositoryProtocol {
 
     /// Searches for POIs within a bounding coordinate box.
     func searchBoundingBox(params: POIBoundingBoxParametersDomainModel) async throws -> [POIDomainModel]
+    
+    /// Searches for POIs by name or text query.
+    func searchByName(params: POIGetByNameParametersDomainModel) async throws -> [POIDomainModel]
 
     /// Retrieves a single POI by ID.
     func getById(_ id: String) async throws -> POIDomainModel
+    
 }
+

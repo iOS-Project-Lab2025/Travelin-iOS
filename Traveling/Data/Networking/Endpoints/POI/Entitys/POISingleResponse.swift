@@ -141,3 +141,4 @@ struct PaginationLinks: Decodable {
         case first, last, next, up
     }
 }
+

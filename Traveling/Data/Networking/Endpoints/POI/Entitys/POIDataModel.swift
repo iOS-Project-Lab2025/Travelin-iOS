@@ -46,6 +46,7 @@ struct POIDataModel: Decodable {
     let id: String
     let `self`: POISelfLink
     let type: String
+    let pictures: [String]?
     let subType: String
     let name: String
     let geoCode: GeoCode
@@ -84,6 +85,7 @@ struct POIDataModel: Decodable {
 struct POIDomainModel: Identifiable {
     let id: String
     let name: String
+    let pictures: [String]?
     let lat: Double
     let lon: Double
     let category: String
