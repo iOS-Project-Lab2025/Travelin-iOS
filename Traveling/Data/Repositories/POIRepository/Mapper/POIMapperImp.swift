@@ -44,7 +44,7 @@ struct POIMapperImp: POIMapperProtocol {
             longitude: vm.lon,
             radius: vm.radius,
             categories: vm.categories,
-            limit: vm.limit,
+            page: PageParameters(limit: vm.page?.limit),
             offset: vm.offset
         )
     }
@@ -57,8 +57,19 @@ struct POIMapperImp: POIMapperProtocol {
             east: vm.east,
             west: vm.west,
             categories: vm.categories,
-            limit: vm.limit,
+            page: PageParameters(limit: vm.page?.limit),
             offset: vm.offset
+        )
+    }
+    
+    /// Converts domain name-based search parameters into data-layer parameters.
+    func poiGetByNameDomainToData(
+        from vm: POIGetByNameParametersDomainModel
+    ) -> POIGetByNameParametersDataModel {
+        POIGetByNameParametersDataModel(
+            name: vm.name,
+            categories: vm.categories,
+            page: PageParameters(limit: vm.page?.limit),
         )
     }
 
@@ -67,6 +78,7 @@ struct POIMapperImp: POIMapperProtocol {
         POIDomainModel(
             id: data.id,
             name: data.name,
+            pictures: data.pictures,
             lat: data.geoCode.latitude,
             lon: data.geoCode.longitude,
             category: data.category

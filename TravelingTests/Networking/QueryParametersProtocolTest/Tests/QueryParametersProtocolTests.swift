@@ -21,7 +21,7 @@ import Foundation
 struct QueryParametersProtocolTests {
 
     // MARK: - Core Behavior
-    
+
     /// Verifies that all properties of a conforming type
     /// are converted into valid `URLQueryItem` instances.
     @Test("Converts properties to valid URLQueryItems")
@@ -38,7 +38,7 @@ struct QueryParametersProtocolTests {
         // Verify correct number of query items and non-nil values
         #expect(items.count == 3)
         #expect(items.allSatisfy { $0.value != nil })
-        
+
         // Verify that the query items can be used to build a valid URL
         var components = URLComponents(string: "https://api.example.com")!
         components.queryItems = items
@@ -46,7 +46,7 @@ struct QueryParametersProtocolTests {
     }
 
     // MARK: - Optional Handling
-    
+
     /// Verifies that optional properties
     /// are omitted from query items when they are `nil`.
     @Test("Omits nil optional values")
@@ -62,7 +62,7 @@ struct QueryParametersProtocolTests {
         #expect(items.count == 1)
         #expect(items.first?.value == "present")
     }
-    
+
     /// Verifies that an empty query item list
     /// is returned when all properties are `nil`.
     @Test("Returns empty array when all values are nil")
@@ -73,12 +73,12 @@ struct QueryParametersProtocolTests {
         }
 
         let params = Params(a: nil, b: nil)
-        
+
         #expect(params.toQueryItems().isEmpty)
     }
 
     // MARK: - Array Handling
-    
+
     /// Verifies that array values
     /// are serialized as comma-separated strings.
     @Test("Serializes arrays as comma-separated values")
@@ -92,12 +92,12 @@ struct QueryParametersProtocolTests {
         let items = params.toQueryItems()
 
         #expect(items.count == 2)
-        
+
         let tagsValue = items.first { $0.value?.contains(",") == true }
         #expect(tagsValue != nil)
         #expect(tagsValue?.value?.components(separatedBy: ",").count == 2)
     }
-    
+
     /// Verifies that empty arrays
     /// are included as empty string values.
     @Test("Handles empty arrays")
@@ -112,7 +112,7 @@ struct QueryParametersProtocolTests {
         #expect(items.count == 1)
         #expect(items.first?.value == "")
     }
-    
+
     /// Verifies that optional arrays
     /// are omitted when they are `nil`.
     @Test("Omits nil optional arrays")
@@ -123,12 +123,12 @@ struct QueryParametersProtocolTests {
         }
 
         let params = Params(present: "here", missing: nil)
-        
+
         #expect(params.toQueryItems().count == 1)
     }
 
     // MARK: - Type Conversion
-    
+
     /// Verifies that supported primitive types
     /// are converted to their string representations.
     @Test("Converts various types to string representation")
@@ -149,7 +149,7 @@ struct QueryParametersProtocolTests {
         #expect(items.contains { $0.value == "3.14" })
         #expect(items.contains { $0.value == "true" })
     }
-    
+
     /// Verifies that zero and false values
     /// are treated as valid values, not omitted.
     @Test("Includes zero and false values")
@@ -168,7 +168,7 @@ struct QueryParametersProtocolTests {
     }
 
     // MARK: - String Handling
-    
+
     /// Verifies that string values
     /// preserve whitespace and special characters.
     @Test("Preserves special characters and whitespace")
@@ -187,7 +187,7 @@ struct QueryParametersProtocolTests {
     }
 
     // MARK: - CustomStringConvertible
-    
+
     /// Verifies that values conforming to `CustomStringConvertible`
     /// use their `description` for serialization.
     @Test("Uses CustomStringConvertible description")
@@ -210,16 +210,16 @@ struct QueryParametersProtocolTests {
     }
 
     // MARK: - Edge Cases
-    
+
     /// Verifies that an empty struct
     /// produces no query items.
     @Test("Handles empty struct")
     func handlesEmptyStruct() {
         struct Empty: QueryParametersProtocol {}
-        
+
         #expect(Empty().toQueryItems().isEmpty)
     }
-    
+
     /// Verifies that complex types
     /// still produce a fallback string value.
     @Test("Provides fallback for complex types")
@@ -236,7 +236,7 @@ struct QueryParametersProtocolTests {
     }
 
     // MARK: - Real-World Scenario
-    
+
     /// Verifies that a realistic set of API parameters
     /// can be converted into a valid URL query string.
     @Test("Handles realistic API parameters")
@@ -267,10 +267,10 @@ struct QueryParametersProtocolTests {
         )
 
         let items = request.toQueryItems()
-        
+
         var components = URLComponents(string: "https://api.shop.com/search")!
         components.queryItems = items
-        
+
         guard let url = components.url else {
             #expect(Bool(false), "Should create valid URL")
             return

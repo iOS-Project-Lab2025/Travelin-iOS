@@ -17,13 +17,12 @@ import Foundation
 ///
 final class URLNetworkClient: NetworkClientProtocol {
     private let session: URLSession
-    
+
     init(session: URLSession = .shared) {
         self.session = session
     }
-    
+
     func execute(_ request: URLRequest) async throws -> (Data, URLResponse) {
         return try await session.data(for: request)
     }
 }
-

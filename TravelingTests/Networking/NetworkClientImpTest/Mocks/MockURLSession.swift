@@ -30,7 +30,7 @@ final class MockURLSession: URLSessionProtocol {
 
     /// Flag indicating whether `data(for:)` was invoked.
     var dataWasCalled = false
-    
+
     /// Simulates the behavior of `URLSession.data(for:)`.
     ///
     /// - Parameter request: The URL request to be executed.
@@ -40,16 +40,15 @@ final class MockURLSession: URLSessionProtocol {
     ///   - `URLError.unknown` if no mock data or response is provided.
     func data(for request: URLRequest) async throws -> (Data, URLResponse) {
         dataWasCalled = true
-        
+
         if let error = mockError {
             throw error
         }
-        
+
         guard let data = mockData, let response = mockResponse else {
             throw URLError(.unknown)
         }
-        
+
         return (data, response)
     }
 }
-

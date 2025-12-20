@@ -30,10 +30,8 @@ struct MockEndPoint: EndPointProtocol {
     var path: String
 
     /// Optional query parameters appended to the request URL.
-    var queryItems: [URLQueryItem]? = nil
+    var queryItems: [URLQueryItem]?
 
     /// Optional HTTP headers to be included in the request.
-    var headers: [String : String]? = nil
+    var headers: [String: String]?
 }
-
-

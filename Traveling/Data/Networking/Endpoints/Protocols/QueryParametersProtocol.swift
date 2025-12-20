@@ -64,7 +64,19 @@ extension QueryParametersProtocol {
             if isNil(value) {
                 continue
             }
-
+            // Handle nested QueryParametersProtocol
+            if let nested = value as? QueryParametersProtocol {
+                let nestedItems = nested.toQueryItems()
+                for item in nestedItems {
+                    items.append(
+                        URLQueryItem(
+                            name: "\(key)[\(item.name)]",
+                            value: item.value
+                        )
+                    )
+                }
+                continue
+            }
             // Handle arrays of values that conform to CustomStringConvertible
             if let array = value as? [CustomStringConvertible] {
                 items.append(
