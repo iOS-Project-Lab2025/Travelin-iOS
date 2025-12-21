@@ -50,6 +50,29 @@ class AuthService {
         return try JSONDecoder().decode(LoginResponse.self, from: data)
     }
 
+    // MARK: - Register
+    /// Registers a new user
+    /// - Parameters:
+    ///   - email: User's email
+    ///   - password: User's password
+    ///   - firstName: First name
+    ///   - lastName: Last name
+    ///   - phone: Phone
+    /// - Returns: RegisterResponse with user and token
+    func register(email: String, password: String, firstName: String, lastName: String, phone: String) async throws -> RegisterResponse {
+        let endpoint = UserEndpoint.register(email: email, password: password, firstName: firstName, lastName: lastName, phone: phone)
+        let request = try requestBuilder.buildRequest(
+            from: endpoint,
+            body: endpoint.bodyData
+        )
+        let (data, response) = try await client.execute(request)
+        if let httpResponse = response as? HTTPURLResponse,
+           !(200...299).contains(httpResponse.statusCode) {
+            throw NetworkingError.serverError(code: httpResponse.statusCode, message: "Registration error")
+        }
+        return try JSONDecoder().decode(RegisterResponse.self, from: data)
+    }
+
     // MARK: - Refresh Token
     /// Refreshes the access token using a refresh token
     /// - Parameter refreshToken: The current refresh token
