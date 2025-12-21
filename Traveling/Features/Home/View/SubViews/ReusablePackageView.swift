@@ -70,7 +70,7 @@ struct ReusablePackageView: View {
             description: "Lorem ipsum dolor sit amet...",
             isFavorite: true,
             price: 600,
-            services: Services(id: UUID(), title: "Bus", subTitle: "Transportation", icon: "bus.fill")
+            servicesIncluded: ServicesIncluded(id: UUID(), title: "Bus", subTitle: "Transportation", icon: "bus.fill")
         )
     )
 }

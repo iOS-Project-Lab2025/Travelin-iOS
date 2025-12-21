@@ -17,9 +17,9 @@ struct Package: Identifiable {
     let description: String
     let isFavorite: Bool
     let price: Int
-    let services: Services
+    let servicesIncluded: ServicesIncluded
 }
-struct Services: Identifiable {
+struct ServicesIncluded: Identifiable {
     let id: UUID
     let title: String
     let subTitle: String
