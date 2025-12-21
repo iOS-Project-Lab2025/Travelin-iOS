@@ -8,7 +8,7 @@
 import Foundation
 
 /// Service responsible for authentication operations (login, refresh)
-/// Uses URLNetworkClient since these endpoints don't require prior authentication
+/// Uses unified NetworkClient for public endpoints (no authentication)
 class AuthService {
 
     private let client: NetworkClientProtocol
