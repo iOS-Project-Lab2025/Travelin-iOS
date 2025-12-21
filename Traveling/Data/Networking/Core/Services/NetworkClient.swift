@@ -2,7 +2,7 @@
 //  NetworkClient.swift
 //  Traveling
 //
-//  Created by Daniel Retamal on 18-11-25.
+//  Co-created by Rodolfo Gonzalez & Daniel Retamal on 18-11-25.
 //
 
 import Foundation
