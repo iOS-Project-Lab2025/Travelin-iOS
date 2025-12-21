@@ -11,7 +11,7 @@ enum UserEndpoint: EndPointProtocol {
     case login(email: String, password: String)
     case refresh(token: String)
     case me
-    case register(email: String, password: String, firstName: String?, lastName: String?, phone: String?)
+    case register(email: String, password: String, firstName: String, lastName: String, phone: String)
 
     var path: String {
         switch self {
