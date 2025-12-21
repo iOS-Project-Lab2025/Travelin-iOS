@@ -53,7 +53,7 @@ struct POIRadiusParametersDataModel: QueryParametersProtocol {
     let longitude: Double
     let radius: Double?
     let categories: [POICategory]?
-    let limit: Int?
+    let page: PageParameters?
     let offset: Int?
 }
 
@@ -91,6 +91,6 @@ struct POIRadiusParametersDomainModel {
     var lon: Double
     var radius: Double
     var categories: [POICategory]?
-    var limit: Int?
+    var page: PageParameters?
     var offset: Int?
 }

@@ -100,6 +100,22 @@ final class POIRepositoryImp: POIRepositoryProtocol {
         return POIDomainModels
     }
 
+    /// Searches for POIs by name or text query.
+    ///
+    /// - Parameter params: Domain model containing the search text and filters.
+    /// - Returns: A list of domain POI models matching the given name.
+    /// - Throws: Networking or decoding related errors.
+    func searchByName(params: POIGetByNameParametersDomainModel) async throws -> [POIDomainModel] {
+        let dataParams = mapper.poiGetByNameDomainToData(from: params)
+
+        let response = try await network.execute(
+            POIEndpoint.getByName(dataParams),
+            responseType: POIListResponse.self,
+            body: nil
+        )
+
+        return response.data.map(mapper.poiDataToDomain(from:))
+    }
     /// Retrieves a single POI by its unique identifier.
     ///
     /// - Parameter id: The POI ID.

@@ -30,7 +30,13 @@ struct ContentView: View {
             BookingView()
 
         case .authentication(.login):
-            LoginView()
+            LoginView(
+                loginViewModel: LoginViewModel(
+                    authService: Services.auth,
+                    userService: Services.user,
+                    tokenManager: Services.tokenManager
+                )
+            )
 
         case .authentication(.register):
             RegisterView()

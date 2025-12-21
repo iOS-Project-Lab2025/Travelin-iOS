@@ -41,6 +41,10 @@ protocol POIMapperProtocol {
     /// Maps domain bounding box parameters → data-layer request parameters.
     func poiBoundingDomainToData(from vm: POIBoundingBoxParametersDomainModel) -> POIBoundingBoxParametersDataModel
 
+    /// Maps domain name-based search parameters into API-ready request parameters.
+    func poiGetByNameDomainToData(from vm: POIGetByNameParametersDomainModel) -> POIGetByNameParametersDataModel
+
     /// Maps API POI data → domain POI model.
     func poiDataToDomain(from data: POIDataModel) -> POIDomainModel
+
 }
