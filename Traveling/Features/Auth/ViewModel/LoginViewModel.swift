@@ -7,16 +7,6 @@
 
 import Foundation
 
-<<<<<<< HEAD
-@Observable
-class LoginViewModel: LoginViewModelProtocol {
-
-    var email: String = ""
-    var password: String = ""
-
-    func login() {
-        print("Login... email: \(email), password: \(password)")
-=======
 /// A view model responsible for handling the logic of the Login screen.
 ///
 /// This class manages the state of the login form, including validation and authentication.
@@ -120,7 +110,6 @@ class LoginViewModel: LoginViewModelProtocol {
         } catch {
         loginState = .failure(error)
         }
->>>>>>> main
     }
 
 }

@@ -7,13 +7,6 @@
 
 import Foundation
 
-<<<<<<< HEAD
-protocol LoginViewModelProtocol: Observable {
-    var email: String { get set }
-    var password: String { get set }
-
-    func login()
-=======
 /// Protocol defining the interface for the Login ViewModel.
 ///
 /// Use this protocol to implement the view model for the Login screen, ensuring testability and separation of concerns.
@@ -47,5 +40,4 @@ protocol LoginViewModelProtocol: Observable {
     ///
     /// This method validates the inputs and attempts to authenticate with the server.
     func login() async
->>>>>>> main
 }
