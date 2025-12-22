@@ -12,10 +12,10 @@ import Foundation
 /// If an interceptor is provided, it handles authentication and token refresh.
 /// If not, it works as a simple client for public endpoints.
 class NetworkClient: NetworkClientProtocol, InterceptableNetworkClientProtocol {
-    private let session: URLSession
+    private let session: URLSessionProtocol
     private let interceptor: RequestInterceptor?
 
-    init(session: URLSession = .shared, interceptor: RequestInterceptor? = nil) {
+    init(session: URLSessionProtocol = URLSession.shared, interceptor: RequestInterceptor? = nil) {
         self.session = session
         self.interceptor = interceptor
     }
