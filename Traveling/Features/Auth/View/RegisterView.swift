@@ -11,8 +11,8 @@ struct RegisterView: View {
 
     @State private var registerRouter = AppRouter.FlowRouter<RegisterRoutes>(flow: [.form, .success])
     @State private var registerViewModel: RegisterViewModel
-    
-    init(registerViewModel:RegisterViewModel){
+
+    init(registerViewModel: RegisterViewModel) {
         _registerViewModel = State(initialValue: registerViewModel)
     }
 

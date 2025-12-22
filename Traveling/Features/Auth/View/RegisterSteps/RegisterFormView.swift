@@ -9,26 +9,21 @@ import SwiftUI
 import TravelinDesignSystem
 
 struct RegisterFormView<VM: RegisterViewModelProtocol>: View {
-    
+
     // MARK: - Dependencies
-    // Inyectamos el Router (para avanzar con .next())
     @Environment(AppRouter.FlowRouter<RegisterRoutes>.self) private var registerRouter
-    
-    // Inyectamos dismiss para poder SALIR de esta vista hacia atrás
-    @Environment(\.dismiss) private var dismiss
-    
+    @Environment(\.appRouter) private var mainRouter
+
     // MARK: - State
     @State private var registerViewModel: VM
-    @State private var selectedPhoneCode = "+569"
-    
+
     // MARK: - Init
     init(registerViewModel: VM) {
         _registerViewModel = State(initialValue: registerViewModel)
     }
-    
+
     // MARK: - Body
     var body: some View {
-        // ScrollView es vital para que el teclado no tape el botón final
         ScrollView(showsIndicators: false) {
             VStack(spacing: 24) {
                 header
@@ -38,49 +33,42 @@ struct RegisterFormView<VM: RegisterViewModelProtocol>: View {
             .padding(.horizontal, 24)
             .padding(.top, 10)
         }
-        .navigationBarHidden(true) // Ocultamos el nav nativo para usar el nuestro custom
+        .navigationBarHidden(true)
     }
-    
+
     // MARK: - Components
-    
     private var header: some View {
         VStack(alignment: .leading, spacing: 20) {
-            
-            // 1. Botón de Retroceso Custom
             Button(action: {
-                // Usamos dismiss() porque estamos en la raíz del flujo de registro
-                dismiss()
-            }) {
+                mainRouter.goTo(.home)
+            }, label: {
                 Image(systemName: "arrow.left")
-                    .font(.system(size: 20, weight: .bold)) // Un poco más grueso
+                    .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.black)
                     .padding(10)
                     .background(
                         Circle()
-                            .stroke(Color.gray.opacity(0.3), lineWidth: 1) // Borde sutil
+                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                     )
-            }
-            // Alineamos el botón a la izquierda
+            })
             .frame(maxWidth: .infinity, alignment: .leading)
-            
-            // 2. Textos con Design Tokens
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Create Account")
-                    // Ajusta esto según tus tokens reales, ej: .heading1
                     .font(TravelinDesignSystem.DesignTokens.Typography.heading1)
                     .foregroundColor(.black)
-                
+
                 Text("Get the best out of Traveling by creating an account")
                     .font(TravelinDesignSystem.DesignTokens.Typography.body)
                     .foregroundColor(TravelinDesignSystem.DesignTokens.Colors.secondaryText)
             }
         }
     }
-    
+
     private var form: some View {
         VStack(spacing: 16) {
-            
-            // Nombre
+
+            // First Name
             DSTextField(
                 placeHolder: "register.firstNamePlaceHolder".localized,
                 type: .givenName,
@@ -88,8 +76,8 @@ struct RegisterFormView<VM: RegisterViewModelProtocol>: View {
                 style: .outlined,
                 text: $registerViewModel.firstName
             )
-            
-            // Apellido
+
+            // Last Name
             DSTextField(
                 placeHolder: "register.lastNamePlaceHolder".localized,
                 type: .familyName,
@@ -97,12 +85,20 @@ struct RegisterFormView<VM: RegisterViewModelProtocol>: View {
                 style: .outlined,
                 text: $registerViewModel.lastName
             )
-            
-            // Teléfono (Con ZIndex para el Dropdown)
+
+            // Phone number
             HStack(spacing: 12) {
-                DSDropDown(items: ["+569", "+1", "+54"], selectedItem: $selectedPhoneCode)
-                    .frame(width: 100)
-                
+                DSDropDown(
+                    items: registerViewModel.availableCountryCodes.map { $0.code },
+                    selectedItem: Binding(
+                        get: { registerViewModel.selectedPhoneCode.code },
+                        set: { newCode in
+                            registerViewModel.updateSelectedCountryCode(newCode)
+                        }
+                    )
+                )
+                .frame(width: 100)
+
                 DSTextField(
                     placeHolder: "register.phonePlaceHolder".localized,
                     type: .phoneNumber,
@@ -111,55 +107,105 @@ struct RegisterFormView<VM: RegisterViewModelProtocol>: View {
                 )
             }
             .zIndex(1)
-            
-            // Email
-            DSTextField(
-                placeHolder: "register.emailPlaceHolder".localized,
-                type: .email,
-                label: "register.emailTextFieldLabel".localized,
-                style: .outlined,
-                text: $registerViewModel.email
-            )
-            
-            // Password
-            DSTextField(
-                placeHolder: "register.passwordPlaceHolder".localized,
-                type: .passwordLetters,
-                label: "register.passwordTextFieldLabel".localized,
-                style: .outlined,
-                text: $registerViewModel.password
-            )
-            
-            Spacer().frame(height: 20)
-            
-            // Botón de Acción
-            DSButton(title: "register.createAccountButtonTitle".localized, variant: .primary) {
-                print("Create Account Tapped")
+
+            // Email Section
+            VStack(alignment: .leading, spacing: 4) {
+                DSTextField(
+                    placeHolder: "register.emailPlaceHolder".localized,
+                    type: .email,
+                    label: "register.emailTextFieldLabel".localized,
+                    style: .outlined,
+                    text: $registerViewModel.email
+                )
+                
+                // Error Message View
+                if let errorMessage = registerViewModel.emailErrorMessage {
+                    Text(errorMessage)
+                        .font(TravelinDesignSystem.DesignTokens.Typography.body)
+                        .foregroundColor(TravelinDesignSystem.DesignTokens.Colors.error)
+                        .padding(.leading, 4)
+                        .transition(.opacity) // Animación suave
+                }
             }
+
+            // Password Section
+            VStack(alignment: .leading, spacing: 8) {
+                DSTextField(
+                    placeHolder: "register.passwordPlaceHolder".localized,
+                    type: .passwordLetters,
+                    label: "register.passwordTextFieldLabel".localized,
+                    style: .outlined,
+                    text: $registerViewModel.password
+                )
+
+                if let strength = registerViewModel.passwordStrength {
+                    passwordStrengthView(strength: strength)
+                }
+            }
+
+            Spacer().frame(height: 20)
+
+            // Action Button
+            DSButton(
+                title: "register.createAccountButtonTitle".localized,
+                variant: .primary
+            ) {
+                registerViewModel.createAccount()
+            }
+            .disabled(!registerViewModel.isFormValid)
+            .opacity(registerViewModel.isFormValid ? 1.0 : 0.5)
         }
     }
-    
+
     private var footer: some View {
         HStack {
             Text("Already have an account?")
                 .font(TravelinDesignSystem.DesignTokens.Typography.body)
                 .foregroundColor(TravelinDesignSystem.DesignTokens.Colors.secondaryText)
-            
+
             Button(action: {
-                dismiss() // Volver al Login
-            }) {
+                mainRouter.goTo(.authentication(.login))
+            }, label: {
                 Text("Log In")
                     .font(TravelinDesignSystem.DesignTokens.Typography.bodyBold)
                     .foregroundColor(TravelinDesignSystem.DesignTokens.Colors.linkText)
-            }
+            })
         }
         .padding(.bottom, 20)
     }
-}
+    
+    // MARK: - Subviews
+    private func passwordStrengthView(strength: TextValidators.PasswordStrength) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 8) {
+                ForEach(0..<5, id: \.self) { index in
+                    Rectangle()
+                        .fill(calculateStrengthBarColor(strength: strength, index: index))
+                        .frame(height: 4)
+                        .cornerRadius(2)
+                }
+            }
 
-// MARK: - Preview
-#Preview {
-    // Simulamos el entorno del Router para que no crashee el preview
-    RegisterFormView(registerViewModel: RegisterViewModel())
-        .environment(AppRouter.FlowRouter<RegisterRoutes>(flow: [.form, .success]))
+            if !strength.isValid {
+                Text(strength.message)
+                    .font(TravelinDesignSystem.DesignTokens.Typography.body)
+                    .foregroundColor(TravelinDesignSystem.DesignTokens.Colors.secondaryText)
+            }
+        }
+        .padding(.horizontal, 4)
+    }
+    
+    private func calculateStrengthBarColor(strength: TextValidators.PasswordStrength, index: Int) -> Color {
+        let validCount = [strength.hasMinLength, strength.hasUppercase, strength.hasLowercase, strength.hasNumber, strength.hasSpecialChar].filter{$0}.count
+        if index < validCount {
+            switch validCount {
+            case 1...2: return .red
+            case 3: return .orange
+            case 4: return .yellow
+            case 5: return .green
+            default: return .gray.opacity(0.3)
+            }
+        }
+        return .gray.opacity(0.3)
+    }
 }
