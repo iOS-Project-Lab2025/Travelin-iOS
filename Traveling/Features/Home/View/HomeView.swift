@@ -18,8 +18,8 @@ struct HomeView: View {
                     .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height * 0.35)
                     
                 ScrollView(.vertical) {
-                    HomePackageCollectionView(packages: $viewModel.packages)
-                    HomeCountriesCollectionView(countries: $viewModel.countries)
+                    HomePackageCollectionView(packages: $viewModel.packages, cardWidth: UIScreen.main.bounds.width * 0.65)
+                    HomeCountriesCollectionView(countries: $viewModel.countries, cardWidth: UIScreen.main.bounds.width * 0.45)
                 }
             }
         }

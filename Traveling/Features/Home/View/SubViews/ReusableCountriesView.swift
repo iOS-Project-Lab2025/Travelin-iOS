@@ -8,29 +8,33 @@
 import SwiftUI
 
 struct ReusableCountriesView: View {
-    var country: Country
+    let country: Country
+
     var body: some View {
         ZStack {
             Image(country.imageURL)
                 .resizable()
-                .scaledToFill()
-                .frame(width: UIScreen.main.bounds.width * 0.45, height: UIScreen.main.bounds.width * 0.45)
+                .aspectRatio(1, contentMode: .fill)
                 .clipped()
                 .overlay {
                     Color.black.opacity(0.13)
                 }
+
             VStack {
                 Spacer()
+
                 Text(country.name)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .bold()
-                    .font(.system(size: 20))
+                    .font(.system(size: 20, weight: .bold))
                     .foregroundStyle(.white)
                     .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .frame(maxWidth: .infinity)
         }
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
+
 
 #Preview {
     ReusableCountriesView(country: Country(
@@ -38,4 +42,7 @@ struct ReusableCountriesView: View {
         name: "Cambodia",
         imageURL: "country1"
     ))
+    .frame(width: UIScreen.main.bounds.width * 0.5, height: UIScreen.main.bounds.width * 0.8 )
+    
 }
+

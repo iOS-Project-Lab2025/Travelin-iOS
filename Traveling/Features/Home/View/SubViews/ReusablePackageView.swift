@@ -10,47 +10,54 @@ import SwiftUI
 struct ReusablePackageView: View {
     var package: Package
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             ZStack(alignment: .topTrailing) {
                 Image(package.imageURL)
                     .resizable()
-                    .scaledToFill()
-                    .frame(width: UIScreen.main.bounds.width * 0.65, height: UIScreen.main.bounds.width * 0.65)
                     .clipShape(RoundedCorner(radius: 12, corners: [.topLeft, .topRight]))
+                    .clipped()
                 Button {
                     
                 } label: {
                     Image(systemName: "heart.circle.fill")
-                        .symbolRenderingMode(.palette)   // Permite usar varios colores
-                        .foregroundStyle(package.isFavorite ? .yellow : .black, .white)
-                            .symbolRenderingMode(.hierarchical)
-                    // Un color por capa
                         .font(.system(size: 32))
+                        .symbolRenderingMode(.palette)   // Permite usar varios colores
+                        
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundStyle(package.isFavorite ? .yellow : .black, .white)
+                    // Un color por capa
+                        
                         .padding()
                 }
             }
-            VStack {
+            VStack(alignment: .leading, spacing: 8) {
                 Text(package.name)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .bold()
-                    .font(.system(size: 20))
+                    .foregroundStyle(.primary)
+                    
+                    .font(.system(size: 20, weight: .bold))
                 HStack(spacing: 0) {
                     ForEach(0..<5, id: \.self) { index in
                         Image(systemName: "star.fill")
-                            .foregroundStyle(package.rating >= index + 1 ? .yellow : .gray)
                             .font(.system(size: 14))
+                            .foregroundStyle(package.rating >= index + 1 ? .yellow : .gray)
+                           
                     }
                     Text("\(package.numberReviews)")
+                        .font(.system(size: 16))
+                        .foregroundStyle(.primary)
                         .padding(.leading)
                     
                     Text(" reviews")
+                        .font(.system(size: 16))
+                        .foregroundStyle(.primary)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                
                 Text(package.description)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    
                     .font(.system(size: 14))
+                    .foregroundStyle(.secondary)
             }
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
             
         }
@@ -73,4 +80,18 @@ struct ReusablePackageView: View {
             servicesIncluded: ServicesIncluded(id: UUID(), title: "Bus", subTitle: "Transportation", icon: "bus.fill")
         )
     )
+    .frame(width: UIScreen.main.bounds.width , height: UIScreen.main.bounds.height )
+}
+
+struct RoundedCorner: Shape {
+    var radius: CGFloat
+    var corners: UIRectCorner
+    
+    func path(in rect: CGRect) -> Path {
+        Path(UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        ).cgPath)
+    }
 }
