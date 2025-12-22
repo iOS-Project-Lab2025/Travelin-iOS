@@ -14,18 +14,18 @@ import Foundation
 /// This struct conforms to `Identifiable` so it can be easily iterated over
 /// in SwiftUI `ForEach` loops or `List` views.
 struct OnboardingStep: Identifiable {
-    
+
     /// A unique identifier for the step, automatically generated.
     /// Required for the `Identifiable` protocol to distinguish between steps.
     let id = UUID()
-    
+
     /// The name of the image asset to display as the background or main visual.
     /// - Note: Ensure this string matches the name of an Image Set in `Assets.xcassets`.
     let image: String
-    
+
     /// The main headline text for this step.
     let title: String
-    
+
     /// The supporting body text providing more details about the feature.
     let description: String
 }

@@ -40,12 +40,12 @@ import Foundation
 /// - `NetworkServiceImp`
 final class NetworkClientImp: NetworkClientProtocol {
 
-    private let session: URLSession
+    private let session: URLSessionProtocol
 
-    /// Initializes the client with a specific `URLSession`.
+    /// Initializes the client with a specific `URLSessionProtocol` implementation.
     ///
     /// - Parameter session: The URLSession instance to use. Defaults to `.shared`.
-    init(session: URLSession = .shared) {
+    init(session: URLSessionProtocol = URLSession.shared) {
         self.session = session
     }
 

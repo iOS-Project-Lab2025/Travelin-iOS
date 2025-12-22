@@ -50,6 +50,7 @@ enum POIEndpoint: EndPointProtocol {
     case searchRadius(POIRadiusParametersDataModel)
     case searchBoundingBox(POIBoundingBoxParametersDataModel)
     case getById(String)
+    case getByName(POIGetByNameParametersDataModel)
 
     /// Base path for all POI-related requests.
     private static let basePath = "/v1/reference-data/locations/pois"
@@ -62,8 +63,12 @@ enum POIEndpoint: EndPointProtocol {
 
         case .searchBoundingBox:
             return Self.basePath + "/by-square"
+
         case .getById(let id):
             return Self.basePath + "/\(id)"
+
+        case .getByName:
+            return Self.basePath + "/by-name"
         }
     }
 
@@ -81,6 +86,9 @@ enum POIEndpoint: EndPointProtocol {
 
         case .getById:
             return nil
+
+        case .getByName(let params):
+            return params.toQueryItems()
         }
     }
 

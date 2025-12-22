@@ -8,6 +8,7 @@
 import SwiftUI
 import TravelinDesignSystem
 
+<<<<<<< HEAD
 struct LoginView <VM: LoginViewModelProtocol>: View {
     @Environment(\.appRouter) var appRouter
     @State private var loginViewModel: VM
@@ -47,6 +48,83 @@ struct LoginView <VM: LoginViewModelProtocol>: View {
     }
 
     // MARK: - Form
+=======
+/// The view responsible for displaying the Login screen.
+///
+/// This view presents a form for the user to enter their email and password,
+/// and handles navigation to other screens upon successful login or sign-up requests.
+struct LoginView: View {
+    // MARK: - Properties
+    /// The router used for navigation within the app.
+    @Environment(\.appRouter) var appRouter
+    /// The view model that manages the login logic and state.
+    @State private var loginViewModel: any LoginViewModelProtocol
+
+    // MARK: - Init
+
+    /// Initializes a new instance of `LoginView`.
+    ///
+    /// - Parameter loginViewModel: The view model to be used by the view.
+     init(loginViewModel: any LoginViewModelProtocol) {
+         _loginViewModel = State(initialValue: loginViewModel)
+     }
+
+    // MARK: - Body sections
+    /// The content and behavior of the view.
+    var body: some View {
+
+        VStack {
+            backButton
+            header
+            form
+            errorMessage
+            footer
+        }
+    }
+
+    // MARK: - Back Button
+    /// Custom back button that navigates to home
+    private var backButton: some View {
+        HStack {
+            Button {
+                appRouter.goTo(.home)
+            }
+            label: {
+                    Image(systemName: "chevron.left")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.black)
+            }
+            .padding(.horizontal, 26)
+
+            Spacer()
+
+        }
+    }
+
+    // MARK: - Header
+    /// The header section containing the logo and titles.
+    private var header: some View {
+        VStack {
+            Spacer()
+                .frame(height: 70)
+
+            Image("AppLogoBlue")
+                .resizable()
+                .frame(
+                    width: 103,
+                    height: 102
+                )
+            Text("login.title".localized)
+                .font(TravelinDesignSystem.DesignTokens.Typography.heading2)
+
+            Text("login.subtitle".localized)
+                .font(TravelinDesignSystem.DesignTokens.Typography.body)
+        }
+    }
+
+    // MARK: - Form
+    /// The form section containing text fields for email and password, and the login button.
+>>>>>>> main
     private var form: some View {
         VStack {
             DSTextField(
@@ -55,7 +133,16 @@ struct LoginView <VM: LoginViewModelProtocol>: View {
                 label: "login.emailTextFieldLabel".localized,
                 style: .outlined,
                 text: $loginViewModel.email)
+<<<<<<< HEAD
             .padding(.bottom, 14)
+=======
+
+            Text("login.emailError")
+                .font(.system(size: 10))
+                .foregroundColor(DesignTokens.Colors.error)
+                .opacity(loginViewModel.shouldShowEmailError ? 1 : 0)
+                .frame(maxWidth: .infinity, alignment: .leading)
+>>>>>>> main
 
             DSTextField(
                 placeHolder: "login.passwordPlaceHolder".localized,
@@ -64,10 +151,39 @@ struct LoginView <VM: LoginViewModelProtocol>: View {
                  style: .outlined,
                  text: $loginViewModel.password
              )
+<<<<<<< HEAD
             .padding(.bottom, 10)
 
             DSButton(title: "login.loginButtonTitle".localized, variant: .primary) {
                 self.loginViewModel.login()
+=======
+            .padding(.top, 2)
+            Text("login.passwordError")
+                .font(.system(size: 10))
+                .foregroundColor(DesignTokens.Colors.error)
+                .opacity(loginViewModel.shouldShowPasswordError ? 1 : 0)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            if case .loading = loginViewModel.loginState {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 10)
+            } else {
+                DSButton(
+                    title: "login.loginButtonTitle".localized,
+                    variant: .primary
+                ) {
+                    Task {
+                       await loginViewModel.login()
+
+                        if case .success = loginViewModel.loginState {
+                            appRouter.goTo(.home)
+                        }
+                    }
+                }
+                .padding(.top, 10)
+>>>>>>> main
             }
             Spacer()
                 .frame(height: 187)
@@ -77,6 +193,10 @@ struct LoginView <VM: LoginViewModelProtocol>: View {
     }
 
     // MARK: - Footer
+<<<<<<< HEAD
+=======
+    /// The footer section containing the sign-up link.
+>>>>>>> main
     private var footer: some View {
         HStack {
             Text("login.footerText".localized)
@@ -94,8 +214,25 @@ struct LoginView <VM: LoginViewModelProtocol>: View {
             }
     }
 
+<<<<<<< HEAD
+=======
+    /// A view that displays an error message if the login fails.
+    @ViewBuilder
+    private var errorMessage: some View {
+        if case .failure(let error) = loginViewModel.loginState {
+            Text("Login failed: \(error.localizedDescription)")
+                .font(.system(size: 10))
+                .foregroundColor(DesignTokens.Colors.error)
+        }
+    }
+
+>>>>>>> main
     }
 
 #Preview {
     LoginView(loginViewModel: LoginViewModel())
+<<<<<<< HEAD
+=======
+        .environment(\.locale, Locale(identifier: "en"))
+>>>>>>> main
 }
