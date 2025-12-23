@@ -8,7 +8,7 @@
 import Foundation
 
 /// Service responsible for user-related operations that require authentication
-/// Uses NetworkClient (with interceptor) for automatic token injection and refresh
+/// Uses unified NetworkClient with interceptor for automatic token injection and refresh
 class UserService {
 
     private let client: InterceptableNetworkClientProtocol

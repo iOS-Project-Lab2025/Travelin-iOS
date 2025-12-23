@@ -29,9 +29,9 @@ enum Services {
         payloadBuilder: payloadBuilder
     )
 
-    // MARK: - Network Clients
+    // MARK: - Unified Network Client
 
-    private static let urlNetworkClient = URLNetworkClient()
+    private static let networkClient = NetworkClient()
     private static let authenticatedNetworkClient: InterceptableNetworkClientProtocol = {
         let interceptor = AuthInterceptor(tokenManager: tokenManager)
         return NetworkClient(interceptor: interceptor)
@@ -40,7 +40,7 @@ enum Services {
     // MARK: - Services
 
     static let auth = AuthService(
-        client: urlNetworkClient,
+        client: networkClient,
         requestBuilder: requestBuilder
     )
 

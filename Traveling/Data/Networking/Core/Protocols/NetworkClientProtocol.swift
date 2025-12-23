@@ -19,7 +19,7 @@ import Foundation
 ///
 /// ## Usage Example
 /// ```swift
-/// let client: NetworkClientProtocol = NetworkClientImp()
+/// let client: NetworkClientProtocol = NetworkClient()
 /// let (data, response) = try await client.execute(request)
 /// ```
 ///
@@ -29,7 +29,7 @@ import Foundation
 /// - Ideal for mocking in unit tests.
 ///
 /// ## SeeAlso
-/// - `NetworkClientImp`
+/// - `NetworkClient`
 /// - `NetworkServiceProtocol`
 protocol NetworkClientProtocol {
 
