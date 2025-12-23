@@ -36,7 +36,7 @@ struct ContentView: View {
             )
 
         case .authentication(.register):
-            RegisterView()
+            RegisterView(registerViewModel: RegisterViewModel())
         }
 
     }
