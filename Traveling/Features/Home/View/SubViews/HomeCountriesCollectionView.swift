@@ -9,12 +9,12 @@ import SwiftUI
 
 struct HomeCountriesCollectionView: View {
     @Binding var countries: [Country]
-    
+
     let screenSize: CGSize
-    
+
     var body: some View {
         let rows = [GridItem(.fixed(screenSize.width * 0.55))]
-        
+
         VStack(spacing: 0) {
             Text("Expanding your trip around the world")
                 .lineLimit(2)
@@ -22,7 +22,7 @@ struct HomeCountriesCollectionView: View {
                 .font(.system(size: 22, weight: .bold))
                 .padding(.horizontal)
                 .padding(.trailing, screenSize.width * 0.2)
-            
+
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHGrid(rows: rows, spacing: 16) {
                     ForEach(countries) { country in
@@ -56,4 +56,3 @@ struct HomeCountriesCollectionView: View {
         ), screenSize: UIScreen.main.bounds.size
     )
 }
-

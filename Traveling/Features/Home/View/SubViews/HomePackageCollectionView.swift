@@ -16,17 +16,16 @@ struct HomePackageCollectionView: View {
 
             VStack(spacing: 0) {
                 Text("Popular package in asia")
-                    
+
                     .font(.system(size: 20, weight: .bold))
-                    
-                    
+
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    
+
                 ScrollView(.horizontal) {
                     LazyHGrid(rows: rows, spacing: 20) {
                         ForEach(packages) { package in
                             ReusablePackageView(package: package, size: CGSize(width: screenSize.width * 0.6, height: screenSize.width * 0.7))
-                               
+
                         }
                     }
                 }
@@ -34,7 +33,6 @@ struct HomePackageCollectionView: View {
             .padding()
         }
 }
-
 
 #Preview {
     HomePackageCollectionView(packages: .constant([

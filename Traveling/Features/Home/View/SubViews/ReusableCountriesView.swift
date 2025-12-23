@@ -10,8 +10,7 @@ import SwiftUI
 struct ReusableCountriesView: View {
     let country: Country
     let size: CGSize
-    
-    
+
     var body: some View {
         ZStack {
             Image(country.imageURL)
@@ -27,12 +26,10 @@ struct ReusableCountriesView: View {
                 .foregroundStyle(.white)
                 .padding(16)
         }
-        
+
         .frame(width: size.width, height: size.height)
     }
 }
-
-
 
 #Preview {
     ReusableCountriesView(country: Country(
@@ -40,7 +37,5 @@ struct ReusableCountriesView: View {
         name: "Cambodia",
         imageURL: "country1"
     ), size: CGSize(width: UIScreen.main.bounds.width * 0.5, height: UIScreen.main.bounds.width * 0.55))
-    
-    
-}
 
+}

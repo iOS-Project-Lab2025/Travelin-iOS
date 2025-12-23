@@ -10,7 +10,7 @@ import SwiftUI
 struct ReusablePackageView: View {
     var package: Package
     let size: CGSize
-    
+
     private enum Constants {
         static let cornerRadius: CGFloat = 12
         static let overlayOpacity: CGFloat = 0.13
@@ -27,53 +27,52 @@ struct ReusablePackageView: View {
                     .overlay(Color.black.opacity(Constants.overlayOpacity))
                     .clipShape(RoundedCorner(radius: 12, corners: [.topLeft, .topRight]))
                 Button {
-                    
+
                 } label: {
                     Image(systemName: "heart.circle.fill")
                         .font(.system(size: 32))
                         .symbolRenderingMode(.palette)   // Permite usar varios colores
-                        
+
                             .symbolRenderingMode(.hierarchical)
                             .foregroundStyle(package.isFavorite ? .yellow : .black, .white)
                     // Un color por capa
-                        
+
                 }
                 .padding()
             }
             VStack(alignment: .leading, spacing: 8) {
                 Text(package.name)
                     .foregroundStyle(.primary)
-                    
+
                     .font(.system(size: 20, weight: .bold))
                 HStack(spacing: 0) {
                     ForEach(0..<5, id: \.self) { index in
                         Image(systemName: "star.fill")
                             .font(.system(size: 14))
                             .foregroundStyle(package.rating >= index + 1 ? .yellow : .gray)
-                           
+
                     }
                     Text("\(package.numberReviews)")
                         .font(.system(size: 16))
                         .foregroundStyle(.primary)
                         .padding(.leading)
-                    
+
                     Text(" reviews")
                         .font(.system(size: 16))
                         .foregroundStyle(.primary)
                 }
-                
+
                 Text(package.description)
-                    
+
                     .font(.system(size: 14))
                     .foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
-            
+
         }
     }
 }
-
 
 #Preview {
     ReusablePackageView(
@@ -90,13 +89,13 @@ struct ReusablePackageView: View {
             servicesIncluded: ServicesIncluded(id: UUID(), title: "Bus", subTitle: "Transportation", icon: "bus.fill")
         ), size: CGSize(width: UIScreen.main.bounds.width * 0.5, height: UIScreen.main.bounds.width * 0.55)
     )
-    .frame(width: UIScreen.main.bounds.width , height: UIScreen.main.bounds.height )
+    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height )
 }
 
 struct RoundedCorner: Shape {
     var radius: CGFloat
     var corners: UIRectCorner
-    
+
     func path(in rect: CGRect) -> Path {
         Path(UIBezierPath(
             roundedRect: rect,

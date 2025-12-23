@@ -20,7 +20,7 @@ struct TopHomeView: View {
                 .overlay(Color.black.opacity(0.2))
                 .clipped()
                 .minimumScaleFactor(0.7)
-            VStack (alignment: .leading){
+            VStack(alignment: .leading) {
                 Text("Explore the world today")
                     .foregroundStyle(.white)
                     .font(.system(size: 48, weight: .bold, design: .default))
@@ -38,7 +38,7 @@ struct TopHomeView: View {
                     type: .search,
                     style: .default,
                     text: $searchDetail.searchText) {
-                        
+
                     }
                 HStack {
                     DSButton(
@@ -50,7 +50,7 @@ struct TopHomeView: View {
                         fullWidth: true,
                         fixedWidth: 100
                     ) {
-                       
+
                     }
                     Spacer()
                     DSButton(
@@ -62,7 +62,7 @@ struct TopHomeView: View {
                         fullWidth: true,
                         fixedWidth: 100
                     ) {
-                            
+
                     }
                 }
                 .padding(.top)

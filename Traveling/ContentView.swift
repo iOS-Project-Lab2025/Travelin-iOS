@@ -16,7 +16,7 @@ struct ContentView: View {
         switch router.path {
         case .initial:
             InitialView()
-            
+
         case .home:
             HomeView()
 
