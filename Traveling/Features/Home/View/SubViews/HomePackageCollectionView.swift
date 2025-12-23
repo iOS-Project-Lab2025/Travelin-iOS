@@ -9,28 +9,29 @@ import SwiftUI
 
 struct HomePackageCollectionView: View {
     @Binding var packages: [Package]
-    let cardWidth: CGFloat
+    let screenSize: CGSize
 
         var body: some View {
-            let rows = [GridItem(.fixed(cardWidth))]
+            let rows = [GridItem(.fixed(screenSize.width * 1.1))]
 
             VStack(spacing: 0) {
                 Text("Popular package in asia")
+                    
+                    .font(.system(size: 20, weight: .bold))
+                    
+                    
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.system(size: 22, weight: .bold))
-                    .padding(.horizontal)
-                    .padding(.top, 24)
-
+                    
                 ScrollView(.horizontal) {
-                    LazyHGrid(rows: rows, spacing: 16) {
+                    LazyHGrid(rows: rows, spacing: 20) {
                         ForEach(packages) { package in
-                            ReusablePackageView(package: package)
-                                .frame(width: cardWidth, height: cardWidth)
+                            ReusablePackageView(package: package, size: CGSize(width: screenSize.width * 0.6, height: screenSize.width * 0.7))
+                               
                         }
                     }
-                    .padding()
                 }
             }
+            .padding()
         }
 }
 
@@ -60,6 +61,6 @@ struct HomePackageCollectionView: View {
             price: 600,
             servicesIncluded: ServicesIncluded(id: UUID(), title: "Bus", subTitle: "Transportation", icon: "bus.fill")
         )
-    ]), cardWidth: UIScreen.main.bounds.width * 1
+    ]), screenSize: UIScreen.main.bounds.size
     )
 }

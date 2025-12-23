@@ -9,35 +9,33 @@ import SwiftUI
 
 struct HomeCountriesCollectionView: View {
     @Binding var countries: [Country]
-    let cardWidth: CGFloat
-
+    
+    let screenSize: CGSize
+    
+    var body: some View {
+        let rows = [GridItem(.fixed(screenSize.width * 0.55))]
         
-
-        var body: some View {
-            // Define las filas del grid
-            let rows = [
-                GridItem(.fixed(cardWidth)
+        VStack(spacing: 0) {
+            Text("Expanding your trip around the world")
+                .lineLimit(2)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.system(size: 22, weight: .bold))
+                .padding(.horizontal)
+                .padding(.trailing, screenSize.width * 0.2)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHGrid(rows: rows, spacing: 16) {
+                    ForEach(countries) { country in
+                        ReusableCountriesView(
+                            country: country,
+                            size: CGSize(width: screenSize.width * 0.5, height: screenSize.width * 0.55)
                         )
-            ]
-            VStack(spacing: 0) {
-                Text("Expanding your trip around the world")
-                    .lineLimit(2)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.system(size: 24, weight: .bold))
-                    .padding(.horizontal)
-                    .padding(.trailing, cardWidth * 0.8)
-                    .padding(.top, 24)
-                ScrollView(.horizontal, showsIndicators: true) {
-                    LazyHGrid(rows: rows, spacing: 16) {
-                        ForEach(countries) { country in
-                            ReusableCountriesView(country: country)
-                            .frame(width: cardWidth)
-                        }
                     }
-                    .padding()
                 }
+                .padding()
             }
         }
+    }
 }
 
 #Preview {
@@ -55,7 +53,7 @@ struct HomeCountriesCollectionView: View {
                     imageURL: "country1"
                 )
             ]
-        ), cardWidth: UIScreen.main.bounds.width * 0.45
+        ), screenSize: UIScreen.main.bounds.size
     )
 }
 

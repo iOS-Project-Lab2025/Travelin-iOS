@@ -9,13 +9,23 @@ import SwiftUI
 
 struct ReusablePackageView: View {
     var package: Package
+    let size: CGSize
+    
+    private enum Constants {
+        static let cornerRadius: CGFloat = 12
+        static let overlayOpacity: CGFloat = 0.13
+        static let textPadding: CGFloat = 16
+    }
     var body: some View {
         VStack(spacing: 0) {
             ZStack(alignment: .topTrailing) {
                 Image(package.imageURL)
                     .resizable()
-                    .clipShape(RoundedCorner(radius: 12, corners: [.topLeft, .topRight]))
+                    .scaledToFill()
+                    .frame(width: size.width, height: size.height)
                     .clipped()
+                    .overlay(Color.black.opacity(Constants.overlayOpacity))
+                    .clipShape(RoundedCorner(radius: 12, corners: [.topLeft, .topRight]))
                 Button {
                     
                 } label: {
@@ -27,8 +37,8 @@ struct ReusablePackageView: View {
                             .foregroundStyle(package.isFavorite ? .yellow : .black, .white)
                     // Un color por capa
                         
-                        .padding()
                 }
+                .padding()
             }
             VStack(alignment: .leading, spacing: 8) {
                 Text(package.name)
@@ -78,7 +88,7 @@ struct ReusablePackageView: View {
             isFavorite: true,
             price: 600,
             servicesIncluded: ServicesIncluded(id: UUID(), title: "Bus", subTitle: "Transportation", icon: "bus.fill")
-        )
+        ), size: CGSize(width: UIScreen.main.bounds.width * 0.5, height: UIScreen.main.bounds.width * 0.55)
     )
     .frame(width: UIScreen.main.bounds.width , height: UIScreen.main.bounds.height )
 }

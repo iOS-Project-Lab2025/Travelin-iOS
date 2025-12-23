@@ -10,32 +10,33 @@ import SwiftUI
 struct HomeView: View {
     @State private var homeRouter = AppRouter.PathRouter<HomeRoutes>()
     @State private var viewModel = HomeViewModel()
+
     var body: some View {
         NavigationStack(path: $homeRouter.path) {
-            VStack(spacing: 0) {
-                TopHomeView(searchDetail: $viewModel.searchDetail)
-                    .edgesIgnoringSafeArea(.top)
-                    .frame(maxWidth: UIScreen.main.bounds.width, maxHeight: UIScreen.main.bounds.height * 0.35)
-                    
-                ScrollView(.vertical) {
-                    HomePackageCollectionView(packages: $viewModel.packages, cardWidth: UIScreen.main.bounds.width * 0.65)
-                    HomeCountriesCollectionView(countries: $viewModel.countries, cardWidth: UIScreen.main.bounds.width * 0.45)
+            GeometryReader { geo in
+                VStack(spacing: 0) {
+                    TopHomeView(searchDetail: $viewModel.searchDetail, screenSize: geo.size)
+                        .ignoresSafeArea(edges: .top)
+
+                    ScrollView(.vertical) {
+                        HomePackageCollectionView(
+                            packages: $viewModel.packages,
+                            screenSize: geo.size
+                        )
+
+                        HomeCountriesCollectionView(
+                            countries: $viewModel.countries,
+                            screenSize: geo.size
+                        )
+                    }
                 }
+                .ignoresSafeArea(edges: .top)
             }
         }
         .environment(homeRouter)
     }
-    @ViewBuilder
-    private func destinationView(for route: HomeRoutes) -> some View {
-        switch route {
-        case .globalSearch:
-            HomeView()
-
-        case .tourList:
-            HomeView()
-        }
-    }
 }
+
 enum HomeRoutes: Hashable {
     case globalSearch
     case tourList

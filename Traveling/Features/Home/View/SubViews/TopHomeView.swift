@@ -10,17 +10,20 @@ import SwiftUI
 
 struct TopHomeView: View {
     @Binding var searchDetail: SearchDetail
+    let screenSize: CGSize
     var body: some View {
         ZStack {
             Image("principalHome")
                 .resizable()
-                .overlay(Color.black.opacity(0.13))
-            Color.black.opacity(0.13)
+                .scaledToFill()
+                .frame(width: screenSize.width, height: screenSize.height * 0.45)
+                .overlay(Color.black.opacity(0.2))
+                .clipped()
+                .minimumScaleFactor(0.7)
             VStack (alignment: .leading){
                 Text("Explore the world today")
                     .foregroundStyle(.white)
-                    .font(.system(size: 48))
-                    .bold()
+                    .font(.system(size: 48, weight: .bold, design: .default))
                     .padding(.top, 24)
                 (
                     Text("Discover ")
@@ -70,5 +73,5 @@ struct TopHomeView: View {
 }
 
 #Preview {
-    TopHomeView(searchDetail: .constant(SearchDetail()))
+    TopHomeView(searchDetail: .constant(SearchDetail()), screenSize: UIScreen.main.bounds.size)
 }
