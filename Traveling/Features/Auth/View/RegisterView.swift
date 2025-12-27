@@ -5,6 +5,7 @@
 //  Created by Ivan Pereira on 21-11-25.
 //
 
+
 import SwiftUI
 
 struct RegisterView: View {
@@ -18,21 +19,21 @@ struct RegisterView: View {
 
     var body: some View {
         NavigationStack(path: $registerRouter.path) {
-            RegisterFormView(registerViewModel: registerViewModel)
+            // ONLY FOR EXAMPLE, CHANGE IT AFTER
+            RegisterExampleView()
                 .navigationDestination(for: RegisterRoutes.self) { route in
                     destinationView(for: route)
                 }
         }
         .environment(registerRouter)
     }
-        @ViewBuilder
-        private func destinationView(for route: RegisterRoutes) -> some View {
-            switch route {
-            case .form:
-                RegisterFormView(registerViewModel: registerViewModel)
-
-            case .success:
-                RegisterSuccessView()
-            }
+    @ViewBuilder
+    private func destinationView(for route: RegisterRoutes) -> some View {
+        switch route {
+        case .form:
+            RegisterExampleView()
+        case .success:
+            RegisterSuccessView()
+        }
     }
 }

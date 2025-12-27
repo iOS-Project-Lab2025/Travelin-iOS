@@ -1,115 +1,100 @@
-//
 //  RegisterViewModel.swift
 //  Traveling
 //
-//  Created by NVSH on 09-12-25.
-//
+// ONLY FOR EXAMPLE, DELETE OR CHANGE IT AFTER
+
 import Foundation
 
-@Observable
-class RegisterViewModel: RegisterViewModelProtocol {
-    var firstName: String = ""
-    var lastName: String = ""
-    var phone: String = ""
-    var selectedPhoneCode: PhoneCountryCode
-    var availableCountryCodes: [PhoneCountryCode]
-    var email: String = ""
-    var password: String = ""
-    var registrationState: LoginState = .idle
+/// ViewModel responsible for user registration logic.
+class RegisterViewModel: ObservableObject {
+    // MARK: - Properties
+    @Published var email: String = ""
+    @Published var password: String = ""
+    @Published var firstName: String = ""
+    @Published var lastName: String = ""
+    @Published var phone: String = ""
+    @Published var didAttemptRegister = false
+    @Published var registerState: RegisterViewModel.RegisterState = .idle
 
-    // Validation states
-    var isEmailValid: Bool {
-        email.isEmpty || TextValidators.isValidEmail(email)
-    }
-
-    var emailErrorMessage: String? {
-        if email.isEmpty {
-            return nil
-        }
-        return isEmailValid ? nil : "Please enter a valid email address"
-    }
-
-    var passwordStrength: TextValidators.PasswordStrength? {
-        guard !password.isEmpty else { return nil }
-        return TextValidators.validatePasswordStrength(password)
-    }
-
-    var isFormValid: Bool {
-        return !firstName.isEmpty &&
-               !lastName.isEmpty &&
-               !phone.isEmpty &&
-               phone.count == selectedPhoneCode.maxDigits &&
-               !email.isEmpty &&
-               TextValidators.isValidEmail(email) &&
-               !password.isEmpty &&
-               (passwordStrength?.isValid ?? false)
-    }
+    // MARK: - Dependencies
+    private let tokenManager: TokenManaging
+    private let authService: AuthService
+    private let userService: UserService
 
     // MARK: - Init
-    init() {
-        self.availableCountryCodes = PhoneCountryCodeData.getAllCountryCodes()
-        self.selectedPhoneCode = PhoneCountryCodeData.getDefaultCountryCode()
+    /// Initializes a new instance of RegisterViewModel.
+    /// - Parameters:
+    ///   - authService: Authentication service. Default is `Services.auth`.
+    ///   - userService: User service. Default is `Services.user`.
+    ///   - tokenManager: Token manager. Default is `Services.tokenManager`.
+    init(
+        authService: AuthService = Services.auth,
+        userService: UserService = Services.user,
+        tokenManager: TokenManaging = Services.tokenManager
+    ) {
+        self.authService = authService
+        self.userService = userService
+        self.tokenManager = tokenManager
     }
 
-    // MARK: - Update Methods with Validation
-
-    func updateFirstName(_ newValue: String) {
-        firstName = TextValidators.validateName(newValue)
+    // MARK: - Methods
+    func validateEmail() -> Bool {
+        let regex = #"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"#
+        let test = NSPredicate(format: "SELF MATCHES %@", regex)
+        return test.evaluate(with: email)
     }
 
-    func updateLastName(_ newValue: String) {
-        lastName = TextValidators.validateName(newValue)
+    func validatePassword() -> Bool {
+        password.count >= 6 && password.count <= 255
     }
 
-    func updatePhone(_ newValue: String) {
-        let filtered = TextValidators.validatePhone(newValue)
-        let maxDigits = selectedPhoneCode.maxDigits
-
-        if filtered.count > maxDigits {
-            phone = String(filtered.prefix(maxDigits))
-        } else {
-            phone = filtered
-        }
+    var shouldShowEmailError: Bool {
+        didAttemptRegister && !validateEmail()
     }
 
-    func updateEmail(_ newValue: String) {
-        email = newValue.trimmingCharacters(in: .whitespaces)
+    var shouldShowPasswordError: Bool {
+        didAttemptRegister && !validatePassword()
     }
 
-    func updatePassword(_ newValue: String) {
-        password = newValue
-    }
-
-    func updateSelectedCountryCode(_ code: String) {
-        if let newCode = PhoneCountryCodeData.getCountryCode(by: code) {
-            selectedPhoneCode = newCode
-            updatePhone(phone)
-        }
-    }
-
-    func createAccount() {
-        registrationState = .idle
-
-        guard isFormValid else {
-            print("Form is not valid")
-            return
-        }
-
-        let fullPhone = "\(selectedPhoneCode.code)\(phone)"
-        
+    /// Starts the registration process.
+    func register() async {
+        didAttemptRegister = true
+        registerState = .idle
+        guard validateEmail(), validatePassword(), !firstName.isEmpty, !lastName.isEmpty, !phone.isEmpty else { return }
         do {
-            registrationState = .success
+            registerState = .loading
+            let response = try await authService.register(
+                email: email,
+                password: password,
+                firstName: firstName,
+                lastName: lastName,
+                phone: phone
+            )
+            // Save token if needed
+            let token = response.data.token
+            // Here you could save the token if the app requires it
+            registerState = .success
         } catch {
-            registrationState = .failure(error)
+            registerState = .failure(error)
         }
-        
-        print("""
-            Account Created:
-            First Name: \(firstName)
-            Last Name: \(lastName)
-            Phone: \(fullPhone)
-            Email: \(email)
-            Password: [HIDDEN]
-            """)
     }
+    
+        // MARK: - RegisterState
+        enum RegisterState: Equatable {
+            case idle
+            case loading
+            case success
+            case failure(Error)
+
+            static func == (lhs: RegisterState, rhs: RegisterState) -> Bool {
+                switch (lhs, rhs) {
+                case (.idle, .idle), (.loading, .loading), (.success, .success):
+                    return true
+                case (.failure, .failure):
+                    return true // Only for UI purposes, does not compare error values
+                default:
+                    return false
+                }
+            }
+        }
 }
