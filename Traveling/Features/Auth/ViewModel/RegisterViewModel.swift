@@ -97,7 +97,6 @@ class RegisterViewModel: RegisterViewModelProtocol {
 
         let fullPhone = "\(selectedPhoneCode.code)\(phone)"
         
-        
         do {
             registrationState = .success
         } catch {

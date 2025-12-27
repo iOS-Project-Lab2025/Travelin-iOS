@@ -213,3 +213,10 @@ struct RegisterFormView: View {
         return .gray.opacity(0.3)
     }
 }
+
+#Preview {
+    // 1. Necesitas una versión "Mock" o de prueba de tu ViewModel
+    // Si no tienes una clase Mock, puedes usar la real con datos vacíos por ahora
+    RegisterFormView(registerViewModel: RegisterViewModel())
+       
+}
