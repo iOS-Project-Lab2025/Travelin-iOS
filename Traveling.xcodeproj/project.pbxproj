@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		642FF90D2EB82969005E613A /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 642FF90C2EB82969005E613A /* KeychainAccess */; };
 		64DF110A2ED4FB870055C94A /* TravelinDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 64DF11092ED4FB870055C94A /* TravelinDesignSystem */; };
+		C66F3BC72F02160C00B3A21A /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = C66F3BC62F02160C00B3A21A /* ViewInspector */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C66F3BC72F02160C00B3A21A /* ViewInspector in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,6 +147,7 @@
 			);
 			name = TravelingTests;
 			packageProductDependencies = (
+				C66F3BC62F02160C00B3A21A /* ViewInspector */,
 			);
 			productName = TravelingTests;
 			productReference = E7A0C4BE2EA8076900ED8CB9 /* TravelingTests.xctest */;
@@ -209,6 +212,7 @@
 				9AF07C272EAAA46C0054106E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 				642FF90B2EB82969005E613A /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				64DF11082ED4FB870055C94A /* XCRemoteSwiftPackageReference "TravelinDesignSystem" */,
+				C66F3BC52F02160C00B3A21A /* XCRemoteSwiftPackageReference "ViewInspector" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E7A0C4B12EA8076600ED8CB9 /* Products */;
@@ -413,7 +417,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3RC25YVKR4;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -457,7 +461,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3RC25YVKR4;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -498,7 +502,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3RC25YVKR4;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -521,7 +525,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3RC25YVKR4;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -543,7 +547,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3RC25YVKR4;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -565,7 +569,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3RC25YVKR4;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -648,6 +652,14 @@
 				minimumVersion = 0.62.1;
 			};
 		};
+		C66F3BC52F02160C00B3A21A /* XCRemoteSwiftPackageReference "ViewInspector" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nalexn/ViewInspector";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -665,6 +677,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9AF07C272EAAA46C0054106E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
 			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+		C66F3BC62F02160C00B3A21A /* ViewInspector */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C66F3BC52F02160C00B3A21A /* XCRemoteSwiftPackageReference "ViewInspector" */;
+			productName = ViewInspector;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

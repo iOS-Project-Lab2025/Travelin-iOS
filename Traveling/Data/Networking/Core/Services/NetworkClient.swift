@@ -52,8 +52,10 @@ class NetworkClient: NetworkClientProtocol, InterceptableNetworkClientProtocol {
                 switch action {
                 case .retry:
                     return try await executeWithResponse(request)
+
                 case .doNotRetry:
                     return (data, response)
+
                 case .doNotRetryWithError(let error):
                     throw error
                 }
