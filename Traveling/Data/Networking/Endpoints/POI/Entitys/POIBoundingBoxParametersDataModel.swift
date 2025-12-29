@@ -50,7 +50,7 @@ struct POIBoundingBoxParametersDataModel: QueryParametersProtocol {
     let east: Double
     let west: Double
     let categories: [POICategory]?
-    let limit: Int?
+    let page: PageParameters?
     let offset: Int?
 
     /// Returns a string representation of the west coordinate.
@@ -82,6 +82,6 @@ struct POIBoundingBoxParametersDomainModel {
     var east: Double
     var west: Double
     var categories: [POICategory]?
-    var limit: Int?
+    let page: PageParameters?
     var offset: Int?
 }

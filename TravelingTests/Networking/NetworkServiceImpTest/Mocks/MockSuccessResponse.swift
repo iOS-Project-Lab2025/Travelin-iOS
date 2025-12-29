@@ -23,4 +23,3 @@ struct MockSuccessResponse: Codable, Equatable {
     /// Name field returned by the mocked API response.
     let name: String
 }
-

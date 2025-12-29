@@ -8,7 +8,7 @@
 import Foundation
 
 struct EndPointBuilder: EndPointBuilderProtocol {
-    
+
     private let baseURL: URL    // <-- URL
 
     init(baseURL: URL) {
@@ -33,4 +33,3 @@ struct EndPointBuilder: EndPointBuilderProtocol {
         return url
     }
 }
-

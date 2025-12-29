@@ -2,77 +2,66 @@
 //  NetworkClient.swift
 //  Traveling
 //
-//  Created by Daniel Retamal on 18-11-25.
+//  Co-created by Rodolfo Gonzalez & Daniel Retamal on 18-11-25.
 //
 
 import Foundation
 
-/// Network client with interceptor support for authenticated requests.
+/// Unified network client for public and authenticated endpoints.
 ///
-/// This client automatically:
-/// - Injects authentication tokens via the interceptor's `adapt()` method
-/// - Detects 401 Unauthorized responses
-/// - Triggers token refresh via the interceptor's `shouldRetry()` method
-/// - Retries the original request with the new token
-///
-/// Use this for endpoints that require authentication.
-/// For public endpoints, use `URLNetworkClient` instead.
-class NetworkClient: InterceptableNetworkClientProtocol {
-    private let session: URLSession
+/// If an interceptor is provided, it handles authentication and token refresh.
+/// If not, it works as a simple client for public endpoints.
+class NetworkClient: NetworkClientProtocol, InterceptableNetworkClientProtocol {
+    private let session: URLSessionProtocol
     private let interceptor: RequestInterceptor?
-    
-    init(session: URLSession = .shared, interceptor: RequestInterceptor? = nil) {
+
+    init(session: URLSessionProtocol = URLSession.shared, interceptor: RequestInterceptor? = nil) {
         self.session = session
         self.interceptor = interceptor
     }
-    
+
+    /// Executes a request and returns only Data (for authenticated endpoints)
     func execute(_ request: URLRequest) async throws -> Data {
-        // 1. Adapt (inject token)
+        let (data, _) = try await executeWithResponse(request)
+        return data
+    }
+
+    /// Executes a request and returns Data and URLResponse (for public endpoints)
+    func execute(_ request: URLRequest) async throws -> (Data, URLResponse) {
+        return try await executeWithResponse(request)
+    }
+
+    /// Shared internal logic
+    private func executeWithResponse(_ request: URLRequest) async throws -> (Data, URLResponse) {
         var finalRequest = request
         if let interceptor = interceptor {
             finalRequest = await interceptor.adapt(request)
         }
-        
-        // 2. Execute
+
         do {
             let (data, response) = try await session.data(for: finalRequest)
-            
-            // 3. Check if it's 401 to intercept
+
             if let httpResponse = response as? HTTPURLResponse,
                httpResponse.statusCode == 401,
                let interceptor = interceptor {
-                
-                // Ask the interceptor what to do
                 let action = await interceptor.shouldRetry(
                     finalRequest,
                     with: URLError(.userAuthenticationRequired),
                     response: httpResponse
                 )
-                
                 switch action {
                 case .retry:
-                    // RECURSION: Call execute again.
-                    // When it enters, interceptor.adapt() will pick up the NEW token that was just saved.
-                    return try await execute(request) // Note: use original 'request' without dirty headers
-                    
+                    return try await executeWithResponse(request)
                 case .doNotRetry:
-                    // Return data as is (the caller should handle the 401)
-                    return data
-                    
+                    return (data, response)
                 case .doNotRetryWithError(let error):
-                    // The interceptor decided to throw a different error (e.g., refresh failed)
                     throw error
                 }
             }
-            
-            // 4. If it's not 401, return data normally
-            return data
-            
+            return (data, response)
         } catch let error as URLError {
-            // If it's a network error (timeout, no connection), propagate it directly
             throw error
         } catch {
-            // Other errors (e.g., decoding), propagate them
             throw error
         }
     }

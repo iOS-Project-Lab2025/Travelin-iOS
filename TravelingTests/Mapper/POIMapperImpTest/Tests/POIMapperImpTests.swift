@@ -42,7 +42,7 @@ struct POIMapperImpTests {
             lon: 2.2,
             radius: 300,
             categories: [.restaurant, .shopping],
-            limit: 50,
+            page: PageParameters(limit: 50),
             offset: 10
         )
 
@@ -56,7 +56,7 @@ struct POIMapperImpTests {
         #expect(result.longitude == 2.2)
         #expect(result.radius == 300)
         #expect(result.categories == [.restaurant, .shopping])
-        #expect(result.limit == 50)
+        #expect(result.page?.limit == 50)
         #expect(result.offset == 10)
     }
 
@@ -82,7 +82,7 @@ struct POIMapperImpTests {
             east: 8,
             west: 3,
             categories: [.restaurant],
-            limit: 20,
+            page: PageParameters(limit: 20),
             offset: 5
         )
 
@@ -97,7 +97,7 @@ struct POIMapperImpTests {
         #expect(result.east == 8)
         #expect(result.west == 3)
         #expect(result.categories == [.restaurant])
-        #expect(result.limit == 20)
+        #expect(result.page?.limit == 20)
         #expect(result.offset == 5)
     }
 
@@ -120,6 +120,7 @@ struct POIMapperImpTests {
             id: "10",
             self: POISelfLink(href: "http://test.com", methods: []),
             type: "Landmark",
+            pictures: [],
             subType: "Historic",
             name: "Castle",
             geoCode: GeoCode(latitude: 40.0, longitude: -3.0),
@@ -140,4 +141,43 @@ struct POIMapperImpTests {
         #expect(result.lon == -3.0)
         #expect(result.category == "HISTORICAL")
     }
+    // ADD
+    // MARK: - SEARCH BY NAME MAPPING TESTS
+
+    @Test("poiGetByNameDomainToData should correctly map name-based search parameters")
+    func test_getByNameDomainToData_mapsCorrectly() {
+
+        // Arrange - given
+        let mapper = POIMapperImp()
+        let domainModel = POIGetByNameParametersDomainModel(
+            name: "Museum",
+            categories: [.sights, .historical]
+        )
+
+        // Act - Then
+        let result = mapper.poiGetByNameDomainToData(from: domainModel)
+
+        // Assert - Expect
+        #expect(result.name == "Museum")
+        #expect(result.categories == [.sights, .historical])
+    }
+
+    @Test("poiGetByNameDomainToData should map nil categories correctly")
+    func test_getByNameDomainToData_mapsNilCategories() {
+
+        // Arrange - given
+        let mapper = POIMapperImp()
+        let domainModel = POIGetByNameParametersDomainModel(
+            name: "Cafe",
+            categories: nil
+        )
+
+        // Act - Then
+        let result = mapper.poiGetByNameDomainToData(from: domainModel)
+
+        // Assert - Expect
+        #expect(result.name == "Cafe")
+        #expect(result.categories == nil)
+    }
+
 }

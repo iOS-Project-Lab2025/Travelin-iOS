@@ -16,19 +16,19 @@ import TravelinDesignSystem
 /// the floating content card, and the navigation logic. It relies on the
 /// `appRouter` to transition the user to the main app once onboarding is complete.
 struct OnboardingView: View {
-    
+
     // MARK: - Dependencies
-    
+
     /// Access to the global navigation router to handle the "Finish" action.
     @Environment(\.appRouter) private var router
 
     // MARK: - State
-    
+
     /// Tracks the currently visible step index in the onboarding flow.
     @State private var currentStep = 0
 
     // MARK: - Body
-    
+
     var body: some View {
         ZStack {
             // 1. Background Layer: Full screen image carousel
@@ -61,7 +61,7 @@ struct OnboardingView: View {
     }
 
     // MARK: - Actions
-    
+
     /// Handles the primary button tap action.
     ///
     /// - Logic:
@@ -88,10 +88,10 @@ struct OnboardingView: View {
 /// It includes specific layout logic (`UIScreen.main.bounds` + `.clipped()`) to ensure
 /// a smooth, full-screen experience without visual glitches during transitions.
 private struct OnboardingBackgroundView: View {
-    
+
     /// Binding to the parent's state index.
     @Binding var currentStep: Int
-    
+
     /// The data source containing the image names for each step.
     let steps: [OnboardingStep]
 
@@ -101,23 +101,23 @@ private struct OnboardingBackgroundView: View {
                 Image(steps[index].image)
                     .resizable()
                     .scaledToFill()
-                
+
                     // 1. PHYSICAL SIZE FORCE:
                     // We use `UIScreen.main.bounds` instead of `GeometryReader`.
                     // This guarantees the image frame exactly matches the device's physical hardware,
                     // effectively covering the top notch/dynamic island without leaving white gaps.
                     .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                
+
                     // 2. CLIPPING:
                     // Since `.scaledToFill` makes the image larger than the frame, we must
                     // explicitly clip the overflow. This prevents the "jumping/flickering" bug
                     // that occurs in SwiftUI TabViews during swiping transitions.
                     .clipped()
-                
+
                     // 3. SAFE AREA IGNORE:
                     // Ensures the content extends behind the status bar and home indicator.
                     .ignoresSafeArea()
-                
+
                     .tag(index)
             }
         }
@@ -168,13 +168,13 @@ public struct OnboardingCardViewDescription: View {
 
 /// The main white card container that holds the text content and the primary action button.
 private struct OnboardingCardView: View {
-    
+
     /// The data for the current step (title and description).
     let step: OnboardingStep
-    
+
     /// Indicates if the current view is the final step of the onboarding.
     let isLastStep: Bool
-    
+
     /// The closure to execute when the button is tapped.
     let action: () -> Void
 
@@ -219,10 +219,10 @@ private struct OnboardingCardView: View {
 
 /// Displays the custom page indicators (dots/rectangles) at the bottom of the screen.
 private struct OnboardingIndicatorsView: View {
-    
+
     /// The total number of pages in the carousel.
     let totalSteps: Int
-    
+
     /// The index of the currently active page.
     let currentStep: Int
 
