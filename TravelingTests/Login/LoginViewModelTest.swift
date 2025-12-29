@@ -119,6 +119,7 @@ struct LoginMethodTests {
             // Verify final state is success
             if case .success = sut.loginState {
                 // Success state confirmed
+                #expect(sut.loginState == .success)
             } else {
                 Issue.record("Expected loginState to be .success but was \(sut.loginState)")
             }
@@ -184,6 +185,7 @@ struct LoginMethodTests {
             // Verify state remains idle
             if case .idle = sut.loginState {
                 // Idle state confirmed
+                #expect(sut.loginState == .idle)
             } else {
                 Issue.record("Expected loginState to be .idle but was \(sut.loginState)")
             }
@@ -216,6 +218,7 @@ struct LoginMethodTests {
             // Verify state remains idle
             if case .idle = sut.loginState {
                 // Idle state confirmed
+                #expect(sut.loginState == .idle)
             } else {
                 Issue.record("Expected loginState to be .idle but was \(sut.loginState)")
             }
