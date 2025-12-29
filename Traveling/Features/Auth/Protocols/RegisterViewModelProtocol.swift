@@ -6,8 +6,8 @@
 //
 import Foundation
 
-protocol RegisterViewModelProtocol: Observable {
-
+protocol RegisterViewModelProtocol: ObservableObject {
+    
     var firstName: String { get set }
     var lastName: String { get set }
     var phone: String { get set }
@@ -15,6 +15,7 @@ protocol RegisterViewModelProtocol: Observable {
     var availableCountryCodes: [PhoneCountryCode] { get set }
     var email: String { get set }
     var password: String { get set}
+    var state: RegisterState { get }
 
     // Validation states
     var isEmailValid: Bool { get }

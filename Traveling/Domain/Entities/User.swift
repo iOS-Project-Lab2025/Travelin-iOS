@@ -10,6 +10,6 @@ struct User: Codable, Identifiable, Equatable {
     let firstName: String?
     let lastName: String?
     let phone: String?
-    let createdAt: Date?
-    let updatedAt: Date?
+    let createdAt: String?
+    let updatedAt: String?
 }

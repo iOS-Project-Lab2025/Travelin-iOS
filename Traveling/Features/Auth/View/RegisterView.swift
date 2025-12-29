@@ -20,7 +20,7 @@ struct RegisterView: View {
     var body: some View {
         NavigationStack(path: $registerRouter.path) {
             // ONLY FOR EXAMPLE, CHANGE IT AFTER
-            RegisterExampleView()
+            RegisterFormView(registerViewModel: registerViewModel)
                 .navigationDestination(for: RegisterRoutes.self) { route in
                     destinationView(for: route)
                 }
@@ -31,7 +31,7 @@ struct RegisterView: View {
     private func destinationView(for route: RegisterRoutes) -> some View {
         switch route {
         case .form:
-            RegisterExampleView()
+            RegisterFormView(registerViewModel: registerViewModel)
         case .success:
             RegisterSuccessView()
         }
