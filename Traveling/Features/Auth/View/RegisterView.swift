@@ -5,7 +5,6 @@
 //  Created by Ivan Pereira on 21-11-25.
 //
 
-
 import SwiftUI
 
 struct RegisterView: View {
@@ -32,6 +31,7 @@ struct RegisterView: View {
         switch route {
         case .form:
             RegisterFormView(registerViewModel: registerViewModel)
+
         case .success:
             RegisterSuccessView()
         }

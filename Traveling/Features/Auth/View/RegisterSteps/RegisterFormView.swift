@@ -14,12 +14,9 @@ struct RegisterFormView: View {
     @Environment(\.appRouter) private var mainRouter
 
     // MARK: - State
-    // ⚠️ CORRECCIÓN 1: Cambiamos @State por @ObservedObject para que escuche los cambios
-    // ⚠️ CORRECCIÓN 2: Usamos el tipo concreto 'RegisterViewModel' en lugar de 'any Protocol'
     @ObservedObject private var registerViewModel: RegisterViewModel
 
     // MARK: - Init
-    // Ajustamos el init para recibir la clase concreta
     init(registerViewModel: RegisterViewModel) {
         self.registerViewModel = registerViewModel
     }
@@ -36,7 +33,7 @@ struct RegisterFormView: View {
             .padding(.top, 10)
         }
         .navigationBarHidden(true)
-        .onChange(of: registerViewModel.state) { oldValue, newState in
+        .onChange(of: registerViewModel.state) { _, newState in
             if case .success = newState {
                 registerRouter.next()
             }
@@ -61,11 +58,11 @@ struct RegisterFormView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Create Account")
+                Text("register.TitleText".localized)
                     .font(TravelinDesignSystem.DesignTokens.Typography.heading1)
                     .foregroundColor(.black)
 
-                Text("Get the best out of Traveling by creating an account")
+                Text("register.subTitleText".localized)
                     .font(TravelinDesignSystem.DesignTokens.Typography.body)
                     .foregroundColor(TravelinDesignSystem.DesignTokens.Colors.secondaryText)
             }
@@ -124,7 +121,7 @@ struct RegisterFormView: View {
                     style: .outlined,
                     text: $registerViewModel.email
                 )
-               
+
                 if let errorMessage = registerViewModel.emailErrorMessage {
                     Text(errorMessage)
                         .font(TravelinDesignSystem.DesignTokens.Typography.body)
@@ -151,8 +148,8 @@ struct RegisterFormView: View {
             }
 
             Spacer().frame(height: 20)
-            
-            // Error del Servidor
+
+            // Server Error
             if case .failure(let error) = registerViewModel.state {
                 Text(error.localizedDescription)
                     .font(TravelinDesignSystem.DesignTokens.Typography.body)
@@ -171,10 +168,9 @@ struct RegisterFormView: View {
                 ) {
                     registerViewModel.createAccount()
                 }
-                // Habilitado solo si el formulario es válido Y no está cargando
                 .disabled(!registerViewModel.isFormValid || registerViewModel.state == .loading)
                 .opacity((registerViewModel.isFormValid && registerViewModel.state != .loading) ? 1.0 : 0.5)
-               
+
                 if registerViewModel.state == .loading {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle(tint: .white))
@@ -182,27 +178,24 @@ struct RegisterFormView: View {
             }
         }
     }
-    
-    // ... (El resto: footer, passwordStrengthView, calculateStrengthBarColor SE MANTIENEN IGUAL)
-    // Cópialos de tu versión anterior si es necesario, no cambian.
-    
+
     private var footer: some View {
         HStack {
-            Text("Already have an account?")
+            Text("register.footerText".localized)
                 .font(TravelinDesignSystem.DesignTokens.Typography.body)
                 .foregroundColor(TravelinDesignSystem.DesignTokens.Colors.secondaryText)
 
             Button(action: {
                 mainRouter.goTo(.authentication(.login))
             }, label: {
-                Text("Log In")
+                Text("register.footerButtonLogin".localized)
                     .font(TravelinDesignSystem.DesignTokens.Typography.bodyBold)
                     .foregroundColor(TravelinDesignSystem.DesignTokens.Colors.linkText)
             })
         }
         .padding(.bottom, 20)
     }
-    
+
     private func passwordStrengthView(strength: TextValidators.PasswordStrength) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 8) {
@@ -215,18 +208,16 @@ struct RegisterFormView: View {
             }
 
             if !strength.isValid {
-                Text(strength.message ?? "Contraseña insegura") // Safety unwrap
+                Text(strength.message ?? "register.passwordStrength".localized) // Safety unwrap
                     .font(TravelinDesignSystem.DesignTokens.Typography.body)
                     .foregroundColor(TravelinDesignSystem.DesignTokens.Colors.secondaryText)
             }
         }
         .padding(.horizontal, 4)
     }
-    
-    
-    
+
     private func calculateStrengthBarColor(strength: TextValidators.PasswordStrength, index: Int) -> Color {
-        let validCount = [strength.hasMinLength, strength.hasUppercase, strength.hasLowercase, strength.hasNumber, strength.hasSpecialChar].filter{$0}.count
+        let validCount = [strength.hasMinLength, strength.hasUppercase, strength.hasLowercase, strength.hasNumber, strength.hasSpecialChar].filter {$0}.count
         if index < validCount {
             switch validCount {
             case 1...2: return .red

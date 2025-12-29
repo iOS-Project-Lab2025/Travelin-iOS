@@ -7,7 +7,7 @@
 import Foundation
 
 protocol RegisterViewModelProtocol: ObservableObject {
-    
+
     var firstName: String { get set }
     var lastName: String { get set }
     var phone: String { get set }

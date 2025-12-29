@@ -18,7 +18,7 @@ struct RegisterExampleView: View {
                 TextField("Apellido (opcional)", text: $viewModel.lastName)
                 TextField("Teléfono (opcional)", text: $viewModel.phone)
             }
-            
+
             Button(action: {
                 // CORRECCIÓN 1: La función ahora se llama createAccount()
                 // y ya maneja el Task internamente, así que no necesitas 'await' ni 'Task' aquí
@@ -31,12 +31,12 @@ struct RegisterExampleView: View {
                     Text("Registrarse")
                 }
             }
-            
+
             // CORRECCIÓN 3: Actualizar referencias a 'state'
             if case .success = viewModel.state {
                 Text("✅ Registrado correctamente").foregroundColor(.green)
             }
-            
+
             if case .failure(let error) = viewModel.state {
                 Text("❌ Error: \(error.localizedDescription)").foregroundColor(.red)
             }
