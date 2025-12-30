@@ -37,6 +37,8 @@ struct ContentView: View {
 
         case .authentication(.register):
             RegisterView()
+        case .favorites:
+            FavouritesView()
         }
 
     }

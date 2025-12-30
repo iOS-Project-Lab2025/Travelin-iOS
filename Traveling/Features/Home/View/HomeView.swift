@@ -28,5 +28,7 @@ struct HomeView: View {
                 }
             }
         }
+        
+        TapBar()
     }
 }
