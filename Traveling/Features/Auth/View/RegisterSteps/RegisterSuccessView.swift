@@ -16,6 +16,8 @@ import TravelinDesignSystem
 /// It uses `AppRouter` to navigate to the main application flows.
 struct RegisterSuccessView: View {
     @Environment(\.appRouter) private var appRouter
+    
+    let successType: SuccessType
 
     var body: some View {
         ZStack {
@@ -52,21 +54,21 @@ struct RegisterSuccessView: View {
 
     private var texts: some View {
         VStack {
-            Text("Successfully")
+            Text(currentTexts.title1)
                 .font(.system(size: 29))
                 .fontWeight(.bold)
                 .foregroundColor(DesignTokens.Colors.textOnAction)
                 .lineSpacing(40 - 32)
                 .kerning(-0.165)
 
-            Text("created an account")
-                .font(.system(size: 25))
+            Text(currentTexts.title2)
+                .font(.system(size: currentTexts.title2FontSize))
                 .fontWeight(.bold)
                 .foregroundColor(DesignTokens.Colors.textOnAction)
                 .lineSpacing(40 - 32)
                 .kerning(-0.165)
 
-            Text("After this you can explore any place you want enjoy it!")
+            Text(currentTexts.subtitle)
                 .font(.system(size: 14))
                 .foregroundColor(DesignTokens.Colors.textOnAction)
                 .multilineTextAlignment(.center)
@@ -77,14 +79,49 @@ struct RegisterSuccessView: View {
     private var button: some View {
 
         DSButton(
-            title: "Let's Explore",
+            title: currentTexts.buttonText,
             variant: .ghost
         ) {
             appRouter.goTo(.home)
         }
     }
+    
+    enum SuccessType {
+        case registerSuccess
+        case bookingSuccess
+    }
+    
+    struct SuccessTexts {
+        var title1: String
+        var title2: String
+        var subtitle: String
+        var buttonText: String
+        var title2FontSize: CGFloat
+    }
+    
+    private var currentTexts: SuccessTexts {
+        switch successType {
+        case .registerSuccess:
+            return SuccessTexts(
+                title1: "Successfully",
+                title2: "created an account",
+                subtitle: "After this you can explore any place you want enjoy it!",
+                buttonText: "Let's Explore",
+                title2FontSize: 25
+            )
+        case .bookingSuccess:
+            return SuccessTexts(
+                title1: "Booking",
+                title2: "Successfully",
+                subtitle: "Get everything ready before your trips date",
+                buttonText: "Back to home",
+                title2FontSize: 29
+            )
+        }
+    }
+    
 }
 
 #Preview {
-    RegisterSuccessView()
+    RegisterSuccessView(successType: .bookingSuccess)
 }
