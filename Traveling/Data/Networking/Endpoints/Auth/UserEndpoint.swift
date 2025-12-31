@@ -17,10 +17,13 @@ enum UserEndpoint: EndPointProtocol {
         switch self {
         case .login:
             return "/v1/auth/login"
+
         case .refresh:
             return "/v1/auth/refresh"
+
         case .me:
             return "/v1/auth/me"
+
         case .register:
             return "/v1/auth/register"
         }
@@ -30,6 +33,7 @@ enum UserEndpoint: EndPointProtocol {
         switch self {
         case .login, .refresh, .register:
             return .post
+
         default:
             return .get
         }
@@ -53,10 +57,13 @@ enum UserEndpoint: EndPointProtocol {
         switch self {
         case .login(let email, let password):
             return LoginRequest(email: email, password: password)
+
         case .refresh(let token):
             return RefreshTokenRequest(refreshToken: token)
+
         case .register(let email, let password, let firstName, let lastName, let phone):
             return RegisterRequest(email: email, password: password, firstName: firstName, lastName: lastName, phone: phone)
+
         case .me:
             return nil
         }

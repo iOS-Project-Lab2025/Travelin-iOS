@@ -10,7 +10,7 @@ import Foundation
 struct PayloadBuilder: PayloadBuilderProtocol {
     func buildPayload<E: Encodable>(from model: E) throws -> Data {
         let encoder = JSONEncoder()
-        encoder.keyEncodingStrategy = .convertToSnakeCase
+
         do {
             return try encoder.encode(model)
         } catch {

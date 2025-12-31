@@ -61,7 +61,7 @@ struct POIMapperImp: POIMapperProtocol {
             offset: vm.offset
         )
     }
-    
+
     /// Converts domain name-based search parameters into data-layer parameters.
     func poiGetByNameDomainToData(
         from vm: POIGetByNameParametersDomainModel
