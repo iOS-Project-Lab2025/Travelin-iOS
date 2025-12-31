@@ -86,7 +86,7 @@ struct ReusablePackageView: View {
             description: "Lorem ipsum dolor sit amet...",
             isFavorite: true,
             price: 600,
-            servicesIncluded: ServicesIncluded(id: UUID(), title: "Bus", subTitle: "Transportation", icon: "bus.fill")
+            servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
         ), size: CGSize(width: UIScreen.main.bounds.width * 0.5, height: UIScreen.main.bounds.width * 0.55)
     )
     .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height )

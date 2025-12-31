@@ -46,7 +46,7 @@ struct HomePackageCollectionView: View {
             description: "Lorem ipsum dolor sit amet...",
             isFavorite: true,
             price: 600,
-            servicesIncluded: ServicesIncluded(id: UUID(), title: "Bus", subTitle: "Transportation", icon: "bus.fill")
+            servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
         ), Package(
             id: UUID(),
             imageURL: "package1",
@@ -57,7 +57,7 @@ struct HomePackageCollectionView: View {
             description: "Lorem ipsum dolor sit amet...",
             isFavorite: true,
             price: 600,
-            servicesIncluded: ServicesIncluded(id: UUID(), title: "Bus", subTitle: "Transportation", icon: "bus.fill")
+            servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
         )
     ]), screenSize: UIScreen.main.bounds.size
     )

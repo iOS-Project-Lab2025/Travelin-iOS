@@ -17,7 +17,7 @@ struct Package: Identifiable {
     let description: String
     let isFavorite: Bool
     let price: Int
-    let servicesIncluded: ServicesIncluded
+    let servicesIncluded: [ServicesIncluded]
 }
 struct ServicesIncluded: Identifiable {
     let id: UUID
