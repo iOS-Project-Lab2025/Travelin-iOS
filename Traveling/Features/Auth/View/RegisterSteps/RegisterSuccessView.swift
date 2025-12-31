@@ -16,7 +16,7 @@ import TravelinDesignSystem
 /// It uses `AppRouter` to navigate to the main application flows.
 struct RegisterSuccessView: View {
     @Environment(\.appRouter) private var appRouter
-    
+
     let successType: SuccessType
 
     var body: some View {
@@ -85,12 +85,12 @@ struct RegisterSuccessView: View {
             appRouter.goTo(.home)
         }
     }
-    
+
     enum SuccessType {
         case registerSuccess
         case bookingSuccess
     }
-    
+
     struct SuccessTexts {
         var title1: String
         var title2: String
@@ -98,7 +98,7 @@ struct RegisterSuccessView: View {
         var buttonText: String
         var title2FontSize: CGFloat
     }
-    
+
     private var currentTexts: SuccessTexts {
         switch successType {
         case .registerSuccess:
@@ -109,6 +109,7 @@ struct RegisterSuccessView: View {
                 buttonText: "Let's Explore",
                 title2FontSize: 25
             )
+
         case .bookingSuccess:
             return SuccessTexts(
                 title1: "Booking",
@@ -119,7 +120,7 @@ struct RegisterSuccessView: View {
             )
         }
     }
-    
+
 }
 
 #Preview {
