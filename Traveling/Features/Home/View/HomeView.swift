@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var homeRouter = AppRouter.PathRouter<HomeRoutes>()
+    @State private var homeRouter = AppRouter.FlowRouter<HomeRoutes>(flow: [.poiSearch, .poiDetail])
     @State private var viewModel = HomeViewModel()
 
     var body: some View {
@@ -38,6 +38,6 @@ struct HomeView: View {
 }
 
 enum HomeRoutes: Hashable {
-    case globalSearch
-    case tourList
+    case poiSearch
+    case poiDetail
 }

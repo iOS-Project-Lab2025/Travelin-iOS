@@ -10,6 +10,7 @@ import SwiftUI
 
 struct TopHomeView: View {
     @Binding var searchDetail: SearchDetail
+    
     let screenSize: CGSize
     var body: some View {
         ZStack {

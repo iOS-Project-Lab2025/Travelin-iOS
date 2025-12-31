@@ -11,11 +11,7 @@ struct ReusablePackageView: View {
     var package: Package
     let size: CGSize
 
-    private enum Constants {
-        static let cornerRadius: CGFloat = 12
-        static let overlayOpacity: CGFloat = 0.13
-        static let textPadding: CGFloat = 16
-    }
+    
     var body: some View {
         VStack(spacing: 0) {
             ZStack(alignment: .topTrailing) {
@@ -103,4 +99,9 @@ struct RoundedCorner: Shape {
             cornerRadii: CGSize(width: radius, height: radius)
         ).cgPath)
     }
+}
+enum Constants {
+    static let cornerRadius: CGFloat = 12
+    static let overlayOpacity: CGFloat = 0.13
+    static let textPadding: CGFloat = 16
 }
