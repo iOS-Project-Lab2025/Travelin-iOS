@@ -12,8 +12,7 @@ struct HomePackageCollectionView: View {
     let screenSize: CGSize
 
         var body: some View {
-            let rows = [GridItem(.fixed(screenSize.width * 1.1))]
-
+            
             VStack(spacing: 0) {
                 Text("Popular package in asia")
 
@@ -22,7 +21,7 @@ struct HomePackageCollectionView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 ScrollView(.horizontal) {
-                    LazyHGrid(rows: rows, spacing: 20) {
+                    LazyHStack(spacing: 20) {
                         ForEach(packages) { package in
                             ReusablePackageView(package: package, size: CGSize(width: screenSize.width * 0.6, height: screenSize.width * 0.7))
 

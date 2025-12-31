@@ -13,7 +13,7 @@ struct HomeCountriesCollectionView: View {
     let screenSize: CGSize
 
     var body: some View {
-        let rows = [GridItem(.fixed(screenSize.width * 0.55))]
+        
 
         VStack(spacing: 0) {
             Text("Expanding your trip around the world")
@@ -24,7 +24,7 @@ struct HomeCountriesCollectionView: View {
                 .padding(.trailing, screenSize.width * 0.2)
 
             ScrollView(.horizontal, showsIndicators: false) {
-                LazyHGrid(rows: rows, spacing: 16) {
+                LazyHStack(spacing: 16) {
                     ForEach(countries) { country in
                         ReusableCountriesView(
                             country: country,
