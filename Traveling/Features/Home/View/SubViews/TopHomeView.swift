@@ -10,7 +10,7 @@ import SwiftUI
 
 struct TopHomeView: View {
     @Binding var searchDetail: SearchDetail
-    
+    @Binding var router: AppRouter.FlowRouter<HomeRoutes>
     let screenSize: CGSize
     var body: some View {
         ZStack {
@@ -33,14 +33,23 @@ struct TopHomeView: View {
                 )
                 .font(.system(size: 16))
                 .foregroundStyle(.white)
-                DSTextField(
-                    symbolPosition: .right,
-                    placeHolder: "Search Destination",
-                    type: .search,
-                    style: .default,
-                    text: $searchDetail.searchText) {
-
+                
+                
+                    DSTextField(
+                        symbolPosition: .right,
+                        placeHolder: "Search Destination",
+                        type: .search,
+                        style: .default,
+                        text: $searchDetail.searchText)
+                    .overlay {
+                        Rectangle()
+                            .fill(.clear)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                router.next()
+                            }
                     }
+                
                 HStack {
                     DSButton(
                         title: "Hotel",
@@ -74,5 +83,5 @@ struct TopHomeView: View {
 }
 
 #Preview {
-    TopHomeView(searchDetail: .constant(SearchDetail()), screenSize: UIScreen.main.bounds.size)
+    TopHomeView(searchDetail: .constant(SearchDetail()), router: .constant(AppRouter.FlowRouter<HomeRoutes>(flow: [.home, .poiSearch, .poiDetail])), screenSize: UIScreen.main.bounds.size)
 }

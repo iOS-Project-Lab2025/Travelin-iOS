@@ -11,6 +11,7 @@ import TravelinDesignSystem
 struct SearchView: View {
     @Binding var packages: [Package]
     @Binding var inputText: String
+    @Binding var router: AppRouter.FlowRouter<HomeRoutes>
     let size: CGSize
     
     var body: some View {
@@ -53,7 +54,7 @@ struct SearchView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    // acción: menú/ubicación/etc
+                    router.previous()
                 } label: {
                     Image(systemName: "chevron.left")
                         .bold()
@@ -148,7 +149,7 @@ struct SearchView: View {
                 price: 600,
                 servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
             )
-        ]), inputText: .constant("s")
+        ]), inputText: .constant("s"), router: .constant(AppRouter.FlowRouter<HomeRoutes>(flow: [.home, .poiSearch, .poiDetail]))
             , size: CGSize(width: UIScreen.main.bounds.width , height: UIScreen.main.bounds.width * 0.38))
     }
 }
