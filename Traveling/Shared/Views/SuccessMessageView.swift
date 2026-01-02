@@ -1,5 +1,5 @@
 //
-//  RegisterSuccessView.swift
+//  SuccessMessageView.swift
 //  Traveling
 //
 //  Created by Ivan Pereira on 23-11-25.
@@ -8,12 +8,15 @@
 import SwiftUI
 import TravelinDesignSystem
 
-/// A view displayed upon successful registration.
+/// A generic view displayed to indicate a successful action, such as registration or booking.
 ///
-/// `SuccessMessageView` presents a success message to the user and provides a button to navigate
-/// to the home screen, effectively.
+/// `SuccessMessageView` presents a customizable success message based on the provided `SuccessType`.
+/// It displays a gradient background, the app logo, title, subtitle, and a button to navigate
+/// (usually to the home screen).
 ///
-/// It uses `AppRouter` to navigate to the main application flows.
+/// Use the `successType` property to configure the content for specific scenarios.
+///
+/// - SeeAlso: `SuccessType`
 struct SuccessMessageView: View {
     @Environment(\.appRouter) private var appRouter
 
@@ -88,16 +91,25 @@ struct SuccessMessageView: View {
         }
     }
 
+    /// Defines the type of success message to display.
     enum SuccessType {
+        /// Indicates successful user registration.
         case registerSuccess
+        /// Indicates a successful booking.
         case bookingSuccess
     }
 
-    struct SuccessTexts {
+    /// A structure holding the textual content and configuration for the success view.
+    private struct SuccessTexts {
+        /// The first line of the main title.
         var title1: String
+        /// The second line of the main title.
         var title2: String
+        /// The subtitle describing the success state.
         var subtitle: String
+        /// The text to display on the action button.
         var buttonText: String
+        /// The font size for the second line of the title.
         var title2FontSize: CGFloat
     }
 
