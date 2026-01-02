@@ -11,34 +11,54 @@ struct ContentView: View {
 
     @Environment(\.appRouter) private var router
 
-    var body: some View {
-
+    private var shouldShowTabBar: Bool {
         switch router.path {
-        case .home:
-            HomeView()
+        case .home, .favorites, .profile, .booking:
+            return true
 
-        case .onBoarding:
-            OnboardingView()
-
-        case .profile:
-            ProfileView(userId: "John Doe")
-
-        case .booking:
-            BookingView()
-
-        case .authentication(.login):
-            LoginView(
-                loginViewModel: LoginViewModel(
-                    authService: Services.auth,
-                    userService: Services.user,
-                    tokenManager: Services.tokenManager
-                )
-            )
-
-        case .authentication(.register):
-            RegisterView(registerViewModel: RegisterViewModel())
+        default:
+            return false
         }
+    }
 
+    var body: some View {
+        ZStack {
+            switch router.path {
+            case .home:
+                HomeView()
+
+            case .onBoarding:
+                OnboardingView()
+
+            case .profile:
+                ProfileView(userId: "John Doe")
+
+            case .booking:
+                BookingView()
+
+            case .authentication(.login):
+                LoginView(
+                    loginViewModel: LoginViewModel(
+                        authService: Services.auth,
+                        userService: Services.user,
+                        tokenManager: Services.tokenManager
+                    )
+                )
+
+            case .authentication(.register):
+                RegisterView()
+
+            case .favorites:
+                FavoritesView()
+            }
+
+            if shouldShowTabBar {
+                VStack {
+                    Spacer()
+                    TapBar()
+                }
+            }
+        }
     }
 }
 
