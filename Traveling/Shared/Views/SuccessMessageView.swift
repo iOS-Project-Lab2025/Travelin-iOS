@@ -10,39 +10,41 @@ import TravelinDesignSystem
 
 /// A view displayed upon successful registration.
 ///
-/// `RegisterSuccessView` presents a success message to the user and provides a button to navigate
-/// to the home screen, effectively ending the on-boarding or registration flow.
+/// `SuccessMessageView` presents a success message to the user and provides a button to navigate
+/// to the home screen, effectively.
 ///
 /// It uses `AppRouter` to navigate to the main application flows.
-struct RegisterSuccessView: View {
+struct SuccessMessageView: View {
     @Environment(\.appRouter) private var appRouter
 
     let successType: SuccessType
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(red: 0.06, green: 0.64, blue: 0.89),  // #0FA3E2
-                    Color(red: 0.29, green: 0.79, blue: 1.0)     // #49C9FF
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-
+            background
             VStack {
                 Spacer()
                 logo
                 texts
                 Spacer()
                 button
-
             }
             .padding(37)
         }
         .navigationBarBackButtonHidden(true)
 
+    }
+
+    private var background: some View {
+        LinearGradient(
+            colors: [
+                DesignTokens.Colors.gradientColor1,  // #0FA3E2
+                DesignTokens.Colors.gradientColor2     // #49C9FF
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        .ignoresSafeArea()
     }
 
     private var logo: some View {
@@ -103,19 +105,19 @@ struct RegisterSuccessView: View {
         switch successType {
         case .registerSuccess:
             return SuccessTexts(
-                title1: "Successfully",
-                title2: "created an account",
-                subtitle: "After this you can explore any place you want enjoy it!",
-                buttonText: "Let's Explore",
+                title1: "RegisterSuccessView.title1".localized,
+                title2: "RegisterSuccessView.title2".localized,
+                subtitle: "RegisterSuccessView.subtitle".localized,
+                buttonText: "RegisterSuccessView.button".localized,
                 title2FontSize: 25
             )
 
         case .bookingSuccess:
             return SuccessTexts(
-                title1: "Booking",
-                title2: "Successfully",
-                subtitle: "Get everything ready before your trips date",
-                buttonText: "Back to home",
+                title1: "BookingSuccessView.title1".localized,
+                title2: "BookingSuccessView.title2".localized,
+                subtitle: "BookingSuccessView.subtitle".localized,
+                buttonText: "BookingSuccessView.button".localized,
                 title2FontSize: 29
             )
         }
@@ -124,5 +126,5 @@ struct RegisterSuccessView: View {
 }
 
 #Preview {
-    RegisterSuccessView(successType: .bookingSuccess)
+    SuccessMessageView(successType: .bookingSuccess)
 }
