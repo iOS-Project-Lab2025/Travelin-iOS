@@ -13,7 +13,7 @@ struct ContentView: View {
 
     private var shouldShowTabBar: Bool {
         switch router.path {
-        case .home, .favorites, .profile:
+        case .home, .favorites, .profile, .booking:
             return true
 
         default:
