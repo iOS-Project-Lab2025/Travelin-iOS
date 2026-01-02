@@ -8,14 +8,13 @@
 import Foundation
 
 struct Package: Identifiable {
-    let id: UUID
-    let imageURL: String
+    let id: String
     let imagesCollection: [String]
     let name: String
     let rating: Int
     let numberReviews: Int
     let description: String
-    let isFavorite: Bool
+    var isFavorite: Bool
     let price: Int
     let servicesIncluded: [ServicesIncluded]
 }

@@ -103,9 +103,8 @@ struct SearchView: View {
     NavigationStack {
         SearchView(packages: .constant([
             Package(
-                id: UUID(),
-                imageURL: "package1",
-                imagesCollection: [],
+                id: "01",
+                imagesCollection: ["package1"],
                 name: "Koh Rong Samloem",
                 rating: 3,
                 numberReviews: 50,
@@ -114,9 +113,8 @@ struct SearchView: View {
                 price: 600,
                 servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
             ), Package(
-                id: UUID(),
-                imageURL: "package1",
-                imagesCollection: [],
+                id: "02",
+                imagesCollection: ["package1"],
                 name: "Koh Rong Samloem",
                 rating: 4,
                 numberReviews: 90,
@@ -126,9 +124,8 @@ struct SearchView: View {
                 servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
             ),
             Package(
-                id: UUID(),
-                imageURL: "package1",
-                imagesCollection: [],
+                id: "03",
+                imagesCollection: ["package1"],
                 name: "Koh Rong Samloem",
                 rating: 3,
                 numberReviews: 50,
@@ -138,9 +135,8 @@ struct SearchView: View {
                 servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
             ),
             Package(
-                id: UUID(),
-                imageURL: "package1",
-                imagesCollection: [],
+                id: "04",
+                imagesCollection: ["package1"],
                 name: "Koh Rong Samloem",
                 rating: 4,
                 numberReviews: 90,
@@ -211,7 +207,7 @@ struct ReusablePackageSearchView: View {
                     ForEach(Array(packages.prefix(3))) { package in
                         VStack {
                             HStack {
-                                Image(package.imageURL)
+                                Image(package.imagesCollection.first!)
                                     .resizable()
                                     .scaledToFill()
                                     .frame(width: size.width * 0.38, height: size.width * 0.38)

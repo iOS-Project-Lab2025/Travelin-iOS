@@ -23,7 +23,7 @@ struct HomePackageCollectionView: View {
                 ScrollView(.horizontal) {
                     LazyHStack(spacing: 20) {
                         ForEach(packages) { package in
-                            ReusablePackageView(package: package, size: CGSize(width: screenSize.width * 0.6, height: screenSize.width * 0.7))
+                            ReusablePackageView(package: package, size: screenSize)
 
                         }
                     }
@@ -36,9 +36,8 @@ struct HomePackageCollectionView: View {
 #Preview {
     HomePackageCollectionView(packages: .constant([
         Package(
-            id: UUID(),
-            imageURL: "package1",
-            imagesCollection: [],
+            id: "01",
+            imagesCollection: ["package1"],
             name: "Koh Rong Samloem",
             rating: 3,
             numberReviews: 50,
@@ -47,9 +46,8 @@ struct HomePackageCollectionView: View {
             price: 600,
             servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
         ), Package(
-            id: UUID(),
-            imageURL: "package1",
-            imagesCollection: [],
+            id: "02",
+            imagesCollection: ["package1"],
             name: "Koh Rong Samloem",
             rating: 4,
             numberReviews: 90,

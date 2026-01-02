@@ -13,12 +13,12 @@ struct ReusablePackageView: View {
 
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             ZStack(alignment: .topTrailing) {
-                Image(package.imageURL)
-                    .resizable()
+                AsyncImage(url: URL(string: package.imagesCollection.first!))
+                //Image(package.imagesCollection.first!)
                     .scaledToFill()
-                    .frame(width: size.width, height: size.height)
+                    .frame(width: size.width * 0.6, height: size.width * 0.7)
                     .clipped()
                     .overlay(Color.black.opacity(Constants.overlayOpacity))
                     .clipShape(RoundedCorner(radius: 12, corners: [.topLeft, .topRight]))
@@ -62,28 +62,29 @@ struct ReusablePackageView: View {
 
                     .font(.system(size: 14))
                     .foregroundStyle(.secondary)
+                    .lineLimit(1)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(width: size.width * 0.6, alignment: .leading)
             .padding()
 
         }
+        
     }
 }
 
 #Preview {
     ReusablePackageView(
         package: Package(
-            id: UUID(),
-            imageURL: "package1",
-            imagesCollection: [],
+            id: "01",
+            imagesCollection: ["package1"],
             name: "Koh Rong Samloem",
             rating: 4,
             numberReviews: 90,
-            description: "Lorem ipsum dolor sit amet...",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             isFavorite: true,
             price: 600,
             servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
-        ), size: CGSize(width: UIScreen.main.bounds.width * 0.5, height: UIScreen.main.bounds.width * 0.55)
+        ), size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width )
     )
     .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height )
 }
