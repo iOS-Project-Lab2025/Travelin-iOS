@@ -37,16 +37,10 @@ struct ContentView: View {
                 BookingView()
 
             case .authentication(.login):
-                LoginView(
-                    loginViewModel: LoginViewModel(
-                        authService: Services.auth,
-                        userService: Services.user,
-                        tokenManager: Services.tokenManager
-                    )
-                )
+                LoginView(loginViewModel: LoginViewModel())
 
             case .authentication(.register):
-                RegisterView()
+                RegisterView(registerViewModel: RegisterViewModel())
 
             case .favorites:
                 FavoritesView()
