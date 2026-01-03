@@ -36,4 +36,5 @@ struct ProfileEditView: View {
 
 #Preview {
     ProfileEditView(userId: "John Doe")
+        .environment(AppRouter.PathRouter<ProfileRoutes>())
 }
