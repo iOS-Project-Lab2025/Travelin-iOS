@@ -44,10 +44,14 @@ import TravelinDesignSystem
 ///         }
 ///     }
 ///
-///     private var shouldShowTabBar: Bool {
-///         // Logic to determine visibility
-///         return true
-///     }
+///    private var shouldShowTabBar: Bool {
+///        switch router.path {
+///        case .home, .favorites, .profile, .booking:
+///            return true
+///        default:
+///            return false
+///        }
+///    }
 /// }
 /// ```
 struct TapBar: View {
