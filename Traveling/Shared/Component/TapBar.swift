@@ -8,11 +8,53 @@
 import SwiftUI
 import TravelinDesignSystem
 
+/// A custom tab bar component that allows navigation between main sections of the app.
+///
+/// `TapBar` displays a horizontal list of buttons, each representing a navigation destination.
+/// It uses `appRouter` from the environment to manage navigation state and highlighting.
+///
+/// ## Usage Example
+/// The `TapBar` is typically used in the root view (e.g., `ContentView`) within a `ZStack` or `VStack` to overlay or position it at the bottom of the screen.
+///
+/// ```swift
+/// struct ContentView: View {
+///     @Environment(\.appRouter) private var router
+///
+///     var body: some View {
+///         ZStack {
+///             // Main Content
+///             switch router.path {
+///             case .home:
+///                 HomeView()
+///             case .favorites:
+///                 FavoritesView()
+///             case .profile:
+///                 ProfileView()
+///             default:
+///                 EmptyView()
+///             }
+///
+///             // Show TapBar only for specific routes
+///             if shouldShowTabBar {
+///                 VStack {
+///                     Spacer()
+///                     TapBar()
+///                 }
+///             }
+///         }
+///     }
+///
+///     private var shouldShowTabBar: Bool {
+///         // Logic to determine visibility
+///         return true
+///     }
+/// }
+/// ```
 struct TapBar: View {
 
     @Environment(\.appRouter) private var appRouter
 
-    // Define los items del TabBar
+    // Defines the TabBar items
     private let tabItems: [TabItem] = [
         TabItem(icon: "house.fill", title: "Home", route: .home),
         TabItem(icon: "heart.fill", title: "Trips", route: .favorites),
@@ -57,7 +99,8 @@ struct TapBar: View {
     }
 }
 
-// Modelo para los items del TabBar
+// Model for the TabBar items
+/// Represents a single item in the `TapBar`.
 struct TabItem: Identifiable {
     let id = UUID()
     let icon: String
@@ -65,7 +108,8 @@ struct TabItem: Identifiable {
     let route: AppRoutes
 }
 
-// Componente reutilizable para cada botón
+// Reusable component for each button
+/// A single button within the `TapBar`.
 struct TabBarButton: View {
     let icon: String
     let title: String
