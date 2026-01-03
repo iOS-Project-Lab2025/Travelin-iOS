@@ -15,13 +15,36 @@ struct ReusablePackageView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ZStack(alignment: .topTrailing) {
-                AsyncImage(url: URL(string: package.imagesCollection.first!))
-                //Image(package.imagesCollection.first!)
-                    .scaledToFill()
-                    .frame(width: size.width * 0.6, height: size.width * 0.7)
-                    .clipped()
-                    .overlay(Color.black.opacity(Constants.overlayOpacity))
-                    .clipShape(RoundedCorner(radius: 12, corners: [.topLeft, .topRight]))
+                let urlString = package.imagesCollection.first ?? ""
+                let url = URL(string: urlString)
+
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                            .frame(width: size.width * 0.6, height: size.width * 0.7)
+
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFill()
+
+                    case .failure:
+                        Image(systemName: "photo")
+                            .resizable()
+                            .scaledToFit()
+                            .padding(24)
+                            .foregroundStyle(.gray)
+
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+                .frame(width: size.width * 0.6, height: size.width * 0.7)
+                .clipped()
+                .overlay(Color.black.opacity(Constants.overlayOpacity))
+                .clipShape(RoundedCorner(radius: 12, corners: [.topLeft, .topRight]))
+
                 Button {
 
                 } label: {

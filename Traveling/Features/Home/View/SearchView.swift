@@ -205,13 +205,33 @@ struct ReusablePackageSearchView: View {
                     ForEach(Array(packages.prefix(3))) { package in
                         VStack {
                             HStack {
-                                AsyncImage(url: URL(string: package.imagesCollection.first!))
-                                //Image(package.imagesCollection.first!)
-                                    .scaledToFill()
-                                    .frame(width: size.width * 0.38, height: size.width * 0.38)
-                                    .cornerRadius(15)
-                                    .clipped()
-                                    .overlay(Color.black.opacity(Constants.overlayOpacity))
+                                let urlString = package.imagesCollection.first ?? ""
+                                let url = URL(string: urlString)
+
+                                AsyncImage(url: url) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        ProgressView()
+                                            .frame(width: size.width * 0.38, height: size.width * 0.38)
+
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .scaledToFill()
+
+                                    case .failure(let error):
+                                        Image(systemName: "photo")
+                                            .onAppear { print("❌ Image error:", error.localizedDescription, urlString) }
+
+                                    @unknown default:
+                                        EmptyView()
+                                    }
+                                }
+                                .frame(width: size.width * 0.38, height: size.width * 0.38)
+                                .cornerRadius(15)
+                                .clipped()
+                                .overlay(Color.black.opacity(Constants.overlayOpacity))
+
                                 VStack(alignment: .leading, spacing: 8) {
                                     Text(package.name)
                                         .foregroundStyle(.primary)
