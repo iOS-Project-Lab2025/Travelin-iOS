@@ -10,6 +10,8 @@ import SwiftUI
 struct HomeView: View {
     @State private var homeRouter = AppRouter.FlowRouter<HomeRoutes>(flow: [.home, .poiSearch, .poiDetail])
     @State private var viewModel = HomeViewModel()
+    
+    
 
     var body: some View {
         NavigationStack(path: $homeRouter.path) {
@@ -17,6 +19,9 @@ struct HomeView: View {
                 VStack(spacing: 0) {
                     TopHomeView(searchDetail: $viewModel.searchDetail, router: $homeRouter, screenSize: geo.size)
                         .ignoresSafeArea(edges: .top)
+                        .onAppear {
+                            viewModel.searchDetail.searchText = ""
+                        }
 
                     ScrollView(.vertical) {
                         HomePackageCollectionView(

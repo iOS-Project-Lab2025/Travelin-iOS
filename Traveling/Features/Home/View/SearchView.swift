@@ -9,95 +9,93 @@ import SwiftUI
 import TravelinDesignSystem
 
 struct SearchView: View {
+    @FocusState private var focused: Bool
     @Binding var packages: [Package]
     @Binding var inputText: String
     @Binding var router: AppRouter.FlowRouter<HomeRoutes>
     let size: CGSize
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Rectangle()
-                .fill(Color.gray.opacity(0.8))
-                .frame(height: 1 )
-                .frame(maxWidth:  size.width)
-                .padding(inputText.isEmpty ? .bottom : .top)
-                
-            if inputText.isEmpty {
-                NearbySearchComponentView()
-                
-            } else {
-                VStack(alignment: .leading) {
-                    ReusablePackageSearchView(inputText: $inputText, packages: $packages, size: size)
-                    if packages.count > 3 {
-                        Button {
-                            
-                        } label: {
-                            Text("Show + \(packages.count - 3) more available")
-                                .foregroundStyle(.black)
-                                .font(.system(size: 14, weight: .bold))
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+
+                // Contenido
+                if inputText.isEmpty {
+                    NearbySearchComponentView()
+                } else {
+                    VStack(alignment: .leading) {
+                        ReusablePackageSearchView(inputText: $inputText, packages: $packages, size: size)
+
+                        if packages.count > 3 {
+                            Button { } label: {
+                                Text("Show + \(packages.count - 3) more available")
+                                    .foregroundStyle(.black)
+                                    .font(.system(size: 14, weight: .bold))
+                                    .frame(width: size.width * 0.5)
+                                    .padding(.vertical, 12)
+                            }
+                            .buttonStyle(.plain)
+                            .padding(.horizontal, 16)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.gray.opacity(0.35), lineWidth: 2)
+                                    .padding(.horizontal, 16)
+                            }
+                            .padding(.top, 12)
+                            .padding(.bottom, 16)
                         }
-                        .padding()
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.gray.opacity(0.8), lineWidth: 2)
-                        }
-                        .padding()
                     }
                 }
-                
             }
-            Spacer()
+            .onAppear() {
+                focused = true
+            }
         }
-        .navigationBarBackButtonHidden(true)
-        .navigationBarTitleDisplayMode(.large)
-        //.toolbarBackground(Color.black, for: .navigationBar)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    router.previous()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .bold()
-                        .foregroundStyle(.black)
-                }
-                .padding(.vertical)
-                .padding(.top)
-            }
-            ToolbarItem(placement: .principal) {
-                if inputText.isEmpty {
+        .ignoresSafeArea(.keyboard, edges: .bottom)   // ✅ el teclado no empuja
+        .navigationBarHidden(true)                    // ✅ apaga navbar sistema
+
+        // ✅ Header fijo que respeta safe area
+        .safeAreaInset(edge: .top, spacing: 0) {
+            VStack(spacing: 0) {
+                HStack(spacing: 12) {
+                    Button {
+                        router.previous()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundStyle(.black)
+                            .frame(width: 44, height: 44)
+                    }
+                    .buttonStyle(.plain)
+
                     DSTextField(
-                        symbolPosition: .left,
-                        placeHolder: "Where do you plan to go?",
+                        symbolPosition: inputText.isEmpty ? .left : .right,
+                        placeHolder: inputText.isEmpty ? "Where do you plan to go?" : "",
                         type: .search,
                         style: .outlined,
-                        text: $inputText) {
-                            
-                        }
-                        .padding(.vertical)
-                        .padding(.top)
-                } else {
-                    HStack {
-                        DSTextField(
-                            symbolPosition: .right,
-                            type: .search,
-                            style: .outlined,
-                            text: $inputText) {
-                                
-                            }
-                           
+                        text: $inputText
+                    )
+                    .focused($focused)
+
+                    if !inputText.isEmpty {
                         Image(systemName: "square.grid.3x2.fill")
                             .font(.system(size: 16))
-                            .rotationEffect(Angle(degrees: 90))
+                            .rotationEffect(.degrees(90))
                             .foregroundStyle(.primary)
-                            
                     }
-                    .padding(.vertical)
-                    .padding(.top)
                 }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+                .background(Color.white)
+
+                Rectangle()
+                    .fill(Color.gray.opacity(0.3))
+                    .frame(height: 1 / UIScreen.main.scale)
             }
         }
     }
 }
+
 
 #Preview {
     NavigationStack {
@@ -146,7 +144,7 @@ struct SearchView: View {
                 servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
             )
         ]), inputText: .constant("s"), router: .constant(AppRouter.FlowRouter<HomeRoutes>(flow: [.home, .poiSearch, .poiDetail]))
-            , size: CGSize(width: UIScreen.main.bounds.width , height: UIScreen.main.bounds.width * 0.38))
+                   , size: CGSize(width: UIScreen.main.bounds.width , height: UIScreen.main.bounds.width * 0.38))
     }
 }
 
@@ -158,34 +156,34 @@ struct SearchView: View {
 
 struct NearbySearchComponentView: View {
     var body: some View {
-            Button {
-                
-            } label: {
-                VStack(spacing:0) {
-                    HStack(alignment: .center) {
-                        Image(systemName: "drop.circle")
-                            .font(.system(size: 32))
-                            .symbolRenderingMode(.palette)   // Permite usar varios colores
-                            .symbolRenderingMode(.hierarchical)
-                            .foregroundStyle(Color.gray)
-                        VStack(alignment: .leading) {
-                            Text("Search place nearby")
-                                .foregroundStyle(.black)
-                                .font(.system(size: 20, weight: .bold))
-                            Text("Current location - Chile")
-                                .foregroundStyle(.black)
-                                .font(.system(size: 14, weight: .light))
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+        Button {
+            
+        } label: {
+            VStack(spacing:0) {
+                HStack(alignment: .center) {
+                    Image(systemName: "drop.circle")
+                        .font(.system(size: 32))
+                        .symbolRenderingMode(.palette)   // Permite usar varios colores
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundStyle(Color.gray)
+                    VStack(alignment: .leading) {
+                        Text("Search place nearby")
+                            .foregroundStyle(.black)
+                            .font(.system(size: 20, weight: .bold))
+                        Text("Current location - Chile")
+                            .foregroundStyle(.black)
+                            .font(.system(size: 14, weight: .light))
                     }
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.8))
-                        .frame(height: 1 / UIScreen.main.scale)
-                        .padding(.all)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                // Un color por capa
+                Rectangle()
+                    .fill(Color.gray.opacity(0.8))
+                    .frame(height: 1 / UIScreen.main.scale)
+                    .padding(.all)
             }
-            .padding()
+            // Un color por capa
+        }
+        .padding()
     }
 }
 
@@ -207,15 +205,15 @@ struct ReusablePackageSearchView: View {
                     ForEach(Array(packages.prefix(3))) { package in
                         VStack {
                             HStack {
-                                Image(package.imagesCollection.first!)
-                                    .resizable()
+                                AsyncImage(url: URL(string: package.imagesCollection.first!))
+                                //Image(package.imagesCollection.first!)
                                     .scaledToFill()
                                     .frame(width: size.width * 0.38, height: size.width * 0.38)
                                     .cornerRadius(15)
                                     .clipped()
                                     .overlay(Color.black.opacity(Constants.overlayOpacity))
                                 VStack(alignment: .leading, spacing: 8) {
-                                    Text("Search place nearby place nearby")
+                                    Text(package.name)
                                         .foregroundStyle(.primary)
                                     
                                         .font(.system(size: 20, weight: .bold))
@@ -240,6 +238,7 @@ struct ReusablePackageSearchView: View {
                                     
                                         .font(.system(size: 14))
                                         .foregroundStyle(.primary)
+                                        .lineLimit(1)
                                     Text("from $\(package.price)/person ")
                                     
                                         .foregroundStyle(.primary)
