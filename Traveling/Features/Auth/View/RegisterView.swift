@@ -33,7 +33,7 @@ struct RegisterView: View {
             RegisterFormView(registerViewModel: registerViewModel)
 
         case .success:
-            RegisterSuccessView()
+            SuccessMessageView(successType: .registerSuccess)
         }
     }
 }
