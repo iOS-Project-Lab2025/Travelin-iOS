@@ -13,6 +13,7 @@ struct SearchView: View {
     @Binding var packages: [Package]
     @Binding var inputText: String
     @Binding var router: AppRouter.FlowRouter<HomeRoutes>
+    @State private var showAllPOI: Bool = false
     let size: CGSize
 
     var body: some View {
@@ -24,11 +25,11 @@ struct SearchView: View {
                     NearbySearchComponentView()
                 } else {
                     VStack(alignment: .leading) {
-                        ReusablePackageSearchView(inputText: $inputText, packages: $packages, size: size)
+                        ReusablePackageSearchView(inputText: $inputText, packages: $packages, showAllPOI: $showAllPOI, size: size)
 
                         if packages.count > 3 {
-                            Button { } label: {
-                                Text("Show + \(packages.count - 3) more available")
+                            Button { showAllPOI.toggle()} label: {
+                                Text("\(showAllPOI ? "Hide": "Show") + \(showAllPOI ? packages.count : packages.count - 3)")
                                     .foregroundStyle(.black)
                                     .font(.system(size: 14, weight: .bold))
                                     .frame(width: size.width * 0.5)
@@ -43,6 +44,7 @@ struct SearchView: View {
                             }
                             .padding(.top, 12)
                             .padding(.bottom, 16)
+                            
                         }
                     }
                 }
@@ -190,6 +192,7 @@ struct NearbySearchComponentView: View {
 struct ReusablePackageSearchView: View {
     @Binding var inputText: String
     @Binding var packages: [Package]
+    @Binding var showAllPOI: Bool
     let size: CGSize
     var body: some View {
         VStack {
@@ -199,91 +202,93 @@ struct ReusablePackageSearchView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
                 .padding(.top)
-            LazyVStack(
-                alignment: .center,
-                spacing: 0) {
-                    ForEach(Array(packages.prefix(3))) { package in
-                        VStack {
-                            HStack {
-                                let urlString = package.imagesCollection.first ?? ""
-                                let url = URL(string: urlString)
+            ScrollView(.vertical) {
+                LazyVStack(
+                    alignment: .center,
+                    spacing: 0) {
+                        ForEach(Array(packages.prefix(showAllPOI ? packages.count : 3))) { package in
+                            VStack {
+                                HStack {
+                                    let urlString = package.imagesCollection.first ?? ""
+                                    let url = URL(string: urlString)
 
-                                AsyncImage(url: url) { phase in
-                                    switch phase {
-                                    case .empty:
-                                        ProgressView()
-                                            .frame(width: size.width * 0.38, height: size.width * 0.38)
+                                    AsyncImage(url: url) { phase in
+                                        switch phase {
+                                        case .empty:
+                                            ProgressView()
+                                                .frame(width: size.width * 0.38, height: size.width * 0.38)
 
-                                    case .success(let image):
-                                        image
-                                            .resizable()
-                                            .scaledToFill()
+                                        case .success(let image):
+                                            image
+                                                .resizable()
+                                                .scaledToFill()
 
-                                    case .failure(let error):
-                                        Image(systemName: "photo")
-                                            .onAppear { print("❌ Image error:", error.localizedDescription, urlString) }
+                                        case .failure(let error):
+                                            Image(systemName: "photo")
+                                                .onAppear { print("❌ Image error:", error.localizedDescription, urlString) }
 
-                                    @unknown default:
-                                        EmptyView()
-                                    }
-                                }
-                                .frame(width: size.width * 0.38, height: size.width * 0.38)
-                                .cornerRadius(15)
-                                .clipped()
-                                .overlay(Color.black.opacity(Constants.overlayOpacity))
-
-                                VStack(alignment: .leading, spacing: 8) {
-                                    Text(package.name)
-                                        .foregroundStyle(.primary)
-                                    
-                                        .font(.system(size: 20, weight: .bold))
-                                        .lineLimit(2)
-                                    HStack(spacing: 0) {
-                                        ForEach(0..<5, id: \.self) { index in
-                                            Image(systemName: "star.fill")
-                                                .font(.system(size: 14))
-                                                .foregroundStyle(package.rating >= index + 1 ? .yellow : .gray)
-                                            
+                                        @unknown default:
+                                            EmptyView()
                                         }
-                                        Text("\(package.numberReviews)")
-                                            .font(.system(size: 14))
+                                    }
+                                    .frame(width: size.width * 0.38, height: size.width * 0.38)
+                                    .cornerRadius(15)
+                                    .clipped()
+                                    .overlay(Color.black.opacity(Constants.overlayOpacity))
+
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        Text(package.name)
                                             .foregroundStyle(.primary)
-                                            .padding(.leading)
                                         
-                                        Text(" reviews")
+                                            .font(.system(size: 20, weight: .bold))
+                                            .lineLimit(2)
+                                        HStack(spacing: 0) {
+                                            ForEach(0..<5, id: \.self) { index in
+                                                Image(systemName: "star.fill")
+                                                    .font(.system(size: 14))
+                                                    .foregroundStyle(package.rating >= index + 1 ? .yellow : .gray)
+                                                
+                                            }
+                                            Text("\(package.numberReviews)")
+                                                .font(.system(size: 14))
+                                                .foregroundStyle(.primary)
+                                                .padding(.leading)
+                                            
+                                            Text(" reviews")
+                                                .font(.system(size: 14))
+                                                .foregroundStyle(.primary)
+                                        }
+                                        Text(package.description)
+                                        
                                             .font(.system(size: 14))
                                             .foregroundStyle(.primary)
+                                            .lineLimit(1)
+                                        Text("from $\(package.price)/person ")
+                                        
+                                            .foregroundStyle(.primary)
+                                            .font(.system(size: 16, weight: .bold))
+                                        Text(package.servicesIncluded.first!.title)
+                                            .foregroundStyle(.primary)
+                                            .font(.system(size: 16, weight: .medium))
+                                            .padding(.all, 6)
+                                            .overlay {
+                                                RoundedRectangle(cornerRadius: 0)
+                                                    .stroke(Color.gray.opacity(0.8), lineWidth: 1)
+                                            }
                                     }
-                                    Text(package.description)
-                                    
-                                        .font(.system(size: 14))
-                                        .foregroundStyle(.primary)
-                                        .lineLimit(1)
-                                    Text("from $\(package.price)/person ")
-                                    
-                                        .foregroundStyle(.primary)
-                                        .font(.system(size: 16, weight: .bold))
-                                    Text(package.servicesIncluded.first!.title)
-                                        .foregroundStyle(.primary)
-                                        .font(.system(size: 16, weight: .medium))
-                                        .padding(.all, 6)
-                                        .overlay {
-                                            RoundedRectangle(cornerRadius: 0)
-                                                .stroke(Color.gray.opacity(0.8), lineWidth: 1)
-                                        }
+                                    .frame(maxHeight: .infinity, alignment: .top)
                                 }
-                                .frame(maxHeight: .infinity, alignment: .top)
+                                .padding(.horizontal)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                Rectangle()
+                                    .fill(Color.gray.opacity(0.8))
+                                    .frame(height: 1)
+                                    .frame(maxWidth:  size.width)
+                                    .padding(.vertical, 8)
                             }
-                            .padding(.horizontal)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            Rectangle()
-                                .fill(Color.gray.opacity(0.8))
-                                .frame(height: 1)
-                                .frame(maxWidth:  size.width)
-                                .padding(.vertical, 8)
                         }
                     }
-                }
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
