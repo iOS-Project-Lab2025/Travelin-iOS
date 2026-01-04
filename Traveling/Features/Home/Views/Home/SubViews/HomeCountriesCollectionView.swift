@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeCountriesCollectionView: View {
-    @Binding var countries: [Country]
+    var countries: [Country]
 
     let screenSize: CGSize
 
@@ -40,7 +40,7 @@ struct HomeCountriesCollectionView: View {
 
 #Preview {
     HomeCountriesCollectionView(
-        countries: .constant(
+        countries: 
             [
                 Country(
                     id: UUID(),
@@ -53,6 +53,6 @@ struct HomeCountriesCollectionView: View {
                     imageURL: "country1"
                 )
             ]
-        ), screenSize: UIScreen.main.bounds.size
+        , screenSize: UIScreen.main.bounds.size
     )
 }

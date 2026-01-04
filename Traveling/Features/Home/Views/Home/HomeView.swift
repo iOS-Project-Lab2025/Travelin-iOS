@@ -10,8 +10,6 @@ import SwiftUI
 struct HomeView: View {
     @State private var homeRouter = AppRouter.PathRouter<HomeRoutes>()
     @State private var viewModel = HomeViewModel()
-    
-    
 
     var body: some View {
         NavigationStack(path: $homeRouter.path) {
@@ -25,15 +23,16 @@ struct HomeView: View {
 
                     ScrollView(.vertical) {
                         HomePackageCollectionView(
-                            packages: $viewModel.packages,
+                            packages: $viewModel.allPoiPackages,
                             screenSize: geo.size
                         )
 
                         HomeCountriesCollectionView(
-                            countries: $viewModel.countries,
+                            countries: viewModel.countries,
                             screenSize: geo.size
                         )
                     }
+                    .padding(.top)
                 }
                 .ignoresSafeArea(edges: .top)
                 .navigationDestination(for: HomeRoutes.self) { route in
@@ -41,7 +40,7 @@ struct HomeView: View {
                     case .home:
                         HomeView()
                     case .poiSearch:
-                        SearchView(allPoiPackages: $viewModel.packages, allNearbyPackages: $viewModel.packages, inputText: $viewModel.searchDetail.searchText, router: $homeRouter, size: geo.size)
+                        SearchView(viewModel: $viewModel, router: $homeRouter, size: geo.size)
                     case .poiDetail:
                         Text("Detail")
                     }

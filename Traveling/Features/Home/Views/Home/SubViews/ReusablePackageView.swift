@@ -91,6 +91,7 @@ struct ReusablePackageView: View {
             .padding()
 
         }
+        .frame(width: size.width * 0.6, alignment: .leading)
         
     }
 }

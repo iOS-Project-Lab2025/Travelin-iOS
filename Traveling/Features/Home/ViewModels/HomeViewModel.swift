@@ -11,7 +11,8 @@ import Foundation
 final class HomeViewModel {
     
     
-    var packages: [Package] = []
+    var allPoiPackages: [Package] = []
+    var allNearbyPackages: [Package] = []
     var countries: [Country] = []
     var searchDetail = SearchDetail()
     
@@ -79,10 +80,35 @@ final class HomeViewModel {
         do {
             let result = try await repo.searchBoundingBox(params: params)
             let UIData = domainToUI(data: result)
-            self.packages = UIData
+            self.allPoiPackages = UIData
             print(result.count)
-            print(packages.count)
-            print(packages)
+            print(allPoiPackages.count)
+            print(allPoiPackages)
+        } catch {
+            lastLog = "❌ BoundingBox Error: \(error.localizedDescription)"
+        }
+    }
+    
+    func fetchChileanPOI() async {
+        guard let repo = poiRepo else {
+            lastLog = "⚠️ Networking not initialized."
+            return
+        }
+        let params = POIBoundingBoxParametersDomainModel(
+            north: -17.0,
+            south: -56.0,
+            east: -66.0,
+            west: -110.0,
+            categories: [],
+            page: PageParameters(limit: 25),
+            offset: 0
+        )
+        isLoading = true
+        defer { isLoading = false }
+        do {
+            let result = try await repo.searchBoundingBox(params: params)
+            let UIData = domainToUI(data: result)
+            self.allNearbyPackages = UIData
         } catch {
             lastLog = "❌ BoundingBox Error: \(error.localizedDescription)"
         }
@@ -109,10 +135,6 @@ final class HomeViewModel {
         }
         return listPOI
     }
-    private func fetchChileanPOI() {
-        
-    }
-    
     
     
     private func loadData() {
