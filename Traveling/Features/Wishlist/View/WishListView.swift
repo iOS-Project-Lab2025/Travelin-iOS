@@ -9,13 +9,13 @@ import SwiftUI
 
 struct WishListView: View {
     var body: some View {
-        VStack{
+        VStack {
             Text("Wishlist")
                 .font(.title)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
-            
+
             Spacer()
         }
         .padding()

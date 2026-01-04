@@ -61,7 +61,7 @@ struct TapBar: View {
     // Defines the TabBar items
     private let tabItems: [TabItem] = [
         TabItem(icon: "house.fill", title: "Home", route: .home),
-        TabItem(icon: "heart.fill", title: "Trips", route: .favorites),
+        TabItem(icon: "heart.fill", title: "Trips", route: .wishlist),
         TabItem(icon: "person.crop.circle.fill", title: "Profile", route: .profile)
     ]
 

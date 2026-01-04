@@ -18,24 +18,24 @@ struct ProfileEditView: View {
 
     /// The local router for the Profile navigation stack, used to navigate back.
     @Environment(AppRouter.PathRouter<ProfileRoutes>.self) private var profileRouter
-    
+
     /// The main application router, available for global navigation if needed.
     @Environment(\.appRouter) private var appRouter
-    
+
     /// The unique identifier of the user being edited.
     var userId: String
-    
+
     // MARK: - State
 
     /// The input state for the user's first name.
     @State private var firstName: String = ""
-    
+
     /// The input state for the user's last name.
     @State private var lastName: String = ""
-    
+
     /// The input state for the user's email address.
     @State private var email: String = ""
-    
+
     /// The input state for the user's password.
     @State private var password: String = ""
 
@@ -46,10 +46,10 @@ struct ProfileEditView: View {
             VStack(spacing: 24) {
                 // Top navigation and title
                 header
-                
+
                 // Form fields
                 bodyContainer()
-                
+
                 // Bottom action button
                 saveButton
             }
@@ -58,9 +58,9 @@ struct ProfileEditView: View {
         }
         .navigationBarHidden(true)
     }
-    
+
     // MARK: - Components
-    
+
     /// The header section containing the back button and the screen title.
     private var header: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -80,7 +80,7 @@ struct ProfileEditView: View {
                 Text("profile.editProfile-Title".localized)
                     .font(TravelinDesignSystem.DesignTokens.Typography.heading1)
                     .foregroundColor(.black)
-               
+
                 Text("editProfile.descriptionSubTitle".localized)
                     .font(TravelinDesignSystem.DesignTokens.Typography.body)
                     .foregroundColor(TravelinDesignSystem.DesignTokens.Colors.secondaryText)
@@ -91,7 +91,7 @@ struct ProfileEditView: View {
     /// The main container holding the input fields for the profile form.
     private func bodyContainer() -> some View {
         VStack(spacing: 16) {
-           
+
             // First Name Field
             DSTextField(
                 placeHolder: "register.firstNamePlaceHolder".localized,
@@ -127,7 +127,7 @@ struct ProfileEditView: View {
                 style: .outlined,
                 text: $password
             )
-           
+
             // Confirm Password Field
             DSTextField(
                 placeHolder: "Re enter your password".localized,
@@ -137,12 +137,12 @@ struct ProfileEditView: View {
             )
         }
     }
-    
+
     /// The bottom section containing the "Save" button.
     private var saveButton: some View {
         VStack {
             Spacer().frame(height: 20)
-           
+
             DSButton(
                 title: "editProfile.ButtonTitle".localized,
                 variant: .primary
@@ -150,7 +150,7 @@ struct ProfileEditView: View {
                 // Action to save changes and return to the previous screen
                 profileRouter.previous()
             }
-           
+
             Spacer().frame(height: 20)
         }
     }

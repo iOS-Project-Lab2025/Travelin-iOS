@@ -19,7 +19,7 @@ struct UserProfileView: View {
     /// The router responsible for handling navigation within the Profile flow.
     /// It is injected via the environment to allow pushing new views onto the stack.
     @Environment(AppRouter.PathRouter<ProfileRoutes>.self) private var profileRouter
-    
+
     // MARK: - Properties
 
     /// The unique identifier of the user currently logged in.
@@ -38,7 +38,7 @@ struct UserProfileView: View {
 
             // Menu options and buttons
             bodyContainer()
-            
+
             // Pushes content to the top
             Spacer()
         }
@@ -76,13 +76,13 @@ struct UserProfileView: View {
     /// Renders the list of action buttons and account settings.
     private func bodyContainer() -> some View {
         VStack(spacing: 16) {
-            
+
             // Section Title
             Text("profile.accountSettings-Title".localized)
                 .font(.title2)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            
+
             // Edit Profile Button
             DSButton(
                 title: "profile.editProfileButton-Title".localized,

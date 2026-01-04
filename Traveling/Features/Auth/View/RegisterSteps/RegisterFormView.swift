@@ -41,7 +41,7 @@ struct RegisterFormView: View {
     }
 
     // MARK: - Components
-    
+
     private var header: some View {
         VStack(alignment: .leading, spacing: 20) {
             Button {
@@ -52,7 +52,6 @@ struct RegisterFormView: View {
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.black)
             }
-            .padding(.horizontal, 26)
             .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(alignment: .leading, spacing: 8) {
