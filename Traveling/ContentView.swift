@@ -25,6 +25,10 @@ struct ContentView: View {
 
         case .booking:
             BookingView()
+            
+        case .wishlist:
+            WishListView()
+        }
 
         case .authentication(.login):
             LoginView(
@@ -37,8 +41,6 @@ struct ContentView: View {
 
         case .authentication(.register):
             RegisterView(registerViewModel: RegisterViewModel())
-        }
-
     }
 }
 
