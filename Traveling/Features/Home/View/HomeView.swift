@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var homeRouter = AppRouter.FlowRouter<HomeRoutes>(flow: [.home, .poiSearch, .poiDetail])
+    @State private var homeRouter = AppRouter.PathRouter<HomeRoutes>()
     @State private var viewModel = HomeViewModel()
     
     
@@ -41,7 +41,7 @@ struct HomeView: View {
                     case .home:
                         HomeView()
                     case .poiSearch:
-                        SearchView(packages: $viewModel.packages, inputText: $viewModel.searchDetail.searchText, router: $homeRouter, size: geo.size)
+                        SearchView(allPoiPackages: $viewModel.packages, allNearbyPackages: $viewModel.packages, inputText: $viewModel.searchDetail.searchText, router: $homeRouter, size: geo.size)
                     case .poiDetail:
                         Text("Detail")
                     }

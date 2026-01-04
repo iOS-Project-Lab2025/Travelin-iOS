@@ -10,7 +10,7 @@ import SwiftUI
 
 struct TopHomeView: View {
     @Binding var searchDetail: SearchDetail
-    @Binding var router: AppRouter.FlowRouter<HomeRoutes>
+    @Binding var router: AppRouter.PathRouter<HomeRoutes>
     let screenSize: CGSize
     var body: some View {
         ZStack {
@@ -46,7 +46,9 @@ struct TopHomeView: View {
                             .fill(.clear)
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                router.next()
+                                router.goTo(
+                                    .poiSearch
+                                )
                             }
                     }
                 
@@ -83,5 +85,5 @@ struct TopHomeView: View {
 }
 
 #Preview {
-    TopHomeView(searchDetail: .constant(SearchDetail()), router: .constant(AppRouter.FlowRouter<HomeRoutes>(flow: [.home, .poiSearch, .poiDetail])), screenSize: UIScreen.main.bounds.size)
+    TopHomeView(searchDetail: .constant(SearchDetail()), router: .constant(AppRouter.PathRouter<HomeRoutes>()), screenSize: UIScreen.main.bounds.size)
 }

@@ -10,9 +10,10 @@ import TravelinDesignSystem
 
 struct SearchView: View {
     @FocusState private var focused: Bool
-    @Binding var packages: [Package]
+    @Binding var allPoiPackages: [Package]
+    @Binding var allNearbyPackages: [Package]
     @Binding var inputText: String
-    @Binding var router: AppRouter.FlowRouter<HomeRoutes>
+    @Binding var router: AppRouter.PathRouter<HomeRoutes>
     @State private var showAllPOI: Bool = false
     let size: CGSize
 
@@ -22,14 +23,28 @@ struct SearchView: View {
 
                 // Contenido
                 if inputText.isEmpty {
-                    NearbySearchComponentView()
+                    VStack(alignment: .leading)  {
+                        NearbySearchComponentView()
+                        ReusablePackageSearchView(packages: $allNearbyPackages, totalPackage: (allNearbyPackages.count), size: size)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
+                    
                     VStack(alignment: .leading) {
-                        ReusablePackageSearchView(inputText: $inputText, packages: $packages, showAllPOI: $showAllPOI, size: size)
+                        Text("Place name \"\(inputText)\" ")
+                            .foregroundStyle(.primary)
+                            .font(.system(size: 20, weight: .bold))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
+                            .padding(.top)
+                        
+                        ReusablePackageSearchView(packages: $allPoiPackages, totalPackage: (showAllPOI ? allPoiPackages.count : 3), size: size)
 
-                        if packages.count > 3 {
-                            Button { showAllPOI.toggle()} label: {
-                                Text("\(showAllPOI ? "Hide": "Show") + \(showAllPOI ? packages.count : packages.count - 3)")
+                        if allPoiPackages.count > 3 {
+                            Button {
+                                showAllPOI.toggle()
+                            } label: {
+                                Text("\(showAllPOI ? "Hide": "Show") + \(showAllPOI ? allPoiPackages.count : allPoiPackages.count - 3)")
                                     .foregroundStyle(.black)
                                     .font(.system(size: 14, weight: .bold))
                                     .frame(width: size.width * 0.5)
@@ -47,6 +62,7 @@ struct SearchView: View {
                             
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
             .onAppear() {
@@ -101,7 +117,7 @@ struct SearchView: View {
 
 #Preview {
     NavigationStack {
-        SearchView(packages: .constant([
+        SearchView(allPoiPackages: .constant([
             Package(
                 id: "01",
                 imagesCollection: ["package1"],
@@ -145,7 +161,51 @@ struct SearchView: View {
                 price: 600,
                 servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
             )
-        ]), inputText: .constant("s"), router: .constant(AppRouter.FlowRouter<HomeRoutes>(flow: [.home, .poiSearch, .poiDetail]))
+        ]), allNearbyPackages: .constant([
+            Package(
+                id: "01",
+                imagesCollection: ["package1"],
+                name: "Koh Rong Samloem",
+                rating: 3,
+                numberReviews: 50,
+                description: "Lorem ipsum dolor sit amet...",
+                isFavorite: true,
+                price: 600,
+                servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
+            ), Package(
+                id: "02",
+                imagesCollection: ["package1"],
+                name: "Koh Rong Samloem",
+                rating: 4,
+                numberReviews: 90,
+                description: "Lorem ipsum dolor sit amet...",
+                isFavorite: true,
+                price: 600,
+                servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
+            ),
+            Package(
+                id: "03",
+                imagesCollection: ["package1"],
+                name: "Koh Rong Samloem",
+                rating: 3,
+                numberReviews: 50,
+                description: "Lorem ipsum dolor sit amet...",
+                isFavorite: true,
+                price: 600,
+                servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
+            ),
+            Package(
+                id: "04",
+                imagesCollection: ["package1"],
+                name: "Koh Rong Samloem",
+                rating: 4,
+                numberReviews: 90,
+                description: "Lorem ipsum dolor sit amet...",
+                isFavorite: true,
+                price: 600,
+                servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
+            )
+        ]), inputText: .constant("s"), router: .constant(AppRouter.PathRouter<HomeRoutes>())
                    , size: CGSize(width: UIScreen.main.bounds.width , height: UIScreen.main.bounds.width * 0.38))
     }
 }
@@ -190,23 +250,19 @@ struct NearbySearchComponentView: View {
 }
 
 struct ReusablePackageSearchView: View {
-    @Binding var inputText: String
+    
     @Binding var packages: [Package]
-    @Binding var showAllPOI: Bool
+    
+    let totalPackage: Int
     let size: CGSize
     var body: some View {
-        VStack {
-            Text("Place name \"\(inputText)\" ")
-                .foregroundStyle(.primary)
-                .font(.system(size: 20, weight: .bold))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal)
-                .padding(.top)
+    
+            
             ScrollView(.vertical) {
                 LazyVStack(
                     alignment: .center,
                     spacing: 0) {
-                        ForEach(Array(packages.prefix(showAllPOI ? packages.count : 3))) { package in
+                        ForEach(Array(packages.prefix(totalPackage))) { package in
                             VStack {
                                 HStack {
                                     let urlString = package.imagesCollection.first ?? ""
@@ -289,8 +345,8 @@ struct ReusablePackageSearchView: View {
                         }
                     }
             }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        
+       
     }
 }
 
