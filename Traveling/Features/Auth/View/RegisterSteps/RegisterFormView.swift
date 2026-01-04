@@ -41,20 +41,17 @@ struct RegisterFormView: View {
     }
 
     // MARK: - Components
+
     private var header: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Button(action: {
+            Button {
                 mainRouter.goTo(.home)
-            }, label: {
-                Image(systemName: "arrow.left")
+            }
+            label: {
+                    Image(systemName: "chevron.left")
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.black)
-                    .padding(10)
-                    .background(
-                        Circle()
-                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                    )
-            })
+            }
             .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(alignment: .leading, spacing: 8) {
@@ -229,4 +226,11 @@ struct RegisterFormView: View {
         }
         return .gray.opacity(0.3)
     }
+}
+
+#Preview {
+    let viewModel = RegisterViewModel()
+
+    RegisterFormView(registerViewModel: viewModel)
+        .environment(AppRouter.FlowRouter<RegisterRoutes>(flow: [.form, .success]))
 }

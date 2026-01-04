@@ -13,7 +13,7 @@ enum AppRoutes: Hashable {
     case authentication(AuthenticationEntry)
     case profile
     case booking
-    case favorites
+    case wishlist
 }
 
 enum AuthenticationEntry {
