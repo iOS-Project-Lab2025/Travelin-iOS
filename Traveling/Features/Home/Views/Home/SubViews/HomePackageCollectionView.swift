@@ -9,6 +9,8 @@ import SwiftUI
 
 struct HomePackageCollectionView: View {
     @Binding var packages: [Package]
+    @Binding var router: AppRouter.PathRouter<HomeRoutes>
+    
     let screenSize: CGSize
 
         var body: some View {
@@ -24,7 +26,9 @@ struct HomePackageCollectionView: View {
                     LazyHStack(spacing: 20) {
                         ForEach(packages) { package in
                             ReusablePackageView(package: package, size: screenSize)
-
+                                .onTapGesture {
+                                    router.goTo(.poiDetail(id: package.id))
+                                }
                         }
                     }
                 }
@@ -56,6 +60,6 @@ struct HomePackageCollectionView: View {
             price: 600,
             servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
         )
-    ]), screenSize: UIScreen.main.bounds.size
+    ]), router: .constant(AppRouter.PathRouter<HomeRoutes>()), screenSize: UIScreen.main.bounds.size
     )
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct ReusablePackageSearchView: View {
     
     @Binding var packages: [Package]
+    @Binding var router: AppRouter.PathRouter<HomeRoutes>
     
     let totalPackage: Int
     let size: CGSize
@@ -99,6 +100,9 @@ struct ReusablePackageSearchView: View {
                                 .frame(height: 1)
                                 .frame(maxWidth:  size.width)
                                 .padding(.vertical, 8)
+                        }
+                        .onTapGesture {
+                            router.goTo(.poiDetail(id: package.id))
                         }
                     }
                 }

@@ -53,9 +53,12 @@ struct SearchView: View {
                             // Un color por capa
                         }
                         .padding()
-                        ReusablePackageSearchView(packages: $viewModel.allNearbyPackages, totalPackage: ($viewModel.allNearbyPackages.count), size: size)
+                        ReusablePackageSearchView(packages: $viewModel.allNearbyPackages, router: $router, totalPackage: ($viewModel.allNearbyPackages.count), size: size)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .onDisappear {
+                        viewModel.allNearbyPackages = []
+                    }
                 } else {
                     
                     VStack(alignment: .leading) {
@@ -66,7 +69,7 @@ struct SearchView: View {
                             .padding(.horizontal)
                             .padding(.top)
                         
-                        ReusablePackageSearchView(packages: $viewModel.allPoiPackages, totalPackage: (showAllPOI ? $viewModel.allPoiPackages.count : 3), size: size)
+                        ReusablePackageSearchView(packages: $viewModel.allPoiPackages, router: $router, totalPackage: (showAllPOI ? $viewModel.allPoiPackages.count : 3), size: size)
 
                         if $viewModel.allPoiPackages.count > 3 {
                             Button {
@@ -102,6 +105,7 @@ struct SearchView: View {
         .onTapGesture {
                     focused = false          // ✅ cierra teclado
                 }
+        
 
         // ✅ Header fijo que respeta safe area
         .safeAreaInset(edge: .top, spacing: 0) {

@@ -24,6 +24,7 @@ struct HomeView: View {
                     ScrollView(.vertical) {
                         HomePackageCollectionView(
                             packages: $viewModel.allPoiPackages,
+                            router: $homeRouter,
                             screenSize: geo.size
                         )
 
@@ -41,8 +42,12 @@ struct HomeView: View {
                         HomeView()
                     case .poiSearch:
                         SearchView(viewModel: $viewModel, router: $homeRouter, size: geo.size)
-                    case .poiDetail:
-                        Text("Detail")
+                    case .poiDetail(let id):
+                        if let package = viewModel.allPoiPackages.first(where: { $0.id == id }) {
+                               DetailPackageView(package: package)
+                           } else {
+                               Text("Not found")
+                           }
                     }
                 }
             }
@@ -55,5 +60,5 @@ struct HomeView: View {
 enum HomeRoutes: Hashable {
     case home
     case poiSearch
-    case poiDetail
+    case poiDetail(id: String)
 }

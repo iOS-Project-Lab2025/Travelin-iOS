@@ -15,6 +15,7 @@ final class HomeViewModel {
     var allNearbyPackages: [Package] = []
     var countries: [Country] = []
     var searchDetail = SearchDetail()
+    var selectedPackage: Package?
     
     var isLoading: Bool = false
     var lastLog: String = ""
