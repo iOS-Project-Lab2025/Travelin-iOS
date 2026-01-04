@@ -36,6 +36,7 @@ struct ProfileView: View {
                 .navigationDestination(for: ProfileRoutes.self) { route in
                     destinationView(for: route)
                 }
+
         }
         // Inject the router into the environment so child views (like UserProfileView)
         // can access it to push new screens.

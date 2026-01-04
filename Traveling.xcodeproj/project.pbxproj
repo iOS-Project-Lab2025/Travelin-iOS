@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		642FF90D2EB82969005E613A /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 642FF90C2EB82969005E613A /* KeychainAccess */; };
 		64DF110A2ED4FB870055C94A /* TravelinDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 64DF11092ED4FB870055C94A /* TravelinDesignSystem */; };
-		64E5C4E32F0959E30002B3FF /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = C66F3BC62F02160C00B3A21A /* ViewInspector */; };
+		64E5C6A02F0ABB100002B3FF /* ViewInspector in Frameworks */ = {isa = PBXBuildFile; productRef = C66F3BC62F02160C00B3A21A /* ViewInspector */; };
 		9A7FFA7C2EF3456100698A4A /* TravelinTestPlan.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 9A7FFA7B2EF3456100698A4A /* TravelinTestPlan.xctestplan */; };
 /* End PBXBuildFile section */
 
@@ -69,7 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				64E5C4E32F0959E30002B3FF /* ViewInspector in Frameworks */,
+				64E5C6A02F0ABB100002B3FF /* ViewInspector in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
