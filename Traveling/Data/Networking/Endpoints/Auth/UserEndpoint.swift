@@ -11,6 +11,7 @@ enum UserEndpoint: EndPointProtocol {
     case login(email: String, password: String)
     case refresh(token: String)
     case me
+    case register(email: String, password: String, firstName: String, lastName: String, phone: String)
 
     var path: String {
         switch self {
@@ -22,12 +23,15 @@ enum UserEndpoint: EndPointProtocol {
 
         case .me:
             return "/v1/auth/me"
+
+        case .register:
+            return "/v1/auth/register"
         }
     }
 
     var method: HTTPMethod {
         switch self {
-        case .login, .refresh:
+        case .login, .refresh, .register:
             return .post
 
         default:
@@ -56,6 +60,9 @@ enum UserEndpoint: EndPointProtocol {
 
         case .refresh(let token):
             return RefreshTokenRequest(refreshToken: token)
+
+        case .register(let email, let password, let firstName, let lastName, let phone):
+            return RegisterRequest(email: email, password: password, firstName: firstName, lastName: lastName, phone: phone)
 
         case .me:
             return nil

@@ -28,8 +28,8 @@ class LoginViewModel: LoginViewModelProtocol {
     // MARK: - Dependencies
 
     private let tokenManager: TokenManaging
-    private let authService: AuthService
-    private let userService: UserService
+    private let authService: AuthServiceProtocol
+    private let userService: UserServiceProtocol
 
     // MARK: - Init
 
@@ -40,8 +40,8 @@ class LoginViewModel: LoginViewModelProtocol {
     ///   - userService: The service responsible for user management. Defaults to `Services.user`.
     ///   - tokenManager: The manager for handling tokens. Defaults to `Services.tokenManager`.
     init(
-        authService: AuthService = Services.auth,
-        userService: UserService = Services.user,
+        authService: AuthServiceProtocol = Services.auth,
+        userService: UserServiceProtocol = Services.user,
         tokenManager: TokenManaging = Services.tokenManager
     ) {
         self.authService = authService
