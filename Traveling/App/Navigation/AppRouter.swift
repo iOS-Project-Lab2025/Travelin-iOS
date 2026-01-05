@@ -59,11 +59,11 @@ enum AppRouter {
         private var onBoardingComplete: (() -> Void)?
         static let shared = Main()
         private init() {
-            path = UserDefaults.standard.bool(forKey: "onboardingSeen") ? .initial : .onBoarding
+            path = UserDefaults.standard.bool(forKey: "onboardingSeen") ? .home : .onBoarding
         }
 
         // Active main route
-        var path: AppRoutes = .initial
+        var path: AppRoutes = .onBoarding
 
         // To go to one of the main routes
         func goTo(_ route: AppRoutes) {
