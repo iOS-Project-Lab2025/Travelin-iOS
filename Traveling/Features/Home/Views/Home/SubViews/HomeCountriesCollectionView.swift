@@ -9,20 +9,12 @@ import SwiftUI
 
 struct HomeCountriesCollectionView: View {
     var countries: [Country]
-
+    
     let screenSize: CGSize
-
+    
     var body: some View {
-        
-
         VStack(spacing: 0) {
-            Text("Expanding your trip around the world")
-                .lineLimit(2)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.system(size: 22, weight: .bold))
-                .padding(.horizontal)
-                .padding(.trailing, screenSize.width * 0.2)
-
+            titleView
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 16) {
                     ForEach(countries) { country in
@@ -36,11 +28,19 @@ struct HomeCountriesCollectionView: View {
             }
         }
     }
+    private var titleView: some View {
+        Text("Expanding your trip around the world")
+            .lineLimit(2)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .font(.system(size: 22, weight: .bold))
+            .padding(.horizontal)
+            .padding(.trailing, screenSize.width * 0.2)
+    }
 }
 
 #Preview {
     HomeCountriesCollectionView(
-        countries: 
+        countries:
             [
                 Country(
                     id: UUID(),

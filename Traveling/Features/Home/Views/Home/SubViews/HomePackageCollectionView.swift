@@ -10,31 +10,28 @@ import SwiftUI
 struct HomePackageCollectionView: View {
     @Binding var packages: [Package]
     @Binding var router: AppRouter.PathRouter<HomeRoutes>
-    
     let screenSize: CGSize
-
-        var body: some View {
-            
-            VStack(spacing: 0) {
-                Text("Popular package in asia")
-
-                    .font(.system(size: 20, weight: .bold))
-
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                ScrollView(.horizontal) {
-                    LazyHStack(spacing: 20) {
-                        ForEach(packages) { package in
-                            ReusablePackageView(package: package, size: screenSize)
-                                .onTapGesture {
-                                    router.goTo(.poiDetail(id: package.id))
-                                }
-                        }
+    var body: some View {
+        VStack(spacing: 0) {
+            titleView
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: 20) {
+                    ForEach(packages) { package in
+                        ReusablePackageView(package: package, size: screenSize)
+                            .onTapGesture {
+                                router.goTo(.poiDetail(id: package.id))
+                            }
                     }
                 }
             }
-            .padding()
         }
+        .padding()
+    }
+    private var titleView: some View {
+        Text("Popular package in asia")
+            .font(.system(size: 20, weight: .bold))
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
 }
 
 #Preview {

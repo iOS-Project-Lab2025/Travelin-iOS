@@ -20,14 +20,12 @@ struct HomeView: View {
                         .onAppear {
                             viewModel.searchDetail.searchText = ""
                         }
-
                     ScrollView(.vertical) {
                         HomePackageCollectionView(
                             packages: $viewModel.allPoiPackages,
                             router: $homeRouter,
                             screenSize: geo.size
                         )
-
                         HomeCountriesCollectionView(
                             countries: viewModel.countries,
                             screenSize: geo.size
@@ -53,7 +51,6 @@ struct HomeView: View {
             }
         }
         .environment(homeRouter)
-        
     }
 }
 

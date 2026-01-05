@@ -13,21 +13,26 @@ struct ReusableCountriesView: View {
 
     var body: some View {
         ZStack {
-            Image(country.imageURL)
-                .resizable()
-                .scaledToFill()
-                .frame(width: size.width, height: size.height)
-                .clipped()
-                .overlay(Color.black.opacity(0.13))
+            countryView
         }
         .overlay(alignment: .bottomLeading) {
-            Text(country.name)
-                .font(.system(size: 20, weight: .bold))
-                .foregroundStyle(.white)
-                .padding(16)
+            countryNameView
         }
-
         .frame(width: size.width, height: size.height)
+    }
+    private var countryView: some View {
+        Image(country.imageURL)
+            .resizable()
+            .scaledToFill()
+            .frame(width: size.width, height: size.height)
+            .clipped()
+            .overlay(Color.black.opacity(0.13))
+    }
+    private var countryNameView: some View {
+        Text(country.name)
+            .font(.system(size: 20, weight: .bold))
+            .foregroundStyle(.white)
+            .padding(16)
     }
 }
 
