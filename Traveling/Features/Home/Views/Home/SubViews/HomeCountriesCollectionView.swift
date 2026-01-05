@@ -9,7 +9,7 @@ import SwiftUI
 import TravelinDesignSystem
 
 struct HomeCountriesCollectionView: View {
-    var countries: [Country]
+    let countries: [Country]
     let screenSize: CGSize
     
     var body: some View {

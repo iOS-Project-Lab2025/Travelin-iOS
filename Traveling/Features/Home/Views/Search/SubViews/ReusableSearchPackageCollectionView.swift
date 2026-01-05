@@ -9,8 +9,8 @@ import SwiftUI
 import TravelinDesignSystem
 
 struct ReusableSearchPackageCollectionView: View {
-    var packages: [Package]
     @Environment(AppRouter.PathRouter<HomeRoutes>.self) private var router
+    let packages: [Package]
     let totalPackage: Int
     let screenSize: CGSize
     
@@ -30,7 +30,9 @@ struct ReusableSearchPackageCollectionView: View {
                                     self.rankingView(rating: package.rating, totalReviews: package.numberReviews)
                                     self.descriptionView(description: package.description)
                                     self.priceView(price: package.price)
-                                    self.servicesView(text: package.servicesIncluded.first!.title)
+                                    if let firstService = package.servicesIncluded.first {
+                                        self.servicesView(text: firstService.title)
+                                    }
                                 }
                                 .frame(maxHeight: .infinity, alignment: .top)
                             }
@@ -77,6 +79,7 @@ struct ReusableSearchPackageCollectionView: View {
         .cornerRadius(15)
         .clipped()
         .overlay(TravelinDesignSystem.DesignTokens.Colors.primaryText.opacity(0.2))
+        .cornerRadius(12)
     }
     @ViewBuilder
     private func packageNameView(name: String) -> some View {

@@ -9,26 +9,30 @@ import SwiftUI
 import TravelinDesignSystem
 
 struct ReusablePackageView: View {
-    var package: Package
-    let screenSize: CGSize
+    @Binding var package: Package
+       let screenSize: CGSize
+       var onTap: (() -> Void)? = nil
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            ZStack(alignment: .topTrailing) {
-                let urlString = self.package.imagesCollection.first ?? ""
-                let url = URL(string: urlString)
-                self.checkPhaseImageView(for: url)
-                self.isFavoriteButtonView
+        Button(action: { onTap?() }) {
+            VStack(alignment: .leading, spacing: 0) {
+                ZStack(alignment: .topTrailing) {
+                    let urlString = self.package.imagesCollection.first ?? ""
+                    let url = URL(string: urlString)
+                    self.checkPhaseImageView(for: url)
+                    self.isFavoriteButtonView
+                }
+                VStack(alignment: .leading, spacing: TravelinDesignSystem.DesignTokens.Spacing.small) {
+                    self.namePackageView
+                    self.rankingView
+                    self.descriptionPackageView
+                }
+                .padding()
+                .frame(width: self.screenSize.width * 0.6, alignment: .leading)
+                .tint(.black)
             }
-            VStack(alignment: .leading, spacing: TravelinDesignSystem.DesignTokens.Spacing.small) {
-                self.namePackageView
-                self.rankingView
-                self.descriptionPackageView
-            }
-            .frame(width: self.screenSize.width * 0.6, alignment: .leading)
-            .padding()
+            
         }
-        .frame(width: self.screenSize.width * 0.6, alignment: .leading)
     }
     @ViewBuilder
     private func checkPhaseImageView(for url: URL?) -> some View {
@@ -61,14 +65,17 @@ struct ReusablePackageView: View {
     }
     private var isFavoriteButtonView: some View {
         Button {
-            
+            package.isFavorite.toggle()  // ✅ Solo una vez
         } label: {
-            Image(systemName: "heart.circle.fill")
+            Image(systemName: package.isFavorite ? "heart.circle.fill" : "heart.circle")
                 .font(.system(size: TravelinDesignSystem.DesignTokens.Spacing.large))
                 .symbolRenderingMode(.palette)
-                .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(self.package.isFavorite ? .yellow : .black, .white)
+                .foregroundStyle(
+                    package.isFavorite ? .yellow : .white,
+                    package.isFavorite ? .white : .gray.opacity(0.5)
+                )
         }
+        .buttonStyle(.plain)  // ✅ Evita el estilo default
         .padding()
     }
     private var namePackageView: some View {
@@ -105,7 +112,7 @@ struct ReusablePackageView: View {
 
 #Preview {
     ReusablePackageView(
-        package: Package(
+        package: .constant(Package(
             id: "01",
             imagesCollection: ["package1"],
             name: "Koh Rong Samloem",
@@ -115,7 +122,7 @@ struct ReusablePackageView: View {
             isFavorite: true,
             price: 600,
             servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
-        ), screenSize: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width )
+        )), screenSize: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width )
     )
     .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height )
 }
@@ -134,8 +141,4 @@ struct RoundedCorner: Shape {
 }
 
 
-enum Constants {
-    static let cornerRadius: CGFloat = 12
-    static let overlayOpacity: CGFloat = 0.13
-    static let textPadding: CGFloat = 16
-}
+

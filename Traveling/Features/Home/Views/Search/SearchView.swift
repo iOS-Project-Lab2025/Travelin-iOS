@@ -10,8 +10,8 @@ import TravelinDesignSystem
 
 struct SearchView: View {
     @FocusState private var focused: Bool
-    @Binding var viewModel: HomeViewModel
     @Environment(AppRouter.PathRouter<HomeRoutes>.self) private var router
+    @Binding var viewModel: HomeViewModel
     @State private var showAllPOI: Bool = false
     let screenSize: CGSize
     
@@ -65,7 +65,7 @@ struct SearchView: View {
                 HStack(alignment: .center) {
                     Image(systemName: "drop.circle")
                         .font(TravelinDesignSystem.DesignTokens.Typography.heading1)
-                        .symbolRenderingMode(.palette)   // Permite usar varios colores
+                        
                         .symbolRenderingMode(.hierarchical)
                         .foregroundStyle(TravelinDesignSystem.DesignTokens.Colors.darkButtonBackgroundPressed)
                     VStack(alignment: .leading) {

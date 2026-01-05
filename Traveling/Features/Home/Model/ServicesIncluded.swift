@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ServicesIncluded: Identifiable {
+struct ServicesIncluded: Identifiable, Codable, Hashable {
     let id: UUID
     let title: String
     let subTitle: String

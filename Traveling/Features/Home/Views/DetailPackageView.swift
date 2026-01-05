@@ -8,16 +8,18 @@
 import SwiftUI
 
 struct DetailPackageView: View {
-    let package: Package
+    @Binding var package: Package
     var body: some View {
-        Text(package.name)
-        Text(package.description)
-        Text(package.isFavorite ? "Favorite" : "Not Favorite")
-    }
+        VStack {
+            Text(package.name)
+            Text(package.description)
+            Text(package.isFavorite ? "Favorite" : "Not Favorite")
+        }
+        }
 }
 
 #Preview {
-    DetailPackageView(package: Package(
+    DetailPackageView(package: .constant(Package(
         id: "01",
         imagesCollection: ["package1"],
         name: "Koh Rong Samloem",
@@ -27,5 +29,5 @@ struct DetailPackageView: View {
         isFavorite: true,
         price: 600,
         servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
-    ))
+    )))
 }

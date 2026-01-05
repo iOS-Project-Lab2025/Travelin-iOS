@@ -9,8 +9,8 @@ import TravelinDesignSystem
 import SwiftUI
 
 struct TopHomeView: View {
-    @Binding var searchDetail: SearchDetail
     @Environment(AppRouter.PathRouter<HomeRoutes>.self) private var router
+    @Binding var searchDetail: SearchDetail
     let screenSize: CGSize
     
     var body: some View {

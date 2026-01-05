@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Package: Identifiable {
+struct Package: Identifiable, Codable, Hashable {
     let id: String
     let imagesCollection: [String]
     let name: String
