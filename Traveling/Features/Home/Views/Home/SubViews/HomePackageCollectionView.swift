@@ -6,20 +6,22 @@
 //
 
 import SwiftUI
+import TravelinDesignSystem
 
 struct HomePackageCollectionView: View {
-    @Binding var packages: [Package]
-    @Binding var router: AppRouter.PathRouter<HomeRoutes>
+    var packages: [Package]
+    @Environment(AppRouter.PathRouter<HomeRoutes>.self) private var router
     let screenSize: CGSize
+    
     var body: some View {
         VStack(spacing: 0) {
-            titleView
+            self.titleView
             ScrollView(.horizontal) {
-                LazyHStack(spacing: 20) {
-                    ForEach(packages) { package in
-                        ReusablePackageView(package: package, size: screenSize)
+                LazyHStack(spacing: TravelinDesignSystem.DesignTokens.Spacing.buttonHorizontal) {
+                    ForEach(self.packages) { package in
+                        ReusablePackageView(package: package, screenSize: self.screenSize)
                             .onTapGesture {
-                                router.goTo(.poiDetail(id: package.id))
+                                self.router.goTo(.poiDetail(id: package.id))
                             }
                     }
                 }
@@ -29,13 +31,13 @@ struct HomePackageCollectionView: View {
     }
     private var titleView: some View {
         Text("Popular package in asia")
-            .font(.system(size: 20, weight: .bold))
+            .font(TravelinDesignSystem.DesignTokens.Typography.title1.bold())
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
 #Preview {
-    HomePackageCollectionView(packages: .constant([
+    HomePackageCollectionView(packages: [
         Package(
             id: "01",
             imagesCollection: ["package1"],
@@ -57,6 +59,6 @@ struct HomePackageCollectionView: View {
             price: 600,
             servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
         )
-    ]), router: .constant(AppRouter.PathRouter<HomeRoutes>()), screenSize: UIScreen.main.bounds.size
+    ], screenSize: UIScreen.main.bounds.size
     )
 }

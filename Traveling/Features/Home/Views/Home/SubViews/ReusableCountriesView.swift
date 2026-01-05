@@ -6,33 +6,34 @@
 //
 
 import SwiftUI
+import TravelinDesignSystem
 
 struct ReusableCountriesView: View {
     let country: Country
-    let size: CGSize
-
+    let screenSize: CGSize
+    
     var body: some View {
         ZStack {
-            countryView
+            self.countryView
         }
         .overlay(alignment: .bottomLeading) {
-            countryNameView
+            self.countryNameView
         }
-        .frame(width: size.width, height: size.height)
+        .frame(width: self.screenSize.width, height: self.screenSize.height)
     }
     private var countryView: some View {
-        Image(country.imageURL)
+        Image(self.country.imageURL)
             .resizable()
             .scaledToFill()
-            .frame(width: size.width, height: size.height)
+            .frame(width: self.screenSize.width, height: self.screenSize.height)
             .clipped()
             .overlay(Color.black.opacity(0.13))
     }
     private var countryNameView: some View {
-        Text(country.name)
-            .font(.system(size: 20, weight: .bold))
+        Text(self.country.name)
+            .font(TravelinDesignSystem.DesignTokens.Typography.title1.bold())
             .foregroundStyle(.white)
-            .padding(16)
+            .padding(TravelinDesignSystem.DesignTokens.Spacing.medium)
     }
 }
 
@@ -41,6 +42,6 @@ struct ReusableCountriesView: View {
         id: UUID(),
         name: "Cambodia",
         imageURL: "country1"
-    ), size: CGSize(width: UIScreen.main.bounds.width * 0.5, height: UIScreen.main.bounds.width * 0.55))
-
+    ), screenSize: CGSize(width: UIScreen.main.bounds.width * 0.5, height: UIScreen.main.bounds.width * 0.55))
+    
 }

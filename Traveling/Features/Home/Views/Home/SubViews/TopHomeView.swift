@@ -10,16 +10,17 @@ import SwiftUI
 
 struct TopHomeView: View {
     @Binding var searchDetail: SearchDetail
-    @Binding var router: AppRouter.PathRouter<HomeRoutes>
+    @Environment(AppRouter.PathRouter<HomeRoutes>.self) private var router
     let screenSize: CGSize
+    
     var body: some View {
         ZStack {
-            backgroundImageView
+            self.backgroundImageView
             VStack(alignment: .leading) {
-                titleView
-                subTitleView
-                falseSearchFieldView
-                filtersView
+                self.titleView
+                self.subTitleView
+                self.falseSearchFieldView
+                self.filtersView
             }
             .padding()
         }
@@ -30,7 +31,7 @@ struct TopHomeView: View {
                 .resizable()
                 .scaledToFill()
                 .frame(width: screenSize.width, height: screenSize.height * 0.45)
-                .overlay(Color.black.opacity(0.2))
+                .overlay(TravelinDesignSystem.DesignTokens.Colors.darkButtonBackgroundPressed.opacity(0.2))
                 .clipped()
                 .minimumScaleFactor(0.7)
         }
@@ -38,8 +39,8 @@ struct TopHomeView: View {
     private var titleView: some View {
         Text("Explore the world today")
             .foregroundStyle(.white)
-            .font(.system(size: 48, weight: .bold, design: .default))
-            .padding(.top, 24)
+            .font(TravelinDesignSystem.DesignTokens.Typography.heading1)
+            .padding(.top, TravelinDesignSystem.DesignTokens.Spacing.mediumLarge)
     }
     private var subTitleView: some View {
         (
@@ -47,7 +48,7 @@ struct TopHomeView: View {
                 .bold()
             + Text("- take your travel to next level")
         )
-        .font(.system(size: 16))
+        .font(TravelinDesignSystem.DesignTokens.Typography.title2)
         .foregroundStyle(.white)
     }
     private var falseSearchFieldView: some View {
@@ -56,13 +57,13 @@ struct TopHomeView: View {
             placeHolder: "Search Destination",
             type: .search,
             style: .default,
-            text: $searchDetail.searchText)
+            text: self.$searchDetail.searchText)
         .overlay {
             Rectangle()
                 .fill(.clear)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    router.goTo(
+                    self.router.goTo(
                         .poiSearch
                     )
                 }
@@ -74,24 +75,32 @@ struct TopHomeView: View {
                 title: "Hotel",
                 icon: Image(systemName: "bed.double.fill"),
                 iconPosition: .leading,
-                variant: .ghost,
+                variant: self.searchDetail.searchType == .hotel ? .dark : .ghost,
                 size: .large,
                 fullWidth: true,
                 fixedWidth: 100
             ) {
-                
+                if self.searchDetail.searchType == .hotel {
+                    self.searchDetail.searchType = .all
+                } else {
+                    self.searchDetail.searchType = .hotel
+                }
             }
             Spacer()
             DSButton(
                 title: "Oversea",
                 icon: Image(systemName: "airplane"),
                 iconPosition: .leading,
-                variant: .ghost,
+                variant: self.searchDetail.searchType == .oversea ? .dark : .ghost,
                 size: .large,
                 fullWidth: true,
                 fixedWidth: 100
             ) {
-                
+                if self.searchDetail.searchType == .oversea {
+                    self.searchDetail.searchType = .all
+                } else {
+                    self.searchDetail.searchType = .oversea
+                }
             }
         }
         .padding(.top)
@@ -99,5 +108,5 @@ struct TopHomeView: View {
 }
 
 #Preview {
-    TopHomeView(searchDetail: .constant(SearchDetail()), router: .constant(AppRouter.PathRouter<HomeRoutes>()), screenSize: UIScreen.main.bounds.size)
+    TopHomeView(searchDetail: .constant(SearchDetail()), screenSize: UIScreen.main.bounds.size)
 }

@@ -11,75 +11,74 @@ import TravelinDesignSystem
 struct SearchView: View {
     @FocusState private var focused: Bool
     @Binding var viewModel: HomeViewModel
-    @Binding var router: AppRouter.PathRouter<HomeRoutes>
+    @Environment(AppRouter.PathRouter<HomeRoutes>.self) private var router
     @State private var showAllPOI: Bool = false
-    let size: CGSize
+    let screenSize: CGSize
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                
-                if viewModel.searchDetail.searchText.isEmpty {
+                if self.viewModel.searchDetail.searchText.isEmpty {
                     VStack(alignment: .leading)  {
-                        buttonNearbyView
-                        ReusableSearchPackageCollectionView(packages: $viewModel.allNearbyPackages, router: $router, totalPackage: ($viewModel.allNearbyPackages.count), size: size)
+                        self.buttonNearbyView
+                        ReusableSearchPackageCollectionView(packages: self.viewModel.allNearbyPackages, totalPackage: (self.viewModel.allNearbyPackages.count), screenSize: self.screenSize)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .onDisappear {
-                        viewModel.allNearbyPackages = []
+                        self.viewModel.allNearbyPackages = []
                     }
                 } else {
-                    
                     VStack(alignment: .leading) {
-                        placeNameView
-                        
-                        ReusableSearchPackageCollectionView(packages: $viewModel.allPoiPackages, router: $router, totalPackage: (showAllPOI ? $viewModel.allPoiPackages.count : 3), size: size)
-                        
-                        if $viewModel.allPoiPackages.count > 3 {
-                            buttonShowTotalPOIView
+                        self.placeNameView
+                        ReusableSearchPackageCollectionView(packages: self.viewModel.allNearbyFilterPackages, totalPackage: (self.showAllPOI ? self.viewModel.allNearbyFilterPackages.count : 3), screenSize: self.screenSize)
+                        if self.viewModel.allNearbyFilterPackages.count > 3 {
+                            self.buttonShowTotalPOIView
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
-            .onAppear() {
-                focused = true
+            .onAppear {
+                self.focused = true
             }
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .navigationBarHidden(true)
         .onTapGesture {
-            focused = false
+            self.focused = false
         }
         .safeAreaInset(edge: .top, spacing: 0) {
-            headerSearchView
+            self.headerSearchView
+        }
+        .onChange(of: viewModel.searchDetail.searchText) { _, _ in
+            viewModel.updateSearch()
         }
     }
     private var buttonNearbyView: some View {
         Button {
             Task {
-                await viewModel.fetchChileanPOI()
-                focused = false
+                await self.viewModel.fetchChileanPOI()
+                self.focused = false
             }
         } label: {
             VStack(spacing: 0) {
                 HStack(alignment: .center) {
                     Image(systemName: "drop.circle")
-                        .font(.system(size: 32))
+                        .font(TravelinDesignSystem.DesignTokens.Typography.heading1)
                         .symbolRenderingMode(.palette)   // Permite usar varios colores
                         .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(Color.gray)
+                        .foregroundStyle(TravelinDesignSystem.DesignTokens.Colors.darkButtonBackgroundPressed)
                     VStack(alignment: .leading) {
                         Text("Search place nearby")
                             .foregroundStyle(.black)
-                            .font(.system(size: 20, weight: .bold))
+                            .font(TravelinDesignSystem.DesignTokens.Typography.title1.bold())
                         Text("Current location - Chile")
                             .foregroundStyle(.black)
-                            .font(.system(size: 14, weight: .light))
+                            .font(TravelinDesignSystem.DesignTokens.Typography.bodyLargeRegular)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                lineView
+                self.lineView
                     .padding(.all)
             }
             // Un color por capa
@@ -92,83 +91,77 @@ struct SearchView: View {
             .frame(height: 1 / UIScreen.main.scale)
     }
     private var placeNameView: some View {
-        Text("Place name \"\(viewModel.searchDetail.searchText)\" ")
+        Text("Place name \"\(viewModel.searchDetail.searchText)\"")
             .foregroundStyle(.primary)
-            .font(.system(size: 20, weight: .bold))
+            .font(TravelinDesignSystem.DesignTokens.Typography.title1.bold())
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal)
             .padding(.top)
     }
     private var buttonShowTotalPOIView: some View {
         Button {
-            showAllPOI.toggle()
+            self.showAllPOI.toggle()
         } label: {
-            Text("\(showAllPOI ? "Hide": "Show") + \(showAllPOI ? $viewModel.allPoiPackages.count : $viewModel.allPoiPackages.count - 3)")
-                .foregroundStyle(.black)
-                .font(.system(size: 14, weight: .bold))
-                .frame(width: size.width * 0.5)
-                .padding(.vertical, 12)
+            Text("\(self.showAllPOI ? "Hide": "Show") + \(self.showAllPOI ? self.$viewModel.allPoiPackages.count : self.$viewModel.allPoiPackages.count - 3)")
+                .foregroundStyle(TravelinDesignSystem.DesignTokens.Colors.primaryText)
+                .font(TravelinDesignSystem.DesignTokens.Typography.bodyLargeMedium.bold())
+                .frame(width: self.screenSize.width * 0.5)
+                .padding(.vertical, TravelinDesignSystem.DesignTokens.Spacing.mediumSmall)
         }
         .buttonStyle(.plain)
-        .padding(.horizontal, 16)
+        .padding(.horizontal, TravelinDesignSystem.DesignTokens.Spacing.medium)
         .overlay {
-            RoundedRectangle(cornerRadius: 10)
+            RoundedRectangle(cornerRadius: TravelinDesignSystem.DesignTokens.Spacing.iconSpacingMenu)
                 .stroke(Color.gray.opacity(0.35), lineWidth: 2)
-                .padding(.horizontal, 16)
+                .padding(.horizontal, TravelinDesignSystem.DesignTokens.Spacing.medium)
         }
-        .padding(.top, 12)
-        .padding(.bottom, 16)
+        .padding(.top, TravelinDesignSystem.DesignTokens.Spacing.mediumSmall)
+        .padding(.bottom, TravelinDesignSystem.DesignTokens.Spacing.medium)
     }
     private var backButtonView: some View {
         Button {
-            focused = false
-            router.previous()
+            self.focused = false
+            self.router.reset()
         } label: {
             Image(systemName: "chevron.left")
-                .font(.system(size: 17, weight: .semibold))
+                .font(TravelinDesignSystem.DesignTokens.Typography.title2)
                 .foregroundStyle(.black)
-                .frame(width: 44, height: 44)
+                .font(TravelinDesignSystem.DesignTokens.Typography.heading1)
         }
         .buttonStyle(.plain)
     }
     private var squareGridView: some View {
         Image(systemName: "square.grid.3x2.fill")
-            .font(.system(size: 16))
+            .font(TravelinDesignSystem.DesignTokens.Typography.title2)
             .rotationEffect(.degrees(90))
             .foregroundStyle(.primary)
     }
     private var headerSearchView: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 12) {
-                backButtonView
+            HStack(spacing: TravelinDesignSystem.DesignTokens.Spacing.mediumSmall) {
+                self.backButtonView
                 DSTextField(
-                    symbolPosition: viewModel.searchDetail.searchText.isEmpty ? .left : .right,
-                    placeHolder: viewModel.searchDetail.searchText.isEmpty ? "Where do you plan to go?" : "",
+                    symbolPosition: self.viewModel.searchDetail.searchText.isEmpty ? .left : .right,
+                    placeHolder: self.viewModel.searchDetail.searchText.isEmpty ? "Where do you plan to go?" : "",
                     type: .search,
                     style: .outlined,
-                    text: $viewModel.searchDetail.searchText
+                    text: self.$viewModel.searchDetail.searchText
                 )
-                .focused($focused)
-                if !viewModel.searchDetail.searchText.isEmpty {
-                    squareGridView
+                .focused(self.$focused)
+                if !self.viewModel.searchDetail.searchText.isEmpty {
+                    self.squareGridView
                 }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
+            .padding(.horizontal, TravelinDesignSystem.DesignTokens.Spacing.medium)
+            .padding(.vertical, TravelinDesignSystem.DesignTokens.Spacing.iconSpacingMenu)
             .background(Color.white)
-            lineView
+            self.lineView
         }
     }
 }
 
 #Preview {
     NavigationStack {
-        SearchView( viewModel: .constant(HomeViewModel()), router: .constant(AppRouter.PathRouter<HomeRoutes>())
-                    , size: CGSize(width: UIScreen.main.bounds.width , height: UIScreen.main.bounds.width * 0.38))
+        SearchView( viewModel: .constant(HomeViewModel()), screenSize: CGSize(width: UIScreen.main.bounds.width , height: UIScreen.main.bounds.width * 0.38))
     }
 }
-
-
-
-
-

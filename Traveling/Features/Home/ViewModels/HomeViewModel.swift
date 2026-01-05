@@ -9,48 +9,49 @@ import Foundation
 
 @Observable
 final class HomeViewModel {
-    
-    
     var allPoiPackages: [Package] = []
     var allNearbyPackages: [Package] = []
+    var allNearbyFilterPackages: [Package] = []
     var countries: [Country] = []
     var searchDetail = SearchDetail()
     var selectedPackage: Package?
-    
     var isLoading: Bool = false
     var lastLog: String = ""
+    
+    
     
     // MARK: - Dependencies
     private var poiRepo: POIRepositoryProtocol?
     
-    
     init() {
-        loadData()
         Task {
-            await setup()
-            await fetchAllPOI()
+            await self.setup()
+            await self.fetchAllPOI()
+        }
+        self.loadCountries()
+    }
+    func updateSearch() {
+        let query = self.searchDetail.searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if query.isEmpty {
+            self.allNearbyFilterPackages = []
+        } else {
+            self.allNearbyFilterPackages = self.allPoiPackages.filter { $0.name.localizedCaseInsensitiveContains(query) }
         }
     }
-    
     // MARK: - Setup simulador DI
     private func setup() async {
         do {
             let url = "http://localhost:3000"
-            
             let endPoint = try EndPointBuilderImp(baseURL: url)
-            
             let requestBuilder = RequestBuilderImp(
                 endPointBuilder: endPoint,
                 payloadBuilder: nil
             )
-            
             let client = NetworkClientImp()
-            
             let network = NetworkServiceImp(
                 client: client,
                 requestBuilder: requestBuilder
             )
-            
             self.poiRepo = POIRepositoryImp(
                 network: network,
                 mapper: POIMapperImp()
@@ -59,12 +60,9 @@ final class HomeViewModel {
             lastLog = "Initialization failed: \(error.localizedDescription)"
         }
     }
-    
-    
-    
     private func fetchAllPOI() async {
         guard let repo = poiRepo else {
-            lastLog = "⚠️ Networking not initialized."
+            self.lastLog = "⚠️ Networking not initialized."
             return
         }
         let params = POIBoundingBoxParametersDomainModel(
@@ -76,8 +74,8 @@ final class HomeViewModel {
             page: PageParameters(limit: 25),
             offset: 0
         )
-        isLoading = true
-        defer { isLoading = false }
+        self.isLoading = true
+        defer { self.isLoading = false }
         do {
             let result = try await repo.searchBoundingBox(params: params)
             let UIData = domainToUI(data: result)
@@ -86,13 +84,12 @@ final class HomeViewModel {
             print(allPoiPackages.count)
             print(allPoiPackages)
         } catch {
-            lastLog = "❌ BoundingBox Error: \(error.localizedDescription)"
+            self.lastLog = "❌ BoundingBox Error: \(error.localizedDescription)"
         }
     }
-    
     func fetchChileanPOI() async {
         guard let repo = poiRepo else {
-            lastLog = "⚠️ Networking not initialized."
+            self.lastLog = "⚠️ Networking not initialized."
             return
         }
         let params = POIBoundingBoxParametersDomainModel(
@@ -104,17 +101,16 @@ final class HomeViewModel {
             page: PageParameters(limit: 25),
             offset: 0
         )
-        isLoading = true
-        defer { isLoading = false }
+        self.isLoading = true
+        defer { self.isLoading = false }
         do {
             let result = try await repo.searchBoundingBox(params: params)
             let UIData = domainToUI(data: result)
             self.allNearbyPackages = UIData
         } catch {
-            lastLog = "❌ BoundingBox Error: \(error.localizedDescription)"
+            self.lastLog = "❌ BoundingBox Error: \(error.localizedDescription)"
         }
     }
-    
     private func domainToUI(data: [POIDomainModel]) -> [Package] {
         var listPOI: [Package] = []
         data.map {
@@ -136,10 +132,7 @@ final class HomeViewModel {
         }
         return listPOI
     }
-    
-    
-    private func loadData() {
-        
+    private func loadCountries() {
         self.countries = [
             Country(
                 id: UUID(),
@@ -158,22 +151,4 @@ final class HomeViewModel {
             )
         ]
     }
-}
-
-
-
-
-struct SearchDetail {
-    var searchText: String = ""
-    var searchType: SearchType = .all
-}
-struct Country: Identifiable {
-    let id: UUID
-    let name: String
-    let imageURL: String
-}
-enum SearchType {
-    case all
-    case hotel
-    case oversea
 }

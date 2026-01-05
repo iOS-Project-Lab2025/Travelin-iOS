@@ -10,24 +10,26 @@ import SwiftUI
 struct HomeView: View {
     @State private var homeRouter = AppRouter.PathRouter<HomeRoutes>()
     @State private var viewModel = HomeViewModel()
-
+    
     var body: some View {
-        NavigationStack(path: $homeRouter.path) {
+        NavigationStack(path: self.$homeRouter.path) {
             GeometryReader { geo in
                 VStack(spacing: 0) {
-                    TopHomeView(searchDetail: $viewModel.searchDetail, router: $homeRouter, screenSize: geo.size)
+                    TopHomeView(
+                        searchDetail: self.$viewModel.searchDetail,
+                        screenSize: geo.size
+                    )
                         .ignoresSafeArea(edges: .top)
                         .onAppear {
-                            viewModel.searchDetail.searchText = ""
+                            self.viewModel.searchDetail.searchText = ""
                         }
                     ScrollView(.vertical) {
                         HomePackageCollectionView(
-                            packages: $viewModel.allPoiPackages,
-                            router: $homeRouter,
+                            packages: self.viewModel.allPoiPackages,
                             screenSize: geo.size
                         )
                         HomeCountriesCollectionView(
-                            countries: viewModel.countries,
+                            countries: self.viewModel.countries,
                             screenSize: geo.size
                         )
                     }
@@ -36,26 +38,20 @@ struct HomeView: View {
                 .ignoresSafeArea(edges: .top)
                 .navigationDestination(for: HomeRoutes.self) { route in
                     switch route {
-                    case .home:
-                        HomeView()
                     case .poiSearch:
-                        SearchView(viewModel: $viewModel, router: $homeRouter, size: geo.size)
+                        SearchView(viewModel: self.$viewModel, screenSize: geo.size)
                     case .poiDetail(let id):
-                        if let package = viewModel.allPoiPackages.first(where: { $0.id == id }) {
-                               DetailPackageView(package: package)
-                           } else {
-                               Text("Not found")
-                           }
+                        if let package = self.viewModel.allPoiPackages.first(where: { $0.id == id }) {
+                            DetailPackageView(package: package)
+                        } else {
+                            Text("Not found")
+                        }
                     }
                 }
             }
         }
-        .environment(homeRouter)
+        .environment(self.homeRouter)
     }
 }
 
-enum HomeRoutes: Hashable {
-    case home
-    case poiSearch
-    case poiDetail(id: String)
-}
+

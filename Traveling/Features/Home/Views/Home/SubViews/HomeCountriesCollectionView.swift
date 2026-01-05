@@ -6,21 +6,21 @@
 //
 
 import SwiftUI
+import TravelinDesignSystem
 
 struct HomeCountriesCollectionView: View {
     var countries: [Country]
-    
     let screenSize: CGSize
     
     var body: some View {
         VStack(spacing: 0) {
-            titleView
+            self.titleView
             ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: 16) {
-                    ForEach(countries) { country in
+                LazyHStack(spacing: TravelinDesignSystem.DesignTokens.Spacing.medium) {
+                    ForEach(self.countries) { country in
                         ReusableCountriesView(
                             country: country,
-                            size: CGSize(width: screenSize.width * 0.5, height: screenSize.width * 0.55)
+                            screenSize: CGSize(width: self.screenSize.width * 0.5, height: self.screenSize.width * 0.55)
                         )
                     }
                 }
@@ -32,9 +32,9 @@ struct HomeCountriesCollectionView: View {
         Text("Expanding your trip around the world")
             .lineLimit(2)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .font(.system(size: 22, weight: .bold))
+            .font(TravelinDesignSystem.DesignTokens.Typography.heading2)
             .padding(.horizontal)
-            .padding(.trailing, screenSize.width * 0.2)
+            .padding(.trailing, self.screenSize.width * 0.2)
     }
 }
 

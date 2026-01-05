@@ -18,9 +18,4 @@ struct Package: Identifiable {
     let price: Int
     let servicesIncluded: [ServicesIncluded]
 }
-struct ServicesIncluded: Identifiable {
-    let id: UUID
-    let title: String
-    let subTitle: String
-    let icon: String
-}
+
