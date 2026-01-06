@@ -33,14 +33,16 @@ struct DetailPackageView: View {
             
             // Button to navigate to booking with this POI
             Button {
-                // Create temporary Package with POI data to maintain consistency
+                // Create temporary Package with POI data and consistent metadata
+                let metadata = DestinationDescriptions.metadata(for: poi.id)
+                
                 let tempPackage = Package(
                     id: poi.id,
                     imagesCollection: poi.pictures ?? [],
                     name: poi.name,
-                    rating: 5,
-                    numberReviews: 20,
-                    description: "Visit \(poi.name), a beautiful \(poi.category) destination.",
+                    rating: metadata.rating,
+                    numberReviews: metadata.reviews,
+                    description: metadata.description,
                     isFavorite: false,
                     price: 100,
                     servicesIncluded: [ServicesIncluded(

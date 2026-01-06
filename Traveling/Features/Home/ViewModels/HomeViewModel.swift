@@ -163,7 +163,7 @@ final class HomeViewModel {
     }
     /// Maps domain POIs into UI-friendly Package models.
     /// Drops POIs with missing/empty pictures (required by AsyncImage).
-    /// Some fields are placeholders (rating/price/services).
+    /// Uses DestinationDescriptions for varied, localized descriptions, ratings, and reviews.
     /// Includes reference to original POIDomainModel for navigation with real data.
     private func domainToUI(data: [POIDomainModel]) -> [Package] {
         data.compactMap { poi -> Package? in
@@ -171,13 +171,16 @@ final class HomeViewModel {
                 return nil  // Explícitamente retorna nil si no hay imágenes
             }
             
+            // Get consistent metadata for this POI
+            let metadata = DestinationDescriptions.metadata(for: poi.id)
+            
             return Package(
                 id: poi.id,
                 imagesCollection: pictures,
                 name: poi.name,
-                rating: 5,
-                numberReviews: 20,
-                description: "Lorem ipsum... asgdhvjasdasasdcasd sadfasdfas",
+                rating: metadata.rating,
+                numberReviews: metadata.reviews,
+                description: metadata.description,
                 isFavorite: false,
                 price: 100,
                 servicesIncluded: [ServicesIncluded(
