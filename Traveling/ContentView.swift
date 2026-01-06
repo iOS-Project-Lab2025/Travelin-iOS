@@ -19,7 +19,7 @@ struct ContentView: View {
         }
         
         switch router.path {
-        case .home, .wishlist, .profile, .booking, .bookingWithPackage:
+        case .home, .wishlist, .profile, .booking:
             return true
         default:
             return false
