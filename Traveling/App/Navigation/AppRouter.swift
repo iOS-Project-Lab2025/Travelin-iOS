@@ -72,7 +72,7 @@ enum AppRouter {
 
         func completeOnboarding() {
             UserDefaults.standard.set(true, forKey: "onboardingSeen")
-            path = .home
+            path = .authentication(.login)
         }
 
     }

@@ -60,6 +60,7 @@ struct HomePackageCollectionView: View {
         Text("Popular package in asia")
             .font(TravelinDesignSystem.DesignTokens.Typography.title1.bold())
             .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.bottom)
     }
 }
 
