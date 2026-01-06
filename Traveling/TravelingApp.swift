@@ -16,7 +16,7 @@ struct TravelingApp: App {
         UserDefaults.standard.set(["en"], forKey: "AppleLanguages")
         UserDefaults.standard.synchronize()
     }
-
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

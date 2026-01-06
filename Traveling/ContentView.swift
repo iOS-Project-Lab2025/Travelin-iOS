@@ -21,48 +21,44 @@ struct ContentView: View {
         switch router.path {
         case .home, .wishlist, .profile, .booking:
             return true
-
         default:
             return false
         }
     }
 
+    @ViewBuilder
+    private var mainContent: some View {
+        switch router.path {
+        case .home:
+            HomeView()
+        case .onBoarding:
+            OnboardingView()
+        case .profile:
+            ProfileView(userId: "John Doe")
+        case .booking:
+            BookingView(hideTabBar: $hideTabBar)
+        case .authentication(.login):
+            LoginView(loginViewModel: LoginViewModel())
+        case .authentication(.register):
+            RegisterView(registerViewModel: RegisterViewModel())
+        case .wishlist:
+            WishListView()
+        }
+    }
+
     var body: some View {
-        ZStack {
-            switch router.path {
-            case .home:
-                HomeView()
-
-            case .onBoarding:
-                OnboardingView()
-
-            case .profile:
-                ProfileView(userId: "John Doe")
-
-            case .booking:
-                BookingView(hideTabBar: $hideTabBar)
-
-            case .authentication(.login):
-                LoginView(loginViewModel: LoginViewModel())
-
-            case .authentication(.register):
-                RegisterView(registerViewModel: RegisterViewModel())
-
-            case .wishlist:
-                WishListView()
-            }
+        VStack(spacing: 0) {
+            // Esto asegura que el contenido ocupa toda la altura disponible
+            mainContent
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
 
             if shouldShowTabBar {
-                VStack {
-                    Spacer()
-                    TapBar()
-                }
+                TapBar()
             }
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom) // mantiene tu intención original
     }
 }
 
-#Preview {
-    ContentView()
-        .environment(AppRouter.Main.shared)
-}
+
+
