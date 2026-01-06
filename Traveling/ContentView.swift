@@ -19,7 +19,7 @@ struct ContentView: View {
         }
         
         switch router.path {
-        case .home, .wishlist, .profile, .booking:
+        case .home, .wishlist, .profile, .booking, .bookingWithPackage:
             return true
         default:
             return false
@@ -31,12 +31,19 @@ struct ContentView: View {
         switch router.path {
         case .home:
             HomeView()
+                .onAppear {
+                    // Ensure tab bar is visible when returning to home
+                    hideTabBar = false
+                }
         case .onBoarding:
             OnboardingView()
         case .profile:
             ProfileView(userId: "John Doe")
         case .booking:
-            BookingView(hideTabBar: $hideTabBar)
+            BookingView(hideTabBar: $hideTabBar, selectedPackage: nil)
+        case .bookingWithPackage(let package):
+            BookingView(hideTabBar: $hideTabBar, selectedPackage: package)
+                .toolbar(hideTabBar ? .hidden : .visible, for: .tabBar)
         case .authentication(.login):
             LoginView(loginViewModel: LoginViewModel())
         case .authentication(.register):

@@ -8,37 +8,75 @@
 import SwiftUI
 
 struct DetailPackageView: View {
-    /// Binding to the selected Package from the source list (HomeViewModel.allPoiPackages).
-    /// HomeView resolves the id and passes Binding<Package> into this screen.
-    /// Any future edits here can propagate back to the shared state.
-    @Binding var package: Package
+    /// The selected POI from the source list, containing real data from the endpoint.
+    /// HomeView passes the complete POIDomainModel when navigating to this screen.
+    /// Contains all POI information needed for display and booking navigation.
+    let poi: POIDomainModel
+    
+    @Environment(\.appRouter) private var appRouter
 
     var body: some View {
-        /// Minimal detail layout: name, description, and favorite status.
+        /// Minimal detail layout: name, category, and coordinates.
         /// Uses plain Text views without design system styling for now.
-        /// Consider wrapping in ScrollView later if descriptions grow long.
-        VStack {
-            Text(package.name)
-            Text(package.description)
-            Text(package.isFavorite ? "Favorite" : "Not Favorite")
+        /// Consider wrapping in ScrollView later if content grows.
+        VStack(spacing: 20) {
+            Text(poi.name)
+                .font(.title)
+                .bold()
+            
+            Text("Category: \(poi.category)")
+                .font(.subheadline)
+            
+            Text("Location: \(poi.lat), \(poi.lon)")
+                .font(.caption)
+                .foregroundColor(.gray)
+            
+            // Button to navigate to booking with this POI
+            Button {
+                // Create temporary Package with POI data to maintain consistency
+                let tempPackage = Package(
+                    id: poi.id,
+                    imagesCollection: poi.pictures ?? [],
+                    name: poi.name,
+                    rating: 5,
+                    numberReviews: 20,
+                    description: "Visit \(poi.name), a beautiful \(poi.category) destination.",
+                    isFavorite: false,
+                    price: 100,
+                    servicesIncluded: [ServicesIncluded(
+                        id: UUID(),
+                        title: "1 day",
+                        subTitle: "Duration",
+                        icon: "clock.fill"
+                    )],
+                    poiSource: poi
+                )
+                appRouter.goTo(.bookingWithPackage(tempPackage))
+            } label: {
+                Text("Book Now")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
+                    .cornerRadius(10)
+            }
+            .padding(.horizontal)
         }
-        }
+        .padding()
+    }
 }
 
 #Preview {
-    /// Preview uses a constant binding to satisfy @Binding requirements.
-    /// Sample Package data mirrors what the app would pass at runtime.
-    /// Useful to verify basic layout and conditional favorite label.
-    DetailPackageView(package: .constant(Package(
+    /// Preview uses sample POIDomainModel data from the endpoint structure.
+    /// Useful to verify basic layout and data display.
+    DetailPackageView(poi: POIDomainModel(
         id: "01",
-        imagesCollection: ["package1"],
         name: "Koh Rong Samloem",
-        rating: 4,
-        numberReviews: 90,
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        isFavorite: true,
-        price: 600,
-        servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
-    )))
+        pictures: ["https://example.com/image.jpg"],
+        lat: 10.5,
+        lon: 103.5,
+        category: "BEACH_PARK"
+    ))
 }
 

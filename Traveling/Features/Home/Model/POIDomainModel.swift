@@ -30,11 +30,12 @@ import Foundation
 /// ## Notes
 /// - Instances are produced by `POIMapperImp`.
 /// - Conforms to `Identifiable` for SwiftUI and List usage.
+/// - Conforms to `Codable` and `Hashable` for navigation and serialization.
 ///
 /// ## SeeAlso
 /// - `POIDataModel`
 /// - `POIMapperImp`
-struct POIDomainModel: Identifiable {
+struct POIDomainModel: Identifiable, Codable, Hashable {
     let id: String
     let name: String
     let pictures: [String]?

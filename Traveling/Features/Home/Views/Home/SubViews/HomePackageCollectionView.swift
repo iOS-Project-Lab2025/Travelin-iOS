@@ -40,10 +40,10 @@ struct HomePackageCollectionView: View {
                             package: $package,
                             screenSize: self.screenSize,
                             onTap: {
-                                /// Card tap triggers navigation to detail by package id.
-                                /// HomeView resolves the id and passes Binding<Package> to the detail view.
-                                /// Keeps detail screen in sync with Home state.
-                                self.router.goTo(.poiDetail(id: package.id))
+                                /// Card tap triggers navigation directly to booking with complete Package data.
+                                /// Uses the app router to switch to booking tab with the selected Package.
+                                /// This ensures rating and reviews are consistent between preview and detail.
+                                AppRouter.Main.shared.goTo(.bookingWithPackage(package))
                             }
                         )
                     }

@@ -161,7 +161,15 @@ struct ReusablePackageView: View {
             description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             isFavorite: true,
             price: 600,
-            servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")]
+            servicesIncluded: [ServicesIncluded(id: UUID(), title: "2 day 1 night", subTitle: "Duration", icon: "clock.fill")],
+            poiSource: POIDomainModel(
+                id: "01",
+                name: "Koh Rong Samloem",
+                pictures: ["package1"],
+                lat: 10.5,
+                lon: 103.5,
+                category: "BEACH_PARK"
+            )
         )), screenSize: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width )
     )
     .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height )

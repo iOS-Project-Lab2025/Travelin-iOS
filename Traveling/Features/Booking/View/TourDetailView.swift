@@ -68,19 +68,54 @@ struct TourDetailView: View {
                 Color.gray.opacity(0.3)
                     .frame(height: 428)
                 
-                // Main Image (placeholder)
-                Rectangle()
-                    .fill(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                Color.gray.opacity(0.5),
-                                Color.blue.opacity(0.3)
-                            ]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
+                // Main Image - Shows the first tour image (same as in the list)
+                if let firstImageURL = tour.images.first, let url = URL(string: firstImageURL) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                                .frame(width: UIScreen.main.bounds.width, height: 428)
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: UIScreen.main.bounds.width, height: 428)
+                                .clipped()
+                        case .failure:
+                            // Fallback if the image fails to load
+                            Rectangle()
+                                .fill(
+                                    LinearGradient(
+                                        gradient: Gradient(colors: [
+                                            Color.gray.opacity(0.5),
+                                            Color.blue.opacity(0.3)
+                                        ]),
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .frame(width: UIScreen.main.bounds.width, height: 428)
+                        @unknown default:
+                            EmptyView()
+                        }
+                    }
+                    .frame(width: UIScreen.main.bounds.width, height: 428)
+                    .clipped()
+                } else {
+                    // Placeholder if there are no images
+                    Rectangle()
+                        .fill(
+                            LinearGradient(
+                                gradient: Gradient(colors: [
+                                    Color.gray.opacity(0.5),
+                                    Color.blue.opacity(0.3)
+                                ]),
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
                         )
-                    )
-                    .frame(height: 428)
+                        .frame(width: UIScreen.main.bounds.width, height: 428)
+                }
                 
                 // Gradient Overlay
                 LinearGradient(
@@ -112,7 +147,10 @@ struct TourDetailView: View {
             
             // Header with Back, Share and Favorite
             HStack {
-                Button(action: { dismiss() }) {
+                Button(action: { 
+                    // When going back from tour detail, return to home
+                    AppRouter.Main.shared.goTo(.home)
+                }) {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 18, weight: .semibold))
                         .foregroundColor(.white)
@@ -235,35 +273,86 @@ struct TourDetailView: View {
     // MARK: - Photos Gallery Section
     private var photosGallerySection: some View {
         VStack(alignment: .leading, spacing: 20) {
-            HStack(spacing: 3) {
-                // Left Column
-                VStack(spacing: 3) {
-                    RoundedRectangle(cornerRadius: 6)
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(width: 156, height: 143)
+            // Only show gallery if there's more than 1 image (first one is already in the hero)
+            if tour.images.count > 1 {
+                HStack(spacing: 3) {
+                    // Left Column - Shows images 2 and 3 if they exist
+                    VStack(spacing: 3) {
+                        // Second image (index 1)
+                        if tour.images.count > 1, let url = URL(string: tour.images[1]) {
+                            AsyncImage(url: url) { phase in
+                                switch phase {
+                                case .success(let image):
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 156, height: 143)
+                                        .clipped()
+                                        .cornerRadius(6)
+                                default:
+                                    RoundedRectangle(cornerRadius: 6)
+                                        .fill(Color.gray.opacity(0.3))
+                                        .frame(width: 156, height: 143)
+                                }
+                            }
+                        }
+                        
+                        // Third image (index 2) - Only if it exists
+                        if tour.images.count > 2, let url = URL(string: tour.images[2]) {
+                            AsyncImage(url: url) { phase in
+                                switch phase {
+                                case .success(let image):
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 156, height: 143)
+                                        .clipped()
+                                        .cornerRadius(6)
+                                default:
+                                    RoundedRectangle(cornerRadius: 6)
+                                        .fill(Color.gray.opacity(0.3))
+                                        .frame(width: 156, height: 143)
+                                }
+                            }
+                        }
+                    }
                     
-                    RoundedRectangle(cornerRadius: 6)
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(width: 156, height: 143)
+                    // Right Large Image - Only if there are 4 or more images
+                    if tour.images.count > 3, let url = URL(string: tour.images[3]) {
+                        AsyncImage(url: url) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(height: 289)
+                                    .clipped()
+                                    .cornerRadius(6)
+                            default:
+                                RoundedRectangle(cornerRadius: 6)
+                                    .fill(Color.gray.opacity(0.3))
+                                    .frame(height: 289)
+                            }
+                        }
+                    }
                 }
                 
-                // Right Large Image
-                RoundedRectangle(cornerRadius: 6)
-                    .fill(Color.gray.opacity(0.3))
-                    .frame(height: 289)
-            }
-            
-            Button(action: {}) {
-                Text("See all +20 photos")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.black)
-                    .frame(width: 156)
-                    .padding(.vertical, 12)
-                    .background(Color.white)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(Color.black, lineWidth: 1)
-                    )
+                // Button to see all photos - Only if there are more than 4 images
+                if tour.totalPhotos > 4 {
+                    let remainingPhotos = tour.totalPhotos - 4 // 4 = 1 hero + 3 galería
+                    Button(action: {}) {
+                        Text("See all +\(remainingPhotos) photos")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundColor(.black)
+                            .frame(width: 156)
+                            .padding(.vertical, 12)
+                            .background(Color.white)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 6)
+                                    .stroke(Color.black, lineWidth: 1)
+                            )
+                    }
+                }
             }
         }
     }
