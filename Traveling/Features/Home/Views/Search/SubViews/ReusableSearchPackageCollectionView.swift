@@ -38,7 +38,7 @@ struct ReusableSearchPackageCollectionView: View {
                 alignment: .center,
                 spacing: 0) {
                     ForEach(Array(self.packages.prefix(self.totalPackage))) { package in
-                        VStack {
+                        VStack(spacing: 0) {
                             HStack {
                                 /// Uses the first image URL string as the cover image.
                                 /// If invalid/empty, AsyncImage will show placeholder behavior.
@@ -46,7 +46,7 @@ struct ReusableSearchPackageCollectionView: View {
                                 let urlString = package.imagesCollection.first ?? ""
                                 let url = URL(string: urlString)
                                 self.checkPhaseImageView(url: url)
-                                VStack(alignment: .leading, spacing: TravelinDesignSystem.DesignTokens.Spacing.small) {
+                                VStack(alignment: .leading, spacing: 4) {
                                     self.packageNameView(name: package.name)
                                     self.rankingView(rating: package.rating, totalReviews: package.numberReviews)
                                     self.descriptionView(description: package.description)
@@ -91,7 +91,7 @@ struct ReusableSearchPackageCollectionView: View {
             switch phase {
             case .empty:
                 ProgressView()
-                    .frame(width: self.screenSize.width * 0.38, height: self.screenSize.width * 0.38)
+                    .frame(width: self.screenSize.width * 0.33, height: self.screenSize.width * 0.33)
                 
             case .success(let image):
                 image
