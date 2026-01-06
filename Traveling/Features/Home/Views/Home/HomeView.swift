@@ -60,13 +60,13 @@ struct HomeView: View {
 
                 /// Route mapping for HomeRoutes → destination views.
                 /// Search receives viewModel binding to run fetch/filter logic.
-                /// Detail resolves a Binding<Package> from the array by id.
+                /// Detail receives the complete POIDomainModel with real data.
                 .navigationDestination(for: HomeRoutes.self) { route in
                     switch route {
                     case .poiSearch:
                         SearchView(viewModel: self.$viewModel, screenSize: geo.size)
-                    case .poiDetail(let id):
-                        detailPackageDestination(packages: $viewModel.allPoiPackages, id: id)
+                    case .poiDetail(let poi):
+                        DetailPackageView(poi: poi)
                     }
                 }
             }
@@ -74,21 +74,6 @@ struct HomeView: View {
         /// Makes this router available to subviews via @Environment.
         /// Needed by TopHomeView/HomePackageCollectionView/SearchView for navigation.
         .environment(self.homeRouter)
-    }
-
-    @ViewBuilder
-    private func detailPackageDestination(
-        packages: Binding<[Package]>,
-        id: String
-    ) -> some View {
-        /// Finds the package by id and passes a Binding<Package> to the detail view.
-        /// This keeps detail edits (e.g., favorite) in sync with the source array.
-        /// Shows a fallback text when the id is not found.
-        if let index = packages.wrappedValue.firstIndex(where: { $0.id == id }) {
-            DetailPackageView(package: packages[index])   // ✅ Binding<Package>
-        } else {
-            Text("Package not found")
-        }
     }
 }
 

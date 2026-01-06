@@ -164,6 +164,7 @@ final class HomeViewModel {
     /// Maps domain POIs into UI-friendly Package models.
     /// Drops POIs with missing/empty pictures (required by AsyncImage).
     /// Some fields are placeholders (rating/price/services).
+    /// Includes reference to original POIDomainModel for navigation with real data.
     private func domainToUI(data: [POIDomainModel]) -> [Package] {
         data.compactMap { poi -> Package? in
             guard let pictures = poi.pictures, !pictures.isEmpty else {
@@ -174,8 +175,8 @@ final class HomeViewModel {
                 id: poi.id,
                 imagesCollection: pictures,
                 name: poi.name,
-                rating: 2,
-                numberReviews: 99,
+                rating: 5,
+                numberReviews: 20,
                 description: "Lorem ipsum... asgdhvjasdasasdcasd sadfasdfas",
                 isFavorite: false,
                 price: 100,
@@ -184,7 +185,8 @@ final class HomeViewModel {
                     title: "2 day 1 night",
                     subTitle: "Duration",
                     icon: "clock.fill"
-                )]
+                )],
+                poiSource: poi
             )
         }
     }

@@ -9,21 +9,37 @@ import SwiftUI
 
 struct BookingTouristPlace: View {
 
-    @Environment(AppRouter.FlowRouter<BookingRoutes>.self) var bookingRouter
+    @Environment(AppRouter.PathRouter<BookingRoutes>.self) var bookingRouter
 
     var body: some View {
         VStack {
-            Text("Booking Tourist Place")
-            Button {
-                bookingRouter.next()
-            } label: {
-                Text("Next")
+            // Header
+            HStack {
+                Text("Select a Tour")
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(.black)
+                
+                Spacer()
             }
-
+            .padding(.horizontal)
+            .padding(.top, 20)
+            
+            // Tour List
+            ScrollView {
+                VStack(spacing: 15) {
+                    ForEach(Tour.mockTours) { tour in
+                        TourCardView(tour: tour) {
+                            bookingRouter.goTo(.tourDetail(tour))
+                        }
+                    }
+                }
+                .padding()
+            }
         }
     }
 }
 
 #Preview {
     BookingTouristPlace()
+        .environment(AppRouter.PathRouter<BookingRoutes>())
 }

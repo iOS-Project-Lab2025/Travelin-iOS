@@ -13,9 +13,9 @@ enum HomeRoutes: Hashable {
     /// Resolved in HomeView.navigationDestination to show SearchView.
     case poiSearch
 
-    /// Route to a specific package/POI detail by identifier.
-    /// Used by Home cards and Search rows (router.goTo(.poiDetail(id:))).
-    /// HomeView resolves the id and passes Binding<Package> to DetailPackageView.
-    case poiDetail(id: String)
+    /// Route to a specific package/POI detail with complete data.
+    /// Used by Home cards and Search rows (router.goTo(.poiDetail(poi:))).
+    /// Passes the complete POIDomainModel to DetailPackageView.
+    case poiDetail(poi: POIDomainModel)
 }
 

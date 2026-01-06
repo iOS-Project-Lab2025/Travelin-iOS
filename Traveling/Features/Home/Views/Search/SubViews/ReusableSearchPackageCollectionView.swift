@@ -71,11 +71,11 @@ struct ReusableSearchPackageCollectionView: View {
                                 .frame(maxWidth:  self.screenSize.width)
                                 .padding(.vertical, TravelinDesignSystem.DesignTokens.Spacing.small)
                         }
-                        /// Tapping a row routes to the detail screen using package id.
-                        /// HomeView resolves the route and builds the destination.
-                        /// Keeps navigation consistent across Home and Search.
+                        /// Tapping a row navigates directly to booking with complete POI data.
+                        /// Uses the app router to switch to booking tab with the selected POI.
+                        /// This bypasses the intermediate detail view and goes straight to tour details.
                         .onTapGesture {
-                            self.router.goTo(.poiDetail(id: package.id))
+                            AppRouter.Main.shared.goTo(.bookingWithPackage(package))
                         }
                     }
                 }

@@ -9,8 +9,8 @@ import Foundation
 
 struct Package: Identifiable, Codable, Hashable {
     /// Unique identifier used by SwiftUI lists and navigation routes.
-    /// Passed into HomeRoutes.poiDetail(id:) to open the detail screen.
-    /// HomeView resolves this id back to a Binding<Package>.
+    /// Passed into HomeRoutes.poiDetail to open the detail screen.
+    /// Matches the id from POIDomainModel.
     let id: String
 
     /// Image references used as URL strings in AsyncImage (first element is the cover).
@@ -52,6 +52,11 @@ struct Package: Identifiable, Codable, Hashable {
     /// Search rows display only the first item as a badge.
     /// Detail can later expand to show the full list.
     let servicesIncluded: [ServicesIncluded]
+    
+    /// Reference to the original POI domain model from the API.
+    /// Contains complete POI data including coordinates and category.
+    /// Used for navigation to booking and detail views with real data.
+    let poiSource: POIDomainModel
 }
 
 
