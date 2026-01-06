@@ -9,12 +9,8 @@ import SwiftUI
 
 struct BookingView: View {
 
-    @State private var bookingRouter =
-        AppRouter.FlowRouter<BookingRoutes>(flow: [
-            .touristPlace,
-            .availableDate,
-            .infoDetails
-        ])
+    @State private var bookingRouter = AppRouter.PathRouter<BookingRoutes>()
+    @Binding var hideTabBar: Bool
 
     var body: some View {
         NavigationStack(path: $bookingRouter.path) {
@@ -24,6 +20,9 @@ struct BookingView: View {
                 }
         }
         .environment(bookingRouter)
+        .onChange(of: bookingRouter.path.count) { _, newCount in
+            hideTabBar = newCount > 0
+        }
     }
         @ViewBuilder
         private func destinationView(for route: BookingRoutes) -> some View {
@@ -31,8 +30,17 @@ struct BookingView: View {
             case .touristPlace:
                 BookingTouristPlace()
 
-            case .availableDate:
-                BookingAvailableDate()
+            case .tourDetail(let tour):
+                TourDetailView(tour: tour)
+
+            case .availableDate(let tour):
+                AvailableDateView(tour: tour)
+
+            case .detailBooking(let tour, let startDate, let endDate):
+                DetailBookingView(tour: tour, startDate: startDate, endDate: endDate)
+            
+            case .bookingSuccess:
+                SuccessMessageView(successType: .bookingSuccess)
 
             case .infoDetails:
                 BookingInfoDetails()
@@ -41,5 +49,5 @@ struct BookingView: View {
 }
 
 #Preview {
-    BookingView()
+    BookingView(hideTabBar: .constant(false))
 }

@@ -10,8 +10,14 @@ import SwiftUI
 struct ContentView: View {
 
     @Environment(\.appRouter) private var router
+    @State private var hideTabBar: Bool = false
 
     private var shouldShowTabBar: Bool {
+        // Hide tab bar if hideTabBar is true
+        if hideTabBar {
+            return false
+        }
+        
         switch router.path {
         case .home, .wishlist, .profile, .booking:
             return true
@@ -34,7 +40,7 @@ struct ContentView: View {
                 ProfileView(userId: "John Doe")
 
             case .booking:
-                BookingView()
+                BookingView(hideTabBar: $hideTabBar)
 
             case .authentication(.login):
                 LoginView(loginViewModel: LoginViewModel())
