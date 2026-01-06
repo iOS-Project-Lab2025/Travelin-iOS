@@ -63,7 +63,7 @@ enum AppRouter {
         }
 
         // Active main route
-        var path: AppRoutes = .home
+        var path: AppRoutes = .onBoarding
 
         // To go to one of the main routes
         func goTo(_ route: AppRoutes) {
@@ -72,7 +72,7 @@ enum AppRouter {
 
         func completeOnboarding() {
             UserDefaults.standard.set(true, forKey: "onboardingSeen")
-            path = .home
+            path = .authentication(.login)
         }
 
     }

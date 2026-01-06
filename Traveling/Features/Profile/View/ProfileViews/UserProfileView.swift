@@ -59,14 +59,16 @@ struct UserProfileView: View {
 
             // Text Info (Name and Location/Description)
             VStack(alignment: .leading, spacing: 4) {
-                Text("John Due") // Note: Typically this would come from a ViewModel
+                Text("Ignacio Alvarado") // Note: Typically this would come from a ViewModel
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(.black)
 
-                Text("Mars, Solar System")
+               /*
+                Text("Chile")
                     .font(.subheadline)
                     .foregroundColor(.gray)
+                */
             }
 
             Spacer()
